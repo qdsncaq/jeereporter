@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.gds.orderdetail.dao.OrderdetailsDao">
+    
+	<sql id="orderdetailsColumns">
+		a.id AS "id",
+		a.orderid AS "orderid",
+		a.begintime AS "begintime",
+		a.endtime AS "endtime",
+		a.totalprice AS "totalprice",
+		a.status AS "status",
+		a.pmsroomorderno AS "pmsroomorderno",
+		a.roomtypeid AS "roomtypeid",
+		a.roompms AS "roompms",
+		a.roomid AS "roomid",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
+		a.note AS "note",
+		a.hotelid AS "hotelid",
+		a.checkintime AS "checkintime",
+		a.checkouttime AS "checkouttime",
+		a.roomtypename AS "roomtypename",
+		a.roomno AS "roomno"
+	</sql>
+	
+	<sql id="orderdetailsJoins">
+	</sql>
+    
+	<select id="get" resultType="Orderdetails">
+		SELECT 
+			<include refid="orderdetailsColumns"/>
+		FROM orderdetails a
+		<include refid="orderdetailsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Orderdetails">
+		SELECT 
+			<include refid="orderdetailsColumns"/>
+		FROM orderdetails a
+		<include refid="orderdetailsJoins"/>
+		<where>
+			
+			<if test="orderid != null and orderid != ''">
+				AND a.orderid = #{orderid}
+			</if>
+			<if test="begintime != null and begintime != ''">
+				AND date_format(a.begintime,'%Y-%m-%d') = date_format(#{begintime},'%Y-%m-%d')
+			</if>
+			<if test="endtime != null and endtime != ''">
+				AND date_format(a.endtime,'%Y-%m-%d') = date_format(#{endtime},'%Y-%m-%d')
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="createtime != null and createtime != ''">
+				AND date_format(a.createtime,'%Y-%m-%d') = date_format(#{createtime},'%Y-%m-%d')
+			</if>
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="roomtypename != null and roomtypename != ''">
+				AND a.roomtypename LIKE 
+					<if test="dbName == 'oracle'">'%'||#{roomtypename}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{roomtypename}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{roomtypename},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Orderdetails">
+		SELECT 
+			<include refid="orderdetailsColumns"/>
+		FROM orderdetails a
+		<include refid="orderdetailsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO orderdetails(
+			id,
+			orderid,
+			begintime,
+			endtime,
+			totalprice,
+			status,
+			pmsroomorderno,
+			roomtypeid,
+			roompms,
+			roomid,
+			createtime,
+			updatetime,
+			note,
+			hotelid,
+			checkintime,
+			checkouttime,
+			roomtypename,
+			roomno
+		) VALUES (
+			#{id},
+			#{orderid},
+			#{begintime},
+			#{endtime},
+			#{totalprice},
+			#{status},
+			#{pmsroomorderno},
+			#{roomtypeid},
+			#{roompms},
+			#{roomid},
+			#{createtime},
+			#{updatetime},
+			#{note},
+			#{hotelid},
+			#{checkintime},
+			#{checkouttime},
+			#{roomtypename},
+			#{roomno}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE orderdetails SET 	
+			orderid = #{orderid},
+			begintime = #{begintime},
+			endtime = #{endtime},
+			totalprice = #{totalprice},
+			status = #{status},
+			pmsroomorderno = #{pmsroomorderno},
+			roomtypeid = #{roomtypeid},
+			roompms = #{roompms},
+			roomid = #{roomid},
+			createtime = #{createtime},
+			updatetime = #{updatetime},
+			note = #{note},
+			hotelid = #{hotelid},
+			checkintime = #{checkintime},
+			checkouttime = #{checkouttime},
+			roomtypename = #{roomtypename},
+			roomno = #{roomno}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM orderdetails
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

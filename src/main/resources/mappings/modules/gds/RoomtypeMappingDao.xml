@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.gds.roomtypemapping.dao.RoomtypeMappingDao">
+    
+	<sql id="roomtypeMappingColumns">
+		a.id AS "id",
+		a.hotelid AS "hotelid",
+		a.ota_hotelid AS "otaHotelid",
+		a.roomtypename AS "roomtypename",
+		a.roomtypeid AS "roomtypeid",
+		a.ota_roomtypeid AS "otaRoomtypeid",
+		a.ota_roomtypename AS "otaRoomtypename",
+		a.state AS "state",
+		a.bedtype AS "bedtype",
+		a.channelid AS "channelid",
+		a.createby AS "createby",
+		a.createtime AS "createtime",
+		a.updateby AS "updateby",
+		a.updatetime AS "updatetime"
+	</sql>
+	
+	<sql id="roomtypeMappingJoins">
+	</sql>
+    
+	<select id="get" resultType="RoomtypeMapping">
+		SELECT 
+			<include refid="roomtypeMappingColumns"/>
+		FROM roomtype_mapping a
+		<include refid="roomtypeMappingJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="RoomtypeMapping">
+		SELECT 
+			<include refid="roomtypeMappingColumns"/>
+		FROM roomtype_mapping a
+		<include refid="roomtypeMappingJoins"/>
+		<where>
+			
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="otaHotelid != null and otaHotelid != ''">
+				AND a.ota_hotelid = #{otaHotelid}
+			</if>
+			<if test="roomtypeid != null and roomtypeid != ''">
+				AND a.roomtypeid = #{roomtypeid}
+			</if>
+			<if test="roomtypename != null and roomtypename != ''">
+				AND a.roomtypename = #{roomtypename}
+			</if>
+			<if test="otaRoomtypeid != null and otaRoomtypeid != ''">
+				AND a.ota_roomtypeid = #{otaRoomtypeid}
+			</if>
+			<if test="otaRoomtypename != null and otaRoomtypename != ''">
+				AND a.ota_roomtypename LIKE 
+					<if test="dbName == 'oracle'">'%'||#{otaRoomtypename}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{otaRoomtypename}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{otaRoomtypename},'%')</if>
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+			<if test="bedtype != null and bedtype != ''">
+				AND a.bedtype = #{bedtype}
+			</if>
+			<if test="channelid != null and channelid != ''">
+				AND a.channelid = #{channelid}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RoomtypeMapping">
+		SELECT 
+			<include refid="roomtypeMappingColumns"/>
+		FROM roomtype_mapping a
+		<include refid="roomtypeMappingJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO roomtype_mapping(
+			hotelid,
+			ota_hotelid,
+			roomtypename,
+			roomtypeid,
+			ota_roomtypeid,
+			ota_roomtypename,
+			state,
+			bedtype,
+			channelid,
+			createby,
+			createtime,
+			updateby,
+			updatetime
+		) VALUES (
+			#{hotelid},
+			#{otaHotelid},
+			#{roomtypename},
+			#{roomtypeid},
+			#{otaRoomtypeid},
+			#{otaRoomtypename},
+			#{state},
+			#{bedtype},
+			#{channelid},
+			#{createby},
+			#{createtime},
+			#{updateby},
+			#{updatetime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE roomtype_mapping SET 	
+			hotelid = #{hotelid},
+			ota_hotelid = #{otaHotelid},
+			roomtypename = #{roomtypename},
+			roomtypeid = #{roomtypeid},
+			ota_roomtypeid = #{otaRoomtypeid},
+			ota_roomtypename = #{otaRoomtypename},
+			state = #{state},
+			bedtype = #{bedtype},
+			channelid = #{channelid},
+			createby = #{createby},
+			createtime = #{createtime},
+			updateby = #{updateby},
+			updatetime = #{updatetime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM roomtype_mapping
+		WHERE id = #{id}
+	</update>
+	 <select id="findRoomtypeByName" resultType="long">
+        SELECT id FROM roomtype where name=#{name} and hotelid=#{hotelid}
+    </select>
+</mapper>

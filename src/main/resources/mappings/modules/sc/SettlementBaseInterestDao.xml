@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.sc.settlementbaseinterest.dao.SettlementBaseInterestDao">
+    
+	<sql id="settlementBaseInterestColumns">
+		a.id AS "id",
+		a.hotelid AS "hotelid",
+		a.hotelname AS "hotelname",
+		a.hotelpms AS "hotelpms",
+		a.accountrole AS "accountrole",
+		a.interestrate AS "interestrate",
+		a.interestratetype AS "interestratetype",
+		a.status AS "status",
+		a.compoundinterest AS "compoundinterest",
+		a.begintime AS "begintime",
+		a.updatetime AS "updatetime"
+	</sql>
+	
+	<sql id="settlementBaseInterestJoins">
+	</sql>
+    
+	<select id="get" resultType="SettlementBaseInterest">
+		SELECT 
+			<include refid="settlementBaseInterestColumns"/>
+		FROM settlement_base_interest a
+		<include refid="settlementBaseInterestJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SettlementBaseInterest">
+		SELECT 
+			<include refid="settlementBaseInterestColumns"/>
+		FROM settlement_base_interest a
+		<include refid="settlementBaseInterestJoins"/>
+		<where>
+			
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="hotelname != null and hotelname != ''">
+				AND a.hotelname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+			</if>
+			<if test="hotelpms != null and hotelpms != ''">
+				AND a.hotelpms = #{hotelpms}
+			</if>
+			<if test="accountrole != null and accountrole != ''">
+				AND a.accountrole = #{accountrole}
+			</if>
+			<if test="interestrate != null and interestrate != ''">
+				AND a.interestrate = #{interestrate}
+			</if>
+			<if test="interestratetype != null and interestratetype != ''">
+				AND a.interestratetype = #{interestratetype}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="compoundinterest != null and compoundinterest != ''">
+				AND a.compoundinterest = #{compoundinterest}
+			</if>
+			<if test="beginBegintime != null  and beginBegintime != '' ">
+				AND a.begintime  <![CDATA[>=]]> #{beginBegintime}
+			</if>
+			<if test="endBegintime != null and endBegintime != ''">
+			    AND a.begintime  <![CDATA[<=]]> #{endBegintime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<when test="page ==null or page.orderBy == null or page.orderBy == ''">
+				ORDER BY id DESC
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SettlementBaseInterest">
+		SELECT 
+			<include refid="settlementBaseInterestColumns"/>
+		FROM settlement_base_interest a
+		<include refid="settlementBaseInterestJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO settlement_base_interest(
+			hotelid,
+			hotelname,
+			hotelpms,
+			accountrole,
+			interestrate,
+			interestratetype,
+			status,
+			compoundinterest,
+			begintime,
+			updatetime
+		) VALUES (
+			#{hotelid},
+			#{hotelname},
+			#{hotelpms},
+			#{accountrole},
+			#{interestrate},
+			#{interestratetype},
+			#{status},
+			#{compoundinterest},
+			#{begintime},
+			#{updatetime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE settlement_base_interest SET 	
+			hotelid = #{hotelid},
+			hotelname = #{hotelname},
+			hotelpms = #{hotelpms},
+			accountrole = #{accountrole},
+			interestrate = #{interestrate},
+			interestratetype = #{interestratetype},
+			status = #{status},
+			compoundinterest = #{compoundinterest},
+			begintime = #{begintime},
+			updatetime = #{updatetime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM settlement_base_interest
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

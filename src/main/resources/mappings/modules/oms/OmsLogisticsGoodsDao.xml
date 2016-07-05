@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.oms.dao.OmsLogisticsGoodsDao">
+    
+	<sql id="omsLogisticsGoodsColumns">
+		a.id AS "id",
+		a.logistics_code AS "logisticsCode",
+		a.logistics_name AS "logisticsName",
+		a.warehouse_code AS "warehouseCode",
+		a.warehouse_name AS "warehouseName",
+		a.distinct_code AS "distinctCode",
+		a.distinct_name AS "distinctName",
+		a.commodity_code AS "commodityCode",
+		a.commodity_name AS "commodityName",
+		a.s_flag AS "sFlag"
+	</sql>
+	
+	<sql id="omsLogisticsGoodsJoins">
+	</sql>
+    
+	<select id="get" resultType="OmsLogisticsGoods">
+		SELECT 
+			<include refid="omsLogisticsGoodsColumns"/>
+		FROM oms_logistics_goods a
+		<include refid="omsLogisticsGoodsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OmsLogisticsGoods">
+		SELECT 
+			<include refid="omsLogisticsGoodsColumns"/>
+		FROM oms_logistics_goods a
+		<include refid="omsLogisticsGoodsJoins"/>
+		<where>
+			<if test="commodityCode != null and commodityCode != '' ">
+				AND a.COMMODITY_CODE = #{commodityCode}
+			</if>
+
+			<if test="commodityName != null and commodityName != '' ">
+				AND a.COMMODITY_NAME = #{commodityName}
+			</if>
+			
+			<if test="distinctCode != null and distinctCode != '' ">
+				AND a.DISTINCT_CODE = #{distinctCode}
+			</if>
+			
+			<if test="distinctName != null and distinctName != '' ">
+				AND a.DISTINCT_NAME = #{distinctName}
+			</if>				
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OmsLogisticsGoods">
+		SELECT 
+			<include refid="omsLogisticsGoodsColumns"/>
+		FROM oms_logistics_goods a
+		<include refid="omsLogisticsGoodsJoins"/>
+		<where>
+			<if test="commodityCode != null and commodityCode != '' ">
+				AND a.COMMODITY_CODE = #{commodityCode}
+			</if>
+
+			<if test="commodityName != null and commodityName != '' ">
+				AND a.COMMODITY_NAME = #{commodityName}
+			</if>
+			
+			<if test="distinctCode != null and distinctCode != '' ">
+				AND a.DISTINCT_CODE = #{distinctCode}
+			</if>
+			
+			<if test="distinctName != null and distinctName != '' ">
+				AND a.DISTINCT_NAME = #{distinctName}
+			</if>					
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oms_logistics_goods(
+			id,
+			logistics_code,
+			logistics_name,
+			warehouse_code,
+			warehouse_name,
+			distinct_code,
+			distinct_name,
+			commodity_code,
+			commodity_name,
+			s_flag
+		) VALUES (
+			#{id},
+			#{logisticsCode},
+			#{logisticsName},
+			#{warehouseCode},
+			#{warehouseName},
+			#{distinctCode},
+			#{distinctName},
+			#{commodityCode},
+			#{commodityName},
+			#{sFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oms_logistics_goods SET 	
+			logistics_code = #{logisticsCode},
+			logistics_name = #{logisticsName},
+			warehouse_code = #{warehouseCode},
+			warehouse_name = #{warehouseName},
+			distinct_code = #{distinctCode},
+			distinct_name = #{distinctName},
+			commodity_code = #{commodityCode},
+			commodity_name = #{commodityName},
+			s_flag = #{sFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM oms_logistics_goods
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.sc.accntwithdraw.dao.SettlementAccountWithdrawcashDao">
+    
+	<sql id="settlementAccountWithdrawcashColumns">
+		a.id AS "id",
+		a.accountid AS "accountid",
+		a.accountname AS "accountname",
+		a.accountphone AS "accountphone",
+		a.accountrole AS "accountrole",
+		a.hotelid AS "hotelid",
+		a.hotelpms AS "hotelpms",
+		a.hotelname AS "hotelname",
+		a.cash AS "cash",
+		FORMAT(a.cash, 2) AS "strCash",
+		a.prebalance AS "prebalance",
+		FORMAT(a.prebalance, 2) AS "strPrebalance",
+		a.balance AS "balance",
+		FORMAT(a.balance, 2) AS "strBalance",
+		a.status AS "status",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.procode AS "procode",
+		a.proname AS "proname",
+		a.citycode AS "citycode",
+		a.cityname AS "cityname",
+		a.discode AS "discode",
+		a.disname AS "disname",
+		a.name AS "name",
+		a.account AS "account",
+		a.bank AS "bank",
+		a.bankbranch AS "bankbranch"
+	</sql>
+	
+	<sql id="settlementAccountWithdrawcashJoins">
+	</sql>
+    
+	<select id="get" resultType="SettlementAccountWithdrawcash">
+		SELECT 
+			<include refid="settlementAccountWithdrawcashColumns"/>
+		FROM settlement_account_withdrawcash a
+		<include refid="settlementAccountWithdrawcashJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SettlementAccountWithdrawcash">
+		SELECT 
+			<include refid="settlementAccountWithdrawcashColumns"/>,
+            b.user_work_num AS "empNo"
+		FROM settlement_account_withdrawcash a
+        LEFT JOIN ots.sy_org_user b ON a.accountid=b.user_code
+		<include refid="settlementAccountWithdrawcashJoins"/>
+		<where>
+			
+			<if test="accountroles != null">
+                AND a.accountrole in 
+                <foreach item="item" index="index" collection="accountroles" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="statuses != null">
+                AND a.status in 
+                <foreach item="item" index="index" collection="statuses" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+			<if test="accountid != null and accountid != ''">
+				AND a.accountid = #{accountid}
+			</if>
+			<if test="accountname != null and accountname != ''">
+				AND a.accountname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{accountname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{accountname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{accountname},'%')</if>
+			</if>
+			<if test="accountphone != null and accountphone != ''">
+				AND a.accountphone LIKE 
+					<if test="dbName == 'oracle'">'%'||#{accountphone}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{accountphone}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{accountphone},'%')</if>
+			</if>
+			<if test="accountrole != null and accountrole != ''">
+				AND a.accountrole = #{accountrole}
+			</if>
+			<if test="strRole != null and strRole != ''">
+				AND a.accountrole != #{strRole}
+			</if>
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="hotelpms != null and hotelpms != ''">
+				AND a.hotelpms = #{hotelpms}
+			</if>
+			<if test="hotelname != null and hotelname != ''">
+				AND a.hotelname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+			</if>
+			<if test="beginCash != null and beginCash != ''">
+				AND a.cash <![CDATA[>=]]> #{beginCash} 
+			</if>
+			<if test="endCash != null and endCash != ''">
+				AND a.cash <![CDATA[<=]]> #{endCash}
+			</if>
+			<if test="beginPrebalance != null and beginPrebalance != ''">
+				AND a.prebalance <![CDATA[>=]]> #{beginPrebalance} 
+			</if>
+			<if test="endPrebalance != null and endPrebalance != ''">
+				AND a.prebalance <![CDATA[<=]]> #{endPrebalance}
+			</if>
+			<if test="beginBalance != null and beginBalance != ''">
+				AND a.balance <![CDATA[>=]]> #{beginBalance} 
+			</if>
+			<if test="endBalance != null and endBalance != ''">
+				AND a.balance <![CDATA[<=]]> #{endBalance}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="beginCreateTime != null and beginCreateTime != ''">
+				AND a.create_time <![CDATA[>=]]> #{beginCreateTime} 
+			</if>
+			<if test="endCreateTime != null and endCreateTime != ''">
+				AND a.create_time <![CDATA[<=]]> #{endCreateTime}
+			</if>
+			<if test="beginUpdateTime != null and beginUpdateTime != ''">
+				AND a.update_time <![CDATA[>=]]> #{beginUpdateTime} 
+			</if>
+			<if test="endUpdateTime != null and endUpdateTime != ''">
+				AND a.update_time <![CDATA[<=]]> #{endUpdateTime}
+			</if>
+			<if test="procode != null and procode != ''">
+				AND a.procode = #{procode}
+			</if>
+			<if test="proname != null and proname != ''">
+				AND a.proname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{proname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{proname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{proname},'%')</if>
+			</if>
+			<if test="citycode != null and citycode != ''">
+				AND a.citycode = #{citycode}
+			</if>
+			<if test="cityname != null and cityname != ''">
+				AND a.cityname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{cityname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{cityname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{cityname},'%')</if>
+			</if>
+			<if test="discode != null and discode != ''">
+				AND a.discode = #{discode}
+			</if>
+			<if test="disname != null and disname != ''">
+				AND a.disname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{disname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{disname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{disname},'%')</if>
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="account != null and account != ''">
+				AND a.account = #{account}
+			</if>
+			<if test="bank != null and bank != ''">
+				AND a.bank = #{bank}
+			</if>
+			<if test="bankbranch != null and bankbranch != ''">
+				AND a.bankbranch = #{bankbranch}
+			</if>
+		</where>
+		ORDER BY id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				, ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		DESC
+	</select>
+	
+	<select id="findAllList" resultType="SettlementAccountWithdrawcash">
+		SELECT 
+			<include refid="settlementAccountWithdrawcashColumns"/>
+		FROM settlement_account_withdrawcash a
+		<include refid="settlementAccountWithdrawcashJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO settlement_account_withdrawcash(
+			id,
+			accountid,
+			accountname,
+			accountphone,
+			accountrole,
+			hotelid,
+			hotelpms,
+			hotelname,
+			cash,
+			prebalance,
+			balance,
+			status,
+			create_time,
+			update_time,
+			procode,
+			proname,
+			citycode,
+			cityname,
+			discode,
+			disname,
+			name,
+			account,
+			bank,
+			bankbranch
+		) VALUES (
+			#{id},
+			#{accountid},
+			#{accountname},
+			#{accountphone},
+			#{accountrole},
+			#{hotelid},
+			#{hotelpms},
+			#{hotelname},
+			#{cash},
+			#{prebalance},
+			#{balance},
+			#{status},
+			#{createTime},
+			#{updateTime},
+			#{procode},
+			#{proname},
+			#{citycode},
+			#{cityname},
+			#{discode},
+			#{disname},
+			#{name},
+			#{account},
+			#{bank},
+			#{bankbranch}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE settlement_account_withdrawcash SET 	
+			accountid = #{accountid},
+			accountname = #{accountname},
+			accountphone = #{accountphone},
+			accountrole = #{accountrole},
+			hotelid = #{hotelid},
+			hotelpms = #{hotelpms},
+			hotelname = #{hotelname},
+			cash = #{cash},
+			prebalance = #{prebalance},
+			balance = #{balance},
+			status = #{status},
+			create_time = #{createTime},
+			update_time = #{updateTime},
+			procode = #{procode},
+			proname = #{proname},
+			citycode = #{citycode},
+			cityname = #{cityname},
+			discode = #{discode},
+			disname = #{disname},
+			name = #{name},
+			account = #{account},
+			bank = #{bank},
+			bankbranch = #{bankbranch}
+		WHERE id = #{id}
+	</update>
+	
+  <update id="updateByPrimaryKeySelective">
+    update settlement_account_withdrawcash
+    <set >
+      <if test="accountid != null" >
+        accountid = #{accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="accountname != null" >
+        accountname = #{accountname,jdbcType=VARCHAR},
+      </if>
+      <if test="accountphone != null" >
+        accountphone = #{accountphone,jdbcType=VARCHAR},
+      </if>
+      <if test="accountrole != null" >
+        accountrole = #{accountrole,jdbcType=INTEGER},
+      </if>
+      <if test="hotelid != null" >
+        hotelid = #{hotelid,jdbcType=VARCHAR},
+      </if>
+      <if test="hotelpms != null" >
+        hotelpms = #{hotelpms,jdbcType=VARCHAR},
+      </if>
+      <if test="hotelname != null" >
+        hotelname = #{hotelname,jdbcType=VARCHAR},
+      </if>
+      <if test="cash != null" >
+        cash = #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="prebalance != null" >
+        prebalance = #{prebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="procode != null" >
+        procode = #{procode,jdbcType=VARCHAR},
+      </if>
+      <if test="proname != null" >
+        proname = #{proname,jdbcType=VARCHAR},
+      </if>
+      <if test="citycode != null" >
+        citycode = #{citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityname != null" >
+        cityname = #{cityname,jdbcType=VARCHAR},
+      </if>
+      <if test="discode != null" >
+        discode = #{discode,jdbcType=VARCHAR},
+      </if>
+      <if test="disname != null" >
+        disname = #{disname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null" >
+        bank = #{bank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankbranch != null" >
+        bankbranch = #{bankbranch,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+	
+	<update id="delete">
+		DELETE FROM settlement_account_withdrawcash
+		WHERE id = #{id}
+	</update>
+		
+	<!-- 打款 流水明细中 状态修改 -->
+	<update id="updateDoneAccntDetailStatus" >
+		UPDATE settlement_accnt_detail SET
+			status = #{status}
+		WHERE
+			accountid = #{accountid}
+			<if test="hotelid != null and hotelid != ''" >
+	        	AND hotelid = #{hotelid}
+	      	</if>
+			AND orderid = #{withdrawcashid}
+			AND biztype = 7
+			AND status = 3
+	</update>
+	
+	<!-- 驳回 流水明细中 状态修改 -->
+	<update id="updateNoAccntDetailStatus" >
+		UPDATE settlement_accnt_detail SET
+			status = #{status}
+		WHERE
+			accountid = #{accountid}
+			<if test="hotelid != null and hotelid != ''" >
+	        	AND hotelid = #{hotelid}
+	      	</if>
+			AND orderid = #{withdrawcashid}
+			AND biztype = 7
+			AND status = 3
+	</update>
+	
+	<!-- 批量查询提现申请记录 -->
+	<select id="selectWithdrawcashByids" resultType="SettlementAccountWithdrawcash">
+		SELECT 
+			<include refid="settlementAccountWithdrawcashColumns"/>
+		FROM settlement_account_withdrawcash a
+		<include refid="settlementAccountWithdrawcashJoins"/>
+		<where>
+			a.id IN 
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+				#{item}  
+     		</foreach>
+     		AND status = 1 
+		</where>		
+		ORDER BY id DESC
+	</select>
+	
+	<!-- 已打款状态修改 -->
+	<update id="updatePaydone">
+		UPDATE settlement_account_withdrawcash SET status = 3 WHERE 
+		id IN 
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+				#{item}  
+     		</foreach>
+     	AND status = 2
+	</update>
+	
+</mapper>

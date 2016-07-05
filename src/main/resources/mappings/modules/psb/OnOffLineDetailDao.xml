@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.psb.onoffdetail.dao.OnOffLineDetailDao">
+    
+	<sql id="onOffLineDetailColumns">
+		a.id AS "id",
+		a.hotel_id AS "hotelId",
+		a.pms AS "pms",
+		a.operate_id AS "operateId",
+		a.operate_name AS "operateName",
+		a.on_off_time AS "onOffTime",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.remarks AS "remarks",
+		a.remark_type AS "remarkType",
+		a.type AS "type",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="onOffLineDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="OnOffLineDetail">
+		SELECT 
+			<include refid="onOffLineDetailColumns"/>
+		FROM on_off_line_detail
+		<include refid="onOffLineDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OnOffLineDetail">
+		SELECT 
+			<include refid="onOffLineDetailColumns"/>
+			, b.hotel_name AS "hotelname"
+			, b.prov_code AS "procode"
+			, b.prov_name AS "proname"
+			, b.city_code AS "citycode"
+			, b.city_name AS "cityname"
+			, b.dis_code AS "discode"
+			, b.dis_name AS "disname"
+		FROM on_off_line_detail a INNER JOIN on_off_line b ON a.pms = b.pms
+		<include refid="onOffLineDetailJoins"/>
+		<where>
+			<!-- a.del_flag = #{DEL_FLAG_NORMAL} -->
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="hotelId != null and hotelId != ''">
+				AND a.hotel_id = #{hotelId}
+			</if>
+			<if test="pms != null and pms != ''">
+				AND a.pms = #{pms}
+			</if>
+			<if test="operateId != null and operateId != ''">
+				AND a.operate_id = #{operateId}
+			</if>
+			<if test="operateName != null and operateName != ''">
+				AND a.operate_name = #{operateName}
+			</if>
+			<if test="beginOnOffTime != null and beginOnOffTime != ''">
+				AND a.on_off_time <![CDATA[>=]]> #{beginOnOffTime} 
+			</if>
+			<if test="endOnOffTime != null and endOnOffTime != ''">
+				AND a.on_off_time <![CDATA[<=]]> #{endOnOffTime}
+			</if>
+			<if test="beginCreateTime != null and endCreateTime != null and beginCreateTime != '' and endCreateTime != ''">
+				AND a.create_time BETWEEN #{beginCreateTime} AND #{endCreateTime}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+				AND a.update_time = #{updateTime}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+			<if test="remarkType != null and remarkType != ''">
+				AND a.remark_type = #{remarkType}
+			</if>
+			AND a.type IN (1,2)
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="hotelname != null and hotelname != ''">
+				AND b.hotel_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+			</if>
+			<if test="procode != null and procode != ''">
+				AND b.prov_code = #{procode}
+			</if>
+			<if test="proname != null and proname != ''">
+				AND b.prov_name = #{proname}
+			</if>
+			<if test="citycode != null and citycode != ''">
+				AND b.city_code = #{citycode}
+			</if>
+			<if test="cityname != null and cityname != ''">
+				AND b.city_name = #{cityname}
+			</if>
+			<if test="discode != null and discode != ''">
+				AND b.dis_code = #{discode}
+			</if>
+			<if test="disname != null and disname != ''">
+				AND b.dis_name = #{disname}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OnOffLineDetail">
+		SELECT 
+			<include refid="onOffLineDetailColumns"/>
+		FROM on_off_line_detail a
+		<include refid="onOffLineDetailJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 根据酒店id 起始结束时间查询酒店本段时间内的上下线记录 -->
+	<select id="selectHotelOfflineByConditions" resultType="OnOffLineDetail">
+		SELECT 
+			<include refid="onOffLineDetailColumns"/>
+		FROM ots.on_off_line_detail a
+		<include refid="onOffLineDetailJoins"/>
+		<where>
+			a.hotel_id = #{hotelid }
+			<!-- AND a.on_off_time <![CDATA[>=]]> #{begintime } -->
+			AND a.on_off_time <![CDATA[<]]> #{endtime }
+		</where>
+		ORDER BY a.on_off_time 
+	</select>
+	
+	<!-- 根据酒店id 起始结束时间查询酒店本段时间内的上下线记录 -->
+	<select id="selectHotelOfflineByConditionsTime" resultType="OnOffLineDetail">
+		SELECT 
+			<include refid="onOffLineDetailColumns"/>
+		FROM ots.on_off_line_detail a
+		<include refid="onOffLineDetailJoins"/>
+		<where>
+			a.hotel_id = #{hotelid }
+			AND a.on_off_time <![CDATA[>=]]> #{begintime }
+			AND a.on_off_time <![CDATA[<]]> #{endtime }
+		</where>
+		ORDER BY a.on_off_time 
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO on_off_line_detail(
+			id,
+			hotel_id,
+			pms,
+			operate_id,
+			operate_name,
+			on_off_time,
+			create_time,
+			update_time,
+			remarks,
+			remark_type,
+			type,
+			del_flag
+		) VALUES (
+			#{id},
+			#{hotelId},
+			#{pms},
+			#{operateId},
+			#{operateName},
+			#{onOffTime},
+			#{createTime},
+			#{updateTime},
+			#{remarks},
+			#{remarkType},
+			#{type},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE on_off_line_detail SET 	
+			hotel_id = #{hotelId},
+			pms = #{pms},
+			operate_id = #{operateId},
+			operate_name = #{operateName},
+			on_off_time = #{onOffTime},
+			create_time = #{createTime},
+			update_time = #{updateTime},
+			remarks = #{remarks},
+			remark_type = #{remarkType},
+			type = #{type}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE on_off_line_detail SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

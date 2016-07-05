@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.gds.message.dao.LMessageLogDao">
+    
+	<sql id="lMessageLogColumns">
+		a.id AS "id",
+		a.time AS "time",
+		a.phone AS "phone",
+		a.message AS "message",
+		a.type AS "type",
+		a.source AS "source",
+		a.ip AS "ip",
+		a.success AS "success",
+		a.reporttime AS "reporttime",
+		a.providername AS "providername"
+	</sql>
+	
+	<sql id="lMessageLogJoins">
+	</sql>
+    
+	<select id="get" resultType="LMessageLog">
+		SELECT 
+			<include refid="lMessageLogColumns"/>
+		FROM l_message_log a
+		<include refid="lMessageLogJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="LMessageLog">
+		SELECT 
+			<include refid="lMessageLogColumns"/>
+		FROM l_message_log a
+		<include refid="lMessageLogJoins"/>
+		<where>
+			
+			<if test="time != null and time != ''">
+				AND date_format(a.time,'%Y-%m-%d') = date_format(#{time},'%Y-%m-%d')
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="success != null and success != ''">
+				AND a.success = #{success}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="LMessageLog">
+		SELECT 
+			<include refid="lMessageLogColumns"/>
+		FROM l_message_log a
+		<include refid="lMessageLogJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO l_message_log(
+			id,
+			time,
+			phone,
+			message,
+			type,
+			source,
+			ip,
+			success,
+			reporttime,
+			providername
+		) VALUES (
+			#{id},
+			#{time},
+			#{phone},
+			#{message},
+			#{type},
+			#{source},
+			#{ip},
+			#{success},
+			#{reporttime},
+			#{providername}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE l_message_log SET 	
+			time = #{time},
+			phone = #{phone},
+			message = #{message},
+			type = #{type},
+			source = #{source},
+			ip = #{ip},
+			success = #{success},
+			reporttime = #{reporttime},
+			providername = #{providername}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM l_message_log
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

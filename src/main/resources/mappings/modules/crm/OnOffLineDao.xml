@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.crm.hotel.dao.OnOffLineDao">
+    
+	<sql id="onOffLineColumns">
+		a.id AS "id",
+		a.hotel_id AS "hotelId",
+		a.hotel_name AS "hotelName",
+		a.hotel_addr AS "hotelAddr",
+		a.pms AS "pms",
+		a.prov_code AS "provCode",
+		a.prov_name AS "provName",
+		a.city_code AS "cityCode",
+		a.city_name AS "cityName",
+		a.dis_code AS "disCode",
+		a.dis_name AS "disName",
+		a.type AS "type",
+		a.psb_type AS "psbType",
+		a.operate_id AS "operateId",
+		a.operate_name AS "operateName",
+		a.create_time AS "createTime",
+		a.ip AS "ip",
+		a.visible AS "visible",
+		a.remarks AS "remarks",
+		min_on_time AS "firstTime",
+		max_off_time AS "lastTime"
+	</sql>
+	<sql id="detailColumns">
+		b.on_off_time AS onOffTime,b.type AS detailType,b.remarks AS detailRemarks
+	</sql>
+	<!-- <sql id="subqueryColumns">
+		(SELECT min(create_time) FROM on_off_line n WHERE n.type=1 AND n.hotel_id = a.hotel_id
+		 	GROUP BY n.hotel_id) AS "firstTime",
+		(SELECT max(create_time) FROM on_off_line x WHERE x.type=2 AND x.hotel_id = a.hotel_id
+			GROUP BY x.hotel_id) AS "lastTime"
+	</sql> -->
+	
+	<sql id="onOffLineJoins">
+	</sql>
+    <!-- ,
+			<include refid="subqueryColumns"/> -->
+	<select id="get" resultType="OnOffLine">
+		SELECT 
+			<include refid="onOffLineColumns"/>
+		FROM on_off_line a
+		<include refid="onOffLineJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<!-- ,
+			<include refid="subqueryColumns"/> -->
+	<select id="findList" resultType="OnOffLine">
+		SELECT 
+			<include refid="onOffLineColumns"/>
+		FROM on_off_line a
+		<include refid="onOffLineJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="hotelId != null and hotelId != ''">
+				AND a.hotel_id = #{hotelId}
+			</if>
+			<if test="hotelName != null and hotelName != ''">
+				AND a.hotel_name LIKE
+					concat('%',#{hotelName},'%')
+			</if>
+			<if test="hotelAddr != null and hotelAddr != ''">
+				AND a.hotel_addr LIKE
+					concat('%',#{hotelAddr},'%')
+			</if>
+			<if test="pms != null and pms != ''">
+				AND a.pms = #{pms}
+			</if>
+			<if test="provCode != null and provCode != ''">
+				AND a.prov_code = #{provCode}
+			</if>
+			<if test="provName != null and provName != ''">
+				AND a.prov_name = #{provName}
+			</if>
+			<if test="cityCode != null and cityCode != ''">
+				AND a.city_code = #{cityCode}
+			</if>
+			<if test="cityName != null and cityName != ''">
+				AND a.city_name = #{cityName}
+			</if>
+			<if test="disCode != null and disCode != ''">
+				AND a.dis_code = #{disCode}
+			</if>
+			<if test="disName != null and disName != ''">
+				AND a.dis_name = #{disName}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="psbType != null and psbType != ''">
+				AND a.psb_type = #{psbType}
+			</if>
+			<if test="operateId != null and operateId != ''">
+				AND a.operate_id = #{operateId}
+			</if>
+			<if test="operateName != null and operateName != ''">
+				AND a.operate_name = #{operateName}
+			</if>
+			<if test="visible != null and visible != ''">
+				AND a.visible = #{visible}
+			</if>
+			<if test="ip != null and ip != ''">
+				AND a.ip = #{ip}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks LIKE 
+					<if test="dbName == 'oracle'">'%'||#{remarks}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{remarks}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{remarks},'%')</if>
+			</if>
+			<if test="onlineTime != null and onlineTime != ''">
+				<![CDATA[and min_on_time>=#{onlineTime}]]>
+			</if>
+			<if test="onlineTimeEnd != null and onlineTimeEnd != ''">
+				<![CDATA[and min_on_time<=#{onlineTimeEnd}]]>
+			</if>
+			<if test="offlineTime != null and offlineTime != ''">
+				<![CDATA[and max_off_time>=#{offlineTime}]]>
+			</if>
+			<if test="offlineTimeEnd != null and offlineTimeEnd != ''">
+				<![CDATA[and max_off_time<=#{offlineTimeEnd}]]>
+			</if>
+			<if test="condition != null and condition != ''">
+				<if test="condition==2">
+					and type in (1,2)
+				</if>
+				<if test="condition==3">
+					and type = 1
+				</if>
+				<if test="condition==4">
+					and type = 2
+				</if>
+			</if>
+		</where>
+		<if test="orderBy != null and orderBy != ''">
+				ORDER BY  ${orderBy}
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findDetailsList" resultType="OnOffLine">
+		SELECT
+		<include refid="onOffLineColumns"/>,
+		<include refid="detailColumns"/>
+		
+		FROM on_off_line_detail b INNER JOIN on_off_line a
+		ON a.pms=b.pms
+		<include refid="onOffLineJoins"/>
+		<where>
+			b.type in (1,2)
+			<if test="pms != null and pms != ''">
+				AND a.pms = #{pms}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OnOffLine">
+		SELECT 
+			<include refid="onOffLineColumns"/>
+		FROM on_off_line a
+		<include refid="onOffLineJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO on_off_line(
+			id,
+			hotel_id,
+			hotel_name,
+			hotel_addr,
+			pms,
+			prov_code,
+			prov_name,
+			city_code,
+			city_name,
+			dis_code,
+			dis_name,
+			type,
+			psb_type,
+			operate_id,
+			operate_name,
+			create_time,
+			visible,
+			ip,
+			remarks
+		) VALUES (
+			#{id},
+			#{hotelId},
+			#{hotelName},
+			#{hotelAddr},
+			#{pms},
+			#{provCode},
+			#{provName},
+			#{cityCode},
+			#{cityName},
+			#{disCode},
+			#{disName},
+			#{type},
+			#{psbType},
+			#{operateId},
+			#{operateName},
+			#{createTime},
+			#{visible},
+			#{ip},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE on_off_line SET 	
+			hotel_id = #{hotelId},
+			hotel_name = #{hotelName},
+			hotel_addr = #{hotelAddr},
+			pms = #{pms},
+			prov_code = #{provCode},
+			prov_name = #{provName},
+			city_code = #{cityCode},
+			city_name = #{cityName},
+			dis_code = #{disCode},
+			dis_name = #{disName},
+			type = #{type},
+			psb_type = #{psbType},
+			operate_id = #{operateId},
+			operate_name = #{operateName},
+			create_time = #{createTime},
+			visible = #{visible},
+			ip = #{ip},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM on_off_line
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

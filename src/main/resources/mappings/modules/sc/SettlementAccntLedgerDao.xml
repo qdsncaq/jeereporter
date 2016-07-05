@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.sc.accntledger.dao.SettlementAccntLedgerDao">
+    
+	<sql id="settlementAccntLedgerColumns">
+		a.id AS "id",
+		a.accountid AS "accountid",
+		a.accountname AS "accountname",
+		a.hotelid AS "hotelid",
+		a.hotelname AS "hotelname",
+		a.hotelpms AS "hotelpms",
+		a.password AS "password",
+		a.accountstate AS "accountstate",
+		a.frozendate AS "frozendate",
+		a.unfrozendate AS "unfrozendate",
+		a.balance AS "balance",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.accountrole AS "accountrole",
+		a.waitpayment AS "waitpayment",
+		a.postpay_balance AS "postpayBalance",
+		a.postpay_threshold AS "postpayThreshold",
+		a.accounttype AS "accounttype"
+	</sql>
+	
+	<sql id="settlementAccntLedgerJoins">
+	</sql>
+    
+	<select id="get" resultType="SettlementAccntLedger">
+		SELECT 
+			<include refid="settlementAccntLedgerColumns"/>
+		FROM settlement_accnt_ledger a
+		<include refid="settlementAccntLedgerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SettlementAccntLedger">
+		SELECT 
+			<include refid="settlementAccntLedgerColumns"/>
+		FROM settlement_accnt_ledger a
+		<include refid="settlementAccntLedgerJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="accountid != null and accountid != ''">
+				AND a.accountid = #{accountid}
+			</if>
+			<if test="accountname != null and accountname != ''">
+				AND a.accountname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{accountname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{accountname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{accountname},'%')</if>
+			</if>
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="hotelname != null and hotelname != ''">
+				AND a.hotelname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+			</if>
+			<if test="hotelpms != null and hotelpms != ''">
+				AND a.hotelpms = #{hotelpms}
+			</if>
+			<if test="password != null and password != ''">
+				AND a.password = #{password}
+			</if>
+			<if test="accountstate != null and accountstate != ''">
+				AND a.accountstate = #{accountstate}
+			</if>
+			<if test="beginFrozendate != null and beginFrozendate != ''">
+				AND a.frozendate <![CDATA[>=]]> #{beginFrozendate}
+			</if>
+			<if test="endFrozendate != null and endFrozendate != ''">
+				AND a.frozendate <![CDATA[<=]]> #{endFrozendate}
+			</if>
+			<if test="beginUnfrozendate != null and beginUnfrozendate != ''">
+				AND a.unfrozendate <![CDATA[>=]]> #{beginUnfrozendate}
+			</if>
+			<if test="endUnfrozendate != null and endUnfrozendate != ''">
+				AND a.unfrozendate <![CDATA[<=]]> #{endUnfrozendate}
+			</if>
+			<if test="beginBalance != null and beginBalance != ''">
+				AND a.balance <![CDATA[>=]]> #{beginBalance}
+			</if>
+			<if test="endBalance != null and endBalance != ''">
+				AND a.balance <![CDATA[<=]]> #{endBalance}
+			</if>
+			<if test="beginCreateTime != null and beginCreateTime != ''">
+				AND a.create_time <![CDATA[>=]]> #{beginCreateTime}
+			</if>
+			<if test="endCreateTime != null and endCreateTime != ''">
+				AND a.create_time <![CDATA[<=]]> #{endCreateTime}
+			</if>
+			<if test="beginUpdateTime != null and beginUpdateTime != ''">
+				AND a.update_time <![CDATA[>=]]> #{beginUpdateTime}
+			</if>
+			<if test="endUpdateTime != null and endUpdateTime != ''">
+				AND a.update_time <![CDATA[<=]]> #{endUpdateTime}
+			</if>
+			<if test="accountrole != null and accountrole != ''">
+				AND a.accountrole = #{accountrole}
+			</if>
+			<if test="beginWaitpayment != null and beginWaitpayment != ''">
+				AND a.waitpayment <![CDATA[>=]]> #{beginWaitpayment}
+			</if>
+			<if test="endWaitpayment != null and endWaitpayment != ''">
+				AND a.waitpayment <![CDATA[<=]]> #{endWaitpayment}
+			</if>
+			<if test="beginPostpayBalance != null and beginPostpayBalance != ''">
+				AND a.postpay_balance <![CDATA[>=]]> #{beginPostpayBalance}
+			</if>
+			<if test="endPostpayBalance != null and endPostpayBalance != ''">
+				AND a.postpay_balance <![CDATA[<=]]> #{endPostpayBalance}
+			</if>
+			<if test="beginPostpayThreshold != null and beginPostpayThreshold != ''">
+				AND a.postpay_threshold <![CDATA[>=]]> #{beginPostpayThreshold}
+			</if>
+			<if test="endPostpayThreshold != null and endPostpayThreshold != ''">
+				AND a.postpay_threshold <![CDATA[<=]]> #{endPostpayThreshold}
+			</if>
+			<if test="accounttype != null and accounttype != ''">
+				AND a.accounttype = #{accounttype}
+			</if>
+		</where>
+		ORDER BY id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				, ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		DESC
+	</select>
+	
+	<select id="findAllList" resultType="SettlementAccntLedger">
+		SELECT 
+			<include refid="settlementAccntLedgerColumns"/>
+		FROM settlement_accnt_ledger a
+		<include refid="settlementAccntLedgerJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO settlement_accnt_ledger(
+			id,
+			accountid,
+			accountname,
+			hotelid,
+			hotelname,
+			hotelpms,
+			password,
+			accountstate,
+			frozendate,
+			unfrozendate,
+			balance,
+			create_time,
+			update_time,
+			accountrole,
+			waitpayment,
+			postpay_balance,
+			postpay_threshold,
+			accounttype
+		) VALUES (
+			#{id},
+			#{accountid},
+			#{accountname},
+			#{hotelid},
+			#{hotelname},
+			#{hotelpms},
+			#{password},
+			#{accountstate},
+			#{frozendate},
+			#{unfrozendate},
+			#{balance},
+			#{createTime},
+			#{updateTime},
+			#{accountrole},
+			#{waitpayment},
+			#{postpayBalance},
+			#{postpayThreshold},
+			#{accounttype}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE settlement_accnt_ledger SET 	
+			accountid = #{accountid},
+			accountname = #{accountname},
+			hotelid = #{hotelid},
+			hotelname = #{hotelname},
+			hotelpms = #{hotelpms},
+			password = #{password},
+			accountstate = #{accountstate},
+			frozendate = #{frozendate},
+			unfrozendate = #{unfrozendate},
+			balance = #{balance},
+			create_time = #{createTime},
+			update_time = #{updateTime},
+			accountrole = #{accountrole},
+			waitpayment = #{waitpayment},
+			postpay_balance = #{postpayBalance},
+			postpay_threshold = #{postpayThreshold},
+			accounttype = #{accounttype}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM settlement_accnt_ledger
+		WHERE id = #{id}
+	</update>
+	
+    <!-- 酒店老板周账单财务确认后更新总账余额 -->
+    <insert id="insertOrUpdateBalanceAfterFIConfirmHotelBossAccountBill">
+      INSERT INTO settlement_accnt_ledger (accountid,accountrole,hotelid,accountstate,balance,create_time,update_time) 
+        VALUES (#{accountid},#{accountrole},#{hotelid},#{accountstate},#{balance},now(),now()) 
+          ON DUPLICATE KEY 
+            UPDATE balance=balance+#{balance},update_time=now();
+    </insert>
+	
+</mapper>

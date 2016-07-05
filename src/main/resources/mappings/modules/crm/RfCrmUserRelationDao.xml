@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.crm.user.dao.RfCrmUserRelationDao">
+    
+	<sql id="rfCrmUserRelationColumns">
+		a.id AS "rid",
+		a.user_code AS "userCode",
+		a.supper_user_code AS "supperUserCode",
+		a.user_code_0 AS "userCode0",
+		a.qz_user_code AS "qzUserCode",
+		a.qz_user_name AS "qzUserName",
+		a.qj_user_code AS "qjUserCode",
+		a.qj_user_name AS "qjUserName",
+		a.saler_user_code AS "salerUserCode",
+		a.saler_user_name AS "salerUserName",
+		a.user_code_1 AS "userCode1",
+		a.user_code_2 AS "userCode2",
+		a.level AS "level",
+		a.role_id AS "roleId",
+		a.type AS "type",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="rfCrmUserRelationJoins">
+	</sql>
+    
+	<select id="get" resultType="RfCrmUserRelation">
+		SELECT 
+			<include refid="rfCrmUserRelationColumns"/>
+		FROM rf_crm_user_relation a
+		<include refid="rfCrmUserRelationJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+    <select id="findByUserCode" resultType="RfCrmUserRelation">
+        SELECT
+        <include refid="rfCrmUserRelationColumns"/>
+        ,u.user_name AS "userName"
+        FROM rf_crm_user_relation a
+        RIGHT JOIN sy_org_user u ON u.user_code = a.user_code
+        WHERE a.user_code = #{userCode}
+    </select>
+
+    <select id="findByQzUserCode" resultType="RfCrmUserRelation">
+        SELECT
+        <include refid="rfCrmUserRelationColumns"/>
+        FROM rf_crm_user_relation a
+        WHERE a.qz_user_code = #{userCode}
+    </select>
+
+    <select id="findByQjUserCode" resultType="RfCrmUserRelation">
+        SELECT
+        <include refid="rfCrmUserRelationColumns"/>
+        FROM rf_crm_user_relation a
+        WHERE a.qj_user_code = #{userCode}
+    </select>
+
+    <select id="findBySalerUserCode" resultType="RfCrmUserRelation">
+        SELECT
+        <include refid="rfCrmUserRelationColumns"/>
+        FROM rf_crm_user_relation a
+        WHERE a.saler_user_code = #{userCode}
+    </select>
+	
+	<select id="findList" resultType="RfCrmUserRelation">
+		SELECT 
+			<include refid="rfCrmUserRelationColumns"/>
+                ,u.user_name AS "userName"
+
+		FROM rf_crm_user_relation a
+            RIGHT JOIN sy_org_user u ON u.user_code = a.user_code
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND (u.user_state=1 or u.user_state=4)
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="supperUserCode != null and supperUserCode != ''">
+				AND a.supper_user_code = #{supperUserCode}
+			</if>
+			<if test="userCode0 != null and userCode0 != ''">
+				AND a.user_code_0 = #{userCode0}
+			</if>
+			<if test="qzUserCode != null and qzUserCode != ''">
+				AND a.qz_user_code = #{qzUserCode}
+			</if>
+			<if test="qjUserCode != null and qjUserCode != ''">
+				AND a.qj_user_code = #{qjUserCode}
+			</if>
+			<if test="salerUserCode != null and salerUserCode != ''">
+				AND a.saler_user_code = #{salerUserCode}
+			</if>
+			<if test="userCode1 != null and userCode1 != ''">
+				AND a.user_code_1 = #{userCode1}
+			</if>
+			<if test="userCode2 != null and userCode2 != ''">
+				AND a.user_code_2 = #{userCode2}
+			</if>
+			<if test="level != null and level != ''">
+				AND a.level = #{level}
+			</if>
+			<if test="roleId != null and roleId != ''">
+				AND a.role_id = #{roleId}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				AND a.update_by = #{updateBy.id}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+			<if test="delFlag != null and delFlag != ''">
+				AND a.del_flag = #{delFlag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RfCrmUserRelation">
+		SELECT 
+			<include refid="rfCrmUserRelationColumns"/>
+		FROM rf_crm_user_relation a
+		<include refid="rfCrmUserRelationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO rf_crm_user_relation(
+		    user_code,
+			supper_user_code,
+			user_code_0,
+			qz_user_code,
+			qz_user_name,
+			qj_user_code,
+			qj_user_name,
+			saler_user_code,
+			saler_user_name,
+			user_code_1,
+			user_code_2,
+			level,
+			role_id,
+			type,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+		    #{userCode},
+			#{supperUserCode},
+			#{userCode0},
+			#{qzUserCode},
+			#{qzUserName},
+			#{qjUserCode},
+			#{qjUserName},
+			#{salerUserCode},
+			#{salerUserName},
+			#{userCode1},
+			#{userCode2},
+			#{level},
+			#{roleId},
+			#{type},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE rf_crm_user_relation SET 	
+			supper_user_code = #{supperUserCode},
+			user_code_0 = #{userCode0},
+			qz_user_code = #{qzUserCode},
+			qz_user_name = #{qzUserName},
+			qj_user_code = #{qjUserCode},
+			qj_user_name = #{qjUserName},
+			saler_user_code = #{salerUserCode},
+			saler_user_name = #{salerUserName},
+			user_code_1 = #{userCode1},
+			user_code_2 = #{userCode2},
+			level = #{level},
+			role_id = #{roleId},
+			type = #{type},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE rf_crm_user_relation SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

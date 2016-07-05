@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.gds.hotelmapping.dao.HotelMappingDao">
+    
+	<sql id="hotelMappingColumns">
+		a.id AS "id",
+		a.hotelid AS "hotelid",
+		a.ota_hotelid AS "otaHotelid",
+		a.hotelname AS "hotelname",
+		a.hoteladdr AS "hoteladdr",
+		a.channelid AS "channelid",
+		a.hotelphone AS "hotelphone",
+		a.state AS "state",
+		a.createby AS "createby",
+		a.createtime AS "createtime",
+		a.updateby AS "updateby",
+		a.updatetime AS "updatetime"
+	</sql>
+	
+	<sql id="hotelMappingJoins">
+	</sql>
+    
+	<select id="get" resultType="HotelMapping">
+		SELECT 
+			<include refid="hotelMappingColumns"/>
+		FROM hotel_mapping a
+		<include refid="hotelMappingJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="HotelMapping">
+		SELECT 
+			<include refid="hotelMappingColumns"/>
+		FROM hotel_mapping a
+		<include refid="hotelMappingJoins"/>
+		<where>
+			
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="hotelname != null and hotelname != ''">
+				AND a.hotelname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+			</if>
+			<if test="hoteladdr != null and hoteladdr != ''">
+				AND a.hoteladdr LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hoteladdr}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hoteladdr}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hoteladdr},'%')</if>
+			</if>
+			<if test="channelid != null and channelid != ''">
+				AND a.channelid = #{channelid}
+			</if>
+			<if test="hotelphone != null and hotelphone != ''">
+				AND a.hotelphone = #{hotelphone}
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="HotelMapping">
+		SELECT 
+			<include refid="hotelMappingColumns"/>
+		FROM hotel_mapping a
+		<include refid="hotelMappingJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO hotel_mapping(
+			hotelid,
+			ota_hotelid,
+			hotelname,
+			hoteladdr,
+			channelid,
+			hotelphone,
+			state,
+			createby,
+			createtime,
+			updateby,
+			updatetime
+		) VALUES (
+			#{hotelid},
+			#{otaHotelid},
+			#{hotelname},
+			#{hoteladdr},
+			#{channelid},
+			#{hotelphone},
+			#{state},
+			#{createby},
+			#{createtime},
+			#{updateby},
+			#{updatetime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE hotel_mapping SET 	
+			hotelid = #{hotelid},
+			ota_hotelid = #{otaHotelid},
+			hotelname = #{hotelname},
+			hoteladdr = #{hoteladdr},
+			channelid = #{channelid},
+			hotelphone = #{hotelphone},
+			state = #{state},
+			createby = #{createby},
+			createtime = #{createtime},
+			updateby = #{updateby},
+			updatetime = #{updatetime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM hotel_mapping
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

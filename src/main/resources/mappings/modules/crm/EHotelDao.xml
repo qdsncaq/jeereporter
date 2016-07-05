@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.crm.hotel.dao.EHotelDao">
+    
+	<sql id="eHotelColumns">
+		a.id AS "id",
+		a.hotelname AS "hotelname",
+		a.hotelcontactname AS "hotelcontactname",
+		a.regtime AS "regtime",
+		a.disid AS "disid",
+		a.detailaddr AS "detailaddr",
+		a.longitude AS "longitude",
+		a.latitude AS "latitude",
+		a.opentime AS "opentime",
+		a.repairtime AS "repairtime",
+		a.roomnum AS "roomnum",
+		a.introduction AS "introduction",
+		a.traffic AS "traffic",
+		a.hotelpic AS "hotelpic",
+		a.peripheral AS "peripheral",
+		a.businesslicensefront AS "businesslicensefront",
+		a.businesslicenseback AS "businesslicenseback",
+		a.pms AS "pms",
+		a.state AS "state",
+		a.check_state AS "checkState",
+		a.visible AS "visible",
+		a.reason AS "reason",
+		a.reasontime AS "reasontime",
+		a.updatetime AS "updatetime",
+		a.pricestate AS "pricestate",
+		a.pricereason AS "pricereason",
+		a.pmsstatus AS "pmsstatus",
+		a.pmsuser AS "pmsuser",
+		a.idcardfront AS "idcardfront",
+		a.idcardback AS "idcardback",
+		a.retentiontime AS "retentiontime",
+		a.defaultleavetime AS "defaultleavetime",
+		a.hotelphone AS "hotelphone",
+		a.isnewpms AS "isnewpms",
+		a.rulecode AS "rulecode",
+		a.isthreshold AS "isthreshold",
+		a.provcode AS "provcode",
+		a.citycode AS "citycode",
+		a.discode AS "discode",
+		a.areacode AS "areacode",
+		a.areaname AS "areaname",
+		a.qtphone AS "qtphone",
+		a.hoteltype AS "hoteltype",
+		a.pmshotelname AS "pmshotelname",
+		a.isSelfBuildHotel AS "isSelfBuildHotel",
+		a.operateName AS "operateName",
+		a.operateTime AS "operateTime"
+	</sql>
+	<sql id="eHotelColumnsBossPhone">
+		d.loginname AS "bossPhone",
+		d.name AS "bossName"
+	</sql>
+	<sql id="eHotelJoins">
+	</sql>
+    
+    <sql id="eHotelJoinsBossPhone">
+    	LEFT JOIN  h_role      b ON a.id = b.hotelid and type = 1
+    	LEFT JOIN  h_user_role c ON b.id = c.roleid
+    	<if test="bossPhone != null and bossPhone != ''">
+    		INNER JOIN  h_user d ON c.userid = d.id
+			AND d.loginname like CONCAT('%', #{bossPhone}, '%')
+		</if>
+		<if test="bossPhone == null or bossPhone == ''">
+    		LEFT JOIN  h_user d ON c.userid = d.id
+		</if>
+	</sql>
+	
+   <sql id="eHotelJoinsBossPhoneGet">
+    	LEFT JOIN  h_role      b ON a.id = b.hotelid and type = 1
+    	LEFT JOIN  h_user_role c ON b.id = c.roleid
+   		LEFT JOIN  h_user d ON c.userid = d.id
+	</sql>
+	
+	<select id="get" resultType="EHotel">
+		SELECT 
+			<include refid="eHotelColumns"/>,
+			<include refid="eHotelColumnsBossPhone"/>
+		FROM e_hotel a
+		<include refid="eHotelJoins"/>
+		<include refid="eHotelJoinsBossPhoneGet"/>
+		WHERE a.id = #{id}
+        limit 1
+	</select>
+
+	<select id="findList" resultType="EHotel">
+		SELECT 
+			<include refid="eHotelColumns"/>,
+			<include refid="eHotelColumnsBossPhone"/>
+		FROM e_hotel a
+		<include refid="eHotelJoins"/>
+		<include refid="eHotelJoinsBossPhone"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="hotelname != null and hotelname != ''">
+				AND a.hotelname like CONCAT('%', #{hotelname}, '%')
+			</if>
+			<if test="hotelcontactname != null and hotelcontactname != ''">
+				AND a.hotelcontactname = #{hotelcontactname}
+			</if>
+			<if test="regtime != null and regtime != ''">
+				AND a.regtime = #{regtime}
+			</if>
+			<if test="disid != null and disid != ''">
+				AND a.disid = #{disid}
+			</if>
+			<if test="detailaddr != null and detailaddr != ''">
+				AND a.detailaddr = #{detailaddr}
+			</if>
+			<if test="longitude != null and longitude != ''">
+				AND a.longitude = #{longitude}
+			</if>
+			<if test="latitude != null and latitude != ''">
+				AND a.latitude = #{latitude}
+			</if>
+			<if test="opentime != null and opentime != ''">
+				AND a.opentime = #{opentime}
+			</if>
+			<if test="repairtime != null and repairtime != ''">
+				AND a.repairtime = #{repairtime}
+			</if>
+			<if test="roomnum != null and roomnum != ''">
+				AND a.roomnum = #{roomnum}
+			</if>
+			<if test="introduction != null and introduction != ''">
+				AND a.introduction = #{introduction}
+			</if>
+			<if test="traffic != null and traffic != ''">
+				AND a.traffic = #{traffic}
+			</if>
+			<if test="hotelpic != null and hotelpic != ''">
+				AND a.hotelpic = #{hotelpic}
+			</if>
+			<if test="peripheral != null and peripheral != ''">
+				AND a.peripheral = #{peripheral}
+			</if>
+			<if test="businesslicensefront != null and businesslicensefront != ''">
+				AND a.businesslicensefront = #{businesslicensefront}
+			</if>
+			<if test="businesslicenseback != null and businesslicenseback != ''">
+				AND a.businesslicenseback = #{businesslicenseback}
+			</if>
+			<if test="pms != null and pms != ''">
+				AND a.pms = #{pms}
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+			<if test="visible != null and visible != ''">
+				AND a.visible = #{visible}
+			</if>
+			<if test="reason != null and reason != ''">
+				AND a.reason = #{reason}
+			</if>
+			<if test="reasontime != null and reasontime != ''">
+				AND a.reasontime = #{reasontime}
+			</if>
+			<if test="updatetime != null and updatetime != ''">
+				AND a.updatetime = #{updatetime}
+			</if>
+			<if test="pricestate != null and pricestate != ''">
+				AND a.pricestate = #{pricestate}
+			</if>
+			<if test="pricereason != null and pricereason != ''">
+				AND a.pricereason = #{pricereason}
+			</if>
+			<if test="pmsstatus != null and pmsstatus != ''">
+				AND a.pmsstatus = #{pmsstatus}
+			</if>
+			<if test="pmsuser != null and pmsuser != ''">
+				AND a.pmsuser = #{pmsuser}
+			</if>
+			<if test="idcardfront != null and idcardfront != ''">
+				AND a.idcardfront = #{idcardfront}
+			</if>
+			<if test="idcardback != null and idcardback != ''">
+				AND a.idcardback = #{idcardback}
+			</if>
+			<if test="retentiontime != null and retentiontime != ''">
+				AND a.retentiontime = #{retentiontime}
+			</if>
+			<if test="defaultleavetime != null and defaultleavetime != ''">
+				AND a.defaultleavetime = #{defaultleavetime}
+			</if>
+			<if test="hotelphone != null and hotelphone != ''">
+				AND a.hotelphone = #{hotelphone}
+			</if>
+			<if test="isnewpms != null and isnewpms != ''">
+				AND a.isnewpms = #{isnewpms}
+			</if>
+			<if test="rulecode != null and rulecode != ''">
+				AND a.rulecode = #{rulecode}
+			</if>
+			<if test="isthreshold != null and isthreshold != ''">
+				AND a.isthreshold = #{isthreshold}
+			</if>
+			<if test="provcode != null and provcode != ''">
+				AND a.provcode = #{provcode}
+			</if>
+			<if test="citycode != null and citycode != ''">
+				AND a.citycode = #{citycode}
+			</if>
+			<if test="discode != null and discode != ''">
+				AND a.discode = #{discode}
+			</if>
+			<if test="areacode != null and areacode != ''">
+				AND a.areacode = #{areacode}
+			</if>
+			<if test="areaname != null and areaname != ''">
+				AND a.areaname = #{areaname}
+			</if>
+			<if test="qtphone != null and qtphone != ''">
+				AND a.qtphone = #{qtphone}
+			</if>
+			<if test="hoteltype != null and hoteltype != ''">
+				AND a.hoteltype = #{hoteltype}
+			</if>
+			<if test="pmshotelname != null and pmshotelname != ''">
+				AND a.pmshotelname = #{pmshotelname}
+			</if>
+            <if test="isSelfBuildHotel != null and isSelfBuildHotel != ''">
+                AND a.isSelfBuildHotel = #{isSelfBuildHotel}
+            </if>
+			<if test="operateName != null and operateName != ''">
+				AND a.operateName = #{operateName}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="getSelfBuildHotel" resultType="EHotel">
+        SELECT
+        <include refid="eHotelColumns"/>,
+        b.phone AS "bossPhone",
+        b.name AS "bossName",
+        p.ProName AS "provName",
+        c.CityName AS "cityName",
+        d.DisName AS "disName",
+        u.USER_CODE AS "userCode",
+        u.USER_NAME AS "userName",
+        u.USER_MOBILE AS "userMobile"
+        FROM e_hotel a
+        LEFT JOIN rf_crm_hotel_role b ON a.id=b.hotel_id AND b.role_id=1
+        LEFT JOIN t_province p ON a.provcode = p.code
+        LEFT JOIN t_city c ON a.citycode = c.code
+        LEFT JOIN t_district d ON a.discode = d.code
+        LEFT JOIN rf_crm_hotel_public h ON h.hotel_id = a.id
+        LEFT JOIN sy_org_user u ON u.USER_CODE = h.hotel_user_id
+        WHERE a.id = #{id}
+    </select>
+    <select id="getCheckHotel" resultType="EHotel">
+        SELECT
+        <include refid="eHotelColumns"/>,
+        hu.loginname AS "bossPhone",
+        hu.`name` AS "bossName",
+        p.ProName AS "provName",
+        c.CityName AS "cityName",
+        d.DisName AS "disName",
+        u.USER_CODE AS "userCode",
+        u.USER_NAME AS "userName",
+        u.USER_MOBILE AS "userMobile"
+        FROM e_hotel a
+        LEFT JOIN h_role r ON a.id = r.hotelid AND r.type = 1
+		LEFT JOIN h_user_role ur ON r.id = ur.roleid
+		LEFT JOIN h_user hu ON hu.id = ur.userid
+        LEFT JOIN t_province p ON a.provcode = p.code
+        LEFT JOIN t_city c ON a.citycode = c.code
+        LEFT JOIN t_district d ON a.discode = d.code
+        LEFT JOIN rf_crm_hotel_public h ON h.hotel_id = a.id
+        LEFT JOIN sy_org_user u ON u.USER_CODE = h.hotel_user_id
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findSelfBuildHotelPage" resultType="EHotel">
+        SELECT
+        <include refid="eHotelColumns"/>,
+          hu.loginname AS "bossPhone",
+          hu.`name` AS "bossName",
+          SUBSTR(p.ProName,2) AS "provName",
+          SUBSTR(c.CityName,2) AS "cityName",
+          SUBSTR(d.DisName,2) AS "disName",
+          u.USER_CODE AS "userCode",
+          u.USER_NAME AS "userName",
+          u.USER_MOBILE AS "userMobile"
+        FROM e_hotel a
+        LEFT JOIN h_role r ON a.id = r.hotelid AND r.type = 1
+		LEFT JOIN h_user_role ur ON r.id = ur.roleid
+		LEFT JOIN h_user hu ON hu.id = ur.userid
+        LEFT JOIN t_province p ON a.provcode = p.code
+        LEFT JOIN t_city c ON a.citycode = c.code
+        LEFT JOIN t_district d ON a.discode = d.code
+        LEFT JOIN rf_crm_hotel_public h ON h.hotel_id = a.id
+        LEFT JOIN sy_org_user u ON u.USER_CODE = h.hotel_user_id
+        <where>
+
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="hotelname != null and hotelname != ''">
+                AND a.hotelname like CONCAT('%', #{hotelname}, '%')
+            </if>
+            <if test="hotelcontactname != null and hotelcontactname != ''">
+                AND a.hotelcontactname = #{hotelcontactname}
+            </if>
+            <if test="regtime != null and regtime != ''">
+                AND a.regtime = #{regtime}
+            </if>
+            <if test="disid != null and disid != ''">
+                AND a.disid = #{disid}
+            </if>
+            <if test="detailaddr != null and detailaddr != ''">
+                AND a.detailaddr LIKE concat('%',#{detailaddr},'%')
+            </if>
+            <if test="longitude != null and longitude != ''">
+                AND a.longitude = #{longitude}
+            </if>
+            <if test="latitude != null and latitude != ''">
+                AND a.latitude = #{latitude}
+            </if>
+            <if test="opentime != null and opentime != ''">
+                AND a.opentime = #{opentime}
+            </if>
+            <if test="repairtime != null and repairtime != ''">
+                AND a.repairtime = #{repairtime}
+            </if>
+            <if test="roomnum != null and roomnum != ''">
+                AND a.roomnum = #{roomnum}
+            </if>
+            <if test="introduction != null and introduction != ''">
+                AND a.introduction = #{introduction}
+            </if>
+            <if test="traffic != null and traffic != ''">
+                AND a.traffic = #{traffic}
+            </if>
+            <if test="hotelpic != null and hotelpic != ''">
+                AND a.hotelpic = #{hotelpic}
+            </if>
+            <if test="peripheral != null and peripheral != ''">
+                AND a.peripheral = #{peripheral}
+            </if>
+            <if test="businesslicensefront != null and businesslicensefront != ''">
+                AND a.businesslicensefront = #{businesslicensefront}
+            </if>
+            <if test="businesslicenseback != null and businesslicenseback != ''">
+                AND a.businesslicenseback = #{businesslicenseback}
+            </if>
+            <if test="pms != null and pms != ''">
+                AND a.pms = #{pms}
+            </if>
+            <if test="state != null and state != ''">
+                AND a.state = #{state}
+            </if>
+			<if test="checkState != null and checkState != ''">
+				AND a.check_state = #{checkState}
+			</if>
+            <if test="visible != null and visible != ''">
+                AND a.visible = #{visible}
+            </if>
+            <if test="reason != null and reason != ''">
+                AND a.reason = #{reason}
+            </if>
+            <if test="reasontime != null and reasontime != ''">
+                AND a.reasontime = #{reasontime}
+            </if>
+            <if test="updatetime != null and updatetime != ''">
+                AND a.updatetime = #{updatetime}
+            </if>
+            <if test="pricestate != null and pricestate != ''">
+                AND a.pricestate = #{pricestate}
+            </if>
+            <if test="pricereason != null and pricereason != ''">
+                AND a.pricereason = #{pricereason}
+            </if>
+            <if test="pmsstatus != null and pmsstatus != ''">
+                AND a.pmsstatus = #{pmsstatus}
+            </if>
+            <if test="pmsuser != null and pmsuser != ''">
+                AND a.pmsuser = #{pmsuser}
+            </if>
+            <if test="idcardfront != null and idcardfront != ''">
+                AND a.idcardfront = #{idcardfront}
+            </if>
+            <if test="idcardback != null and idcardback != ''">
+                AND a.idcardback = #{idcardback}
+            </if>
+            <if test="retentiontime != null and retentiontime != ''">
+                AND a.retentiontime = #{retentiontime}
+            </if>
+            <if test="defaultleavetime != null and defaultleavetime != ''">
+                AND a.defaultleavetime = #{defaultleavetime}
+            </if>
+            <if test="hotelphone != null and hotelphone != ''">
+                AND a.hotelphone = #{hotelphone}
+            </if>
+            <if test="isnewpms != null and isnewpms != ''">
+                AND a.isnewpms = #{isnewpms}
+            </if>
+            <if test="rulecode != null and rulecode != ''">
+                AND a.rulecode = #{rulecode}
+            </if>
+            <if test="isthreshold != null and isthreshold != ''">
+                AND a.isthreshold = #{isthreshold}
+            </if>
+            <if test="provcode != null and provcode != ''">
+                AND a.provcode = #{provcode}
+            </if>
+            <if test="citycode != null and citycode != ''">
+                AND a.citycode = #{citycode}
+            </if>
+            <if test="discode != null and discode != ''">
+                AND a.discode = #{discode}
+            </if>
+            <if test="areacode != null and areacode != ''">
+                AND a.areacode = #{areacode}
+            </if>
+            <if test="areaname != null and areaname != ''">
+                AND a.areaname = #{areaname}
+            </if>
+            <if test="qtphone != null and qtphone != ''">
+                AND a.qtphone = #{qtphone}
+            </if>
+            <if test="hoteltype != null and hoteltype != ''">
+                AND a.hoteltype = #{hoteltype}
+            </if>
+            <if test="pmshotelname != null and pmshotelname != ''">
+                AND a.pmshotelname = #{pmshotelname}
+            </if>
+            <if test="isSelfBuildHotel != null and isSelfBuildHotel != ''">
+                AND a.isSelfBuildHotel = #{isSelfBuildHotel}
+            </if>
+            <if test="bossName != null and bossName != ''">
+                AND b.name LIKE concat('%',#{bossName},'%')
+            </if>
+            <if test="bossPhone != null and bossPhone != ''">
+                AND b.phone = #{bossPhone}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND u.USER_NAME LIKE concat('%', #{userName}, '%')
+            </if>
+			<if test="operateName != null and operateName != ''">
+				AND a.operateName = #{operateName}
+			</if>
+			<if test="beginOperateTime != null and endOperateTime != null and beginOperateTime != '' and endOperateTime != ''">
+				AND a.operateTime BETWEEN #{beginOperateTime} AND #{endOperateTime}
+			</if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+	
+	<select id="findAllList" resultType="EHotel">
+		SELECT 
+			<include refid="eHotelColumns"/>
+		FROM e_hotel a
+		<include refid="eHotelJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO e_hotel(
+			id,
+			hotelname,
+			hotelcontactname,
+			regtime,
+			disid,
+			detailaddr,
+			longitude,
+			latitude,
+			opentime,
+			repairtime,
+			roomnum,
+			introduction,
+			traffic,
+			hotelpic,
+			peripheral,
+			businesslicensefront,
+			businesslicenseback,
+			pms,
+			state,
+			visible,
+			reason,
+			reasontime,
+			updatetime,
+			pricestate,
+			pricereason,
+			pmsstatus,
+			pmsuser,
+			idcardfront,
+			idcardback,
+			retentiontime,
+			defaultleavetime,
+			hotelphone,
+			isnewpms,
+			rulecode,
+			isthreshold,
+			provcode,
+			citycode,
+			discode,
+			areacode,
+			areaname,
+			qtphone,
+			hoteltype,
+			pmshotelname
+		) VALUES (
+			#{id},
+			#{hotelname},
+			#{hotelcontactname},
+			#{regtime},
+			#{disid},
+			#{detailaddr},
+			#{longitude},
+			#{latitude},
+			#{opentime},
+			#{repairtime},
+			#{roomnum},
+			#{introduction},
+			#{traffic},
+			#{hotelpic},
+			#{peripheral},
+			#{businesslicensefront},
+			#{businesslicenseback},
+			#{pms},
+			#{state},
+			#{visible},
+			#{reason},
+			#{reasontime},
+			#{updatetime},
+			#{pricestate},
+			#{pricereason},
+			#{pmsstatus},
+			#{pmsuser},
+			#{idcardfront},
+			#{idcardback},
+			#{retentiontime},
+			#{defaultleavetime},
+			#{hotelphone},
+			#{isnewpms},
+			#{rulecode},
+			#{isthreshold},
+			#{provcode},
+			#{citycode},
+			#{discode},
+			#{areacode},
+			#{areaname},
+			#{qtphone},
+			#{hoteltype},
+			#{pmshotelname}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE e_hotel SET 	
+			hotelname = #{hotelname},
+			hotelcontactname = #{hotelcontactname},
+			regtime = #{regtime},
+			disid = #{disid},
+			detailaddr = #{detailaddr},
+			longitude = #{longitude},
+			latitude = #{latitude},
+			opentime = #{opentime},
+			repairtime = #{repairtime},
+			roomnum = #{roomnum},
+			introduction = #{introduction},
+			traffic = #{traffic},
+			hotelpic = #{hotelpic},
+			peripheral = #{peripheral},
+			businesslicensefront = #{businesslicensefront},
+			businesslicenseback = #{businesslicenseback},
+			pms = #{pms},
+			state = #{state},
+			visible = #{visible},
+			reason = #{reason},
+			reasontime = #{reasontime},
+			updatetime = #{updatetime},
+			pricestate = #{pricestate},
+			pricereason = #{pricereason},
+			pmsstatus = #{pmsstatus},
+			pmsuser = #{pmsuser},
+			idcardfront = #{idcardfront},
+			idcardback = #{idcardback},
+			retentiontime = #{retentiontime},
+			defaultleavetime = #{defaultleavetime},
+			hotelphone = #{hotelphone},
+			isnewpms = #{isnewpms},
+			rulecode = #{rulecode},
+			isthreshold = #{isthreshold},
+			provcode = #{provcode},
+			citycode = #{citycode},
+			discode = #{discode},
+			areacode = #{areacode},
+			areaname = #{areaname},
+			qtphone = #{qtphone},
+			hoteltype = #{hoteltype},
+			pmshotelname = #{pmshotelname}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM e_hotel
+		WHERE id = #{id}
+	</update>
+	
+	
+	<select id="findTHotelTypeByHotelId" resultType="TRoomType">
+		select a.ehotelid as hotelid,
+      		 a.name as name,
+			 a.pms as pms,
+			 a.id as roomtypeid,
+			 b.pics as pics ,
+			 b.bedtype as bedtype, 
+			 b.maxarea as maxarea, 
+			 b.bedsize as bedsize
+		from t_roomtype a
+		INNER JOIN t_roomtype_info b on a.id = b.roomtypeid
+		<where>
+			<if test="hotelid != null and hotelid != ''">
+				AND a.ehotelid = #{hotelid}
+			</if>
+		</where>
+		 
+	</select>
+</mapper>

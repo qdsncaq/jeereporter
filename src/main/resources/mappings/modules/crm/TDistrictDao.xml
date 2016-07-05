@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.crm.location.dao.TDistrictDao">
+    
+	<sql id="tDistrictColumns">
+		a.id AS "id",
+		a.code AS "code",
+		a.disname AS "disname",
+		a.cityid AS "cityid",
+		a.dissort AS "dissort",
+		a.latitude AS "latitude",
+		a.longitude AS "longitude"
+	</sql>
+	
+	<sql id="tDistrictJoins">
+	</sql>
+    
+	<select id="get" resultType="TDistrict">
+		SELECT 
+			<include refid="tDistrictColumns"/>
+		FROM ots.t_district a
+		<include refid="tDistrictJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TDistrict">
+		SELECT 
+			<include refid="tDistrictColumns"/>
+		FROM ots.t_district a
+		<include refid="tDistrictJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="code != null and code != ''">
+				AND a.code = #{code}
+			</if>
+			<if test="disname != null and disname != ''">
+				AND a.disname = #{disname}
+			</if>
+			<if test="cityid != null and cityid != ''">
+				AND a.cityid = #{cityid}
+			</if>
+			<if test="dissort != null and dissort != ''">
+				AND a.dissort = #{dissort}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TDistrict">
+		SELECT 
+			<include refid="tDistrictColumns"/>
+		FROM ots.t_district a
+		<include refid="tDistrictJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="findAllToAllAreas" resultType="com.thinkgem.crm.location.entity.AllAreas" parameterType="com.thinkgem.crm.location.entity.AllAreas">
+        SELECT
+            a.id AS "id",
+            a.code AS "code",
+            a.disname AS "name",
+            a.cityid AS "parentId",
+            FALSE AS "parent",
+            "3" AS "type"
+        FROM ots.t_district a
+        WHERE a.cityid=${id}
+    </select>
+	
+	<insert id="insert">
+		INSERT INTO ots.t_district(
+			id,
+			code,
+			disname,
+			cityid,
+			dissort,
+			latitude,
+			longitude
+		) VALUES (
+			#{id},
+			#{code},
+			#{disname},
+			#{cityid},
+			#{dissort},
+			#{latitude},
+			#{longitude}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ots.t_district SET
+			code = #{code},
+			disname = #{disname},
+			cityid = #{cityid},
+			dissort = #{dissort},
+			latitude = #{latitude},
+			longitude = #{longitude}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM ots.t_district
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

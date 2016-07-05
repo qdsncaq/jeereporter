@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.psb.psbhotelbillinit.dao.SettlementPsbhotelbillinitDao">
+	<sql id="settlementPsbhotelbillinitColumns">
+		a.id AS "id",
+		a.psbid AS "psbid",
+		a.psbname AS "psbname",
+		a.hotelid AS "hotelid",
+		a.hotelpms AS "hotelpms",
+		a.hotelname AS "hotelname",
+		a.procode AS "procode",
+		a.proname AS "proname",
+		a.citycode AS "citycode",
+		a.cityname AS "cityname",
+		a.discode AS "discode",
+		a.disname AS "disname",
+		a.roomnums AS "roomnums",
+		a.onlinestate AS "onlinestate",
+		a.areamanager AS "areamanager",
+		a.operator AS "operator",
+		a.begintime AS "begintime",
+		a.endtime AS "endtime",
+		a.realendtime AS "realendtime",
+		a.onlinetime AS "onlinetime",
+		a.offlinetime AS "offlinetime",
+		a.fee AS "fee",
+		a.feetypeids AS "feetypeids",
+		a.onlinedays AS "onlinedays",
+		a.amount AS "amount",
+		a.recoveramount AS "recoveramount",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
+		a.status AS "status",
+		a.billtype AS "billtype",
+		a.billtypedesc AS "billtypedesc"
+	</sql>
+	
+	<sql id="settlementPsbhotelbillinitJoins">
+	</sql>
+    
+	<select id="get" resultType="SettlementPsbhotelbillinit">
+		SELECT 
+			<include refid="settlementPsbhotelbillinitColumns"/>
+		FROM settlement_psbhotelbillinit a
+		<include refid="settlementPsbhotelbillinitJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SettlementPsbhotelbillinit">
+		SELECT 
+			<include refid="settlementPsbhotelbillinitColumns"/>
+		FROM settlement_psbhotelbillinit a
+		<include refid="settlementPsbhotelbillinitJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="psbid != null and psbid != ''">
+				AND a.psbid = #{psbid}
+			</if>
+			<if test="psbname != null and psbname != ''">
+				AND a.psbname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{psbname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{psbname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{psbname},'%')</if>
+			</if>
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="hotelpms != null and hotelpms != ''">
+				AND a.hotelpms = #{hotelpms}
+			</if>
+			<if test="hotelname != null and hotelname != ''">
+				AND a.hotelname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+			</if>
+			<if test="procode != null and procode != ''">
+				AND a.procode = #{procode}
+			</if>
+			<if test="proname != null and proname != ''">
+				AND a.proname = #{proname}
+			</if>
+			<if test="citycode != null and citycode != ''">
+				AND a.citycode = #{citycode}
+			</if>
+			<if test="cityname != null and cityname != ''">
+				AND a.cityname = #{cityname}
+			</if>
+			<if test="discode != null and discode != ''">
+				AND a.discode = #{discode}
+			</if>
+			<if test="disname != null and disname != ''">
+				AND a.disname = #{disname}
+			</if>
+			<if test="beginRoomnums != null and endRoomnums != null and beginRoomnums != '' and endRoomnums != ''">
+				AND a.roomnums BETWEEN #{beginRoomnums} AND #{endRoomnums}
+			</if>
+			<if test="onlinestate != null and onlinestate != ''">
+				AND a.onlinestate = #{onlinestate}
+			</if>
+			<if test="areamanager != null and areamanager != ''">
+				AND a.areamanager = #{areamanager}
+			</if>
+			<if test="operator != null and operator != ''">
+				AND a.operator = #{operator}
+			</if>
+			<if test="beginBegintime != null and beginBegintime != ''">
+				AND a.begintime <![CDATA[>=]]> #{beginBegintime}
+			</if>
+			<if test="endBegintime != null and endBegintime != ''">
+				AND a.begintime <![CDATA[<=]]> #{endBegintime}
+			</if>
+			<if test="beginEndtime != null and beginEndtime != ''">
+				AND a.endtime <![CDATA[>=]]> #{beginEndtime}
+			</if>
+			<if test="endEndtime != null and endEndtime != ''">
+				AND a.endtime <![CDATA[<=]]> #{endEndtime}
+			</if>
+			<if test="beginRealendtime != null and beginRealendtime != ''">
+				AND a.realendtime <![CDATA[>=]]> #{beginRealendtime}
+			</if>
+			<if test="endRealendtime != null and endRealendtime != ''">
+				AND a.realendtime <![CDATA[<=]]> #{endRealendtime}
+			</if>
+			<if test="beginOnlinetime != null and beginOnlinetime != ''">
+				AND a.onlinetime <![CDATA[>=]]> #{beginOnlinetime}
+			</if>
+			<if test="endOnlinetime != null and endOnlinetime != ''">
+				AND a.onlinetime <![CDATA[<=]]> #{endOnlinetime}
+			</if>
+			<if test="beginOfflinetime != null and beginOfflinetime != ''">
+				AND a.offlinetime <![CDATA[>=]]> #{beginOfflinetime}
+			</if>
+			<if test="endOfflinetime != null and endOfflinetime != ''">
+				AND a.offlinetime <![CDATA[<=]]> #{endOfflinetime}
+			</if>
+			<if test="beginFee != null and beginFee != ''">
+				AND a.fee <![CDATA[>=]]> #{beginFee}
+			</if>
+			<if test="endFee != null and endFee != ''">
+				AND a.fee <![CDATA[<=]]> #{endFee}
+			</if>
+			<if test="feetypeids != null and feetypeids != ''">
+				AND a.feetypeids LIKE 
+					<if test="dbName == 'oracle'">'%'||#{feetypeids}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{feetypeids}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{feetypeids},'%')</if>
+			</if>
+			<if test="beginOnlinedays != null and beginOnlinedays != ''">
+				AND a.onlinedays <![CDATA[>=]]> #{beginOnlinedays}
+			</if>
+			<if test="endOnlinedays != null and endOnlinedays != ''">
+				AND a.onlinedays <![CDATA[<=]]> #{endOnlinedays}
+			</if>
+			<if test="beginAmount != null and beginAmount != ''">
+				AND a.amount <![CDATA[>=]]> #{beginAmount}
+			</if>
+			<if test="endAmount != null and endAmount != ''">
+				AND a.amount <![CDATA[<=]]> #{endAmount}
+			</if>
+			<if test="beginRecoveramount != null and beginRecoveramount != ''">
+				AND a.recoveramount <![CDATA[>=]]> #{beginRecoveramount}
+			</if>
+			<if test="endRecoveramount != null and endRecoveramount != ''">
+				AND a.recoveramount <![CDATA[<=]]> #{endRecoveramount}
+			</if>
+			<if test="beginCreatetime != null and beginCreatetime != ''">
+				AND a.createtime <![CDATA[>=]]> #{beginCreatetime}
+			</if>
+			<if test="endCreatetime != null and endCreatetime != ''">
+				AND a.createtime <![CDATA[<=]]> #{endCreatetime}
+			</if>
+			<if test="beginUpdatetime != null and beginUpdatetime != ''">
+				AND a.updatetime <![CDATA[>=]]> #{beginUpdatetime}
+			</if>
+			<if test="endUpdatetime != null and endUpdatetime != ''">
+				AND a.updatetime <![CDATA[<=]]> #{endUpdatetime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SettlementPsbhotelbillinit">
+		SELECT 
+			<include refid="settlementPsbhotelbillinitColumns"/>
+		FROM settlement_psbhotelbillinit a
+		<include refid="settlementPsbhotelbillinitJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 酒店账单初始化, 查询所有有上线记录的酒店,生成一条账单明细 -->
+	<select id="getAllFirstOnHotel" parameterType="SettlementPsbhotelbillinit" resultType="java.util.HashMap">
+		SELECT
+			DISTINCT onoff.hotel_id AS hotelid,
+			onoff.type AS type,
+			onoff.prov_code AS procode,
+			onoff.prov_name AS proname,
+			onoff.city_code AS citycode,
+			onoff.city_name AS cityname,
+			onoff.dis_code AS discode,
+			onoff.dis_name AS disname,
+			onoff.hotel_name AS hotelname,
+			onoff.pms AS hotelpms,
+			onoff.min_on_time AS minontime
+		FROM
+			ots.on_off_line onoff
+		INNER JOIN ots.e_hotel h ON onoff.pms = h.pms
+		WHERE
+			h.isSelfBuildHotel = 'F'
+		AND onoff.type IN (1, 2)
+		AND onoff.del_flag = 1
+		<if test="procode != null and procode != ''">
+			AND onoff.prov_code = #{procode }
+		</if>
+		<if test="citycode != null and citycode != ''">
+			AND onoff.city_code = #{citycode }
+		</if>
+		<if test="discode != null and discode != ''">
+			AND onoff.dis_code = #{discode }
+		</if>
+		<if test="hotelid != null and hotelid != ''">
+			AND onoff.hotel_id = #{hotelid }
+		</if>
+		<if test="hotelpms != null and hotelpms != ''">
+			AND onoff.pms = #{hotelpms }
+		</if>
+		AND NOT EXISTS (
+			SELECT
+				hotelid
+			FROM
+				settlement_psbhotelbillinit exitedbill
+			WHERE
+				onoff.hotel_id = exitedbill.hotelid
+				AND exitedbill.onlinestate = 1
+		)
+		GROUP BY
+			onoff.hotel_id
+		ORDER BY
+			onoff.min_on_time ASC 
+	</select>
+	
+	<!-- 根据酒店id 查询酒店房间数 -->
+	<select id="selectroomNums" resultType="Integer">
+		SELECT
+			COUNT(r.id)
+		FROM
+			ots.t_roomtype rt
+		INNER JOIN ots.t_room r ON r.roomtypeid = rt.id
+		WHERE
+			rt.thotelId = #{hotelid }
+	</select>
+	
+	<!-- 查询规则 -->
+	<select id="selectrules" resultType="java.util.HashMap">
+		SELECT
+			re.hotelrules AS hotelrules,
+			re.disrules AS disrules,
+			re.cityrules AS cityrules
+		FROM
+			settlement_psbrulesrelation re
+		WHERE
+			( re.hotelid = #{hotelid }
+		AND re.procode = #{procode }
+		AND re.citycode = #{citycode }
+		AND re.discode = #{discode }
+		AND re.areatype = 3 )
+		OR (
+			re.discode = #{discode }
+		AND re.citycode = #{citycode }
+		AND re.procode = #{procode }
+		AND re.areatype = 2
+		)
+		OR (
+			re.citycode = #{citycode }
+		AND re.procode = #{procode }
+		AND re.areatype = 1
+		)
+		AND re.delflag = 1
+	</select>
+	
+	<select id="getByHotelid" resultType="SettlementPsbhotelbillinit">
+		SELECT 
+			<include refid="settlementPsbhotelbillinitColumns"/>
+		FROM settlement_psbhotelbillinit a
+		<include refid="settlementPsbhotelbillinitJoins"/>
+		<where>
+			a.hotelid = #{hotelid }
+		</where>		
+		ORDER BY id DESC LIMIT 1
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO settlement_psbhotelbillinit(
+			psbid,
+			psbname,
+			hotelid,
+			hotelpms,
+			hotelname,
+			procode,
+			proname,
+			citycode,
+			cityname,
+			discode,
+			disname,
+			roomnums,
+			onlinestate,
+			areamanager,
+			operator,
+			begintime,
+			endtime,
+			realendtime,
+			onlinetime,
+			offlinetime,
+			fee,
+			feetypeids,
+			onlinedays,
+			amount,
+			recoveramount,
+			createtime,
+			updatetime,
+			status,
+			billtype,
+			billtypedesc
+		) VALUES (
+			#{psbid},
+			#{psbname},
+			#{hotelid},
+			#{hotelpms},
+			#{hotelname},
+			#{procode},
+			#{proname},
+			#{citycode},
+			#{cityname},
+			#{discode},
+			#{disname},
+			#{roomnums},
+			#{onlinestate},
+			#{areamanager},
+			#{operator},
+			#{begintime},
+			#{endtime},
+			#{realendtime},
+			#{onlinetime},
+			#{offlinetime},
+			#{fee},
+			#{feetypeids},
+			#{onlinedays},
+			#{amount},
+			#{recoveramount},
+			#{createtime},
+			#{updatetime},
+			#{status},
+			#{billtype},
+			#{billtypedesc}
+		)
+	</insert>
+	
+	<!-- 批量插入到账单初始化表中 返回 插入记录条数 -->
+	<insert id="batchInsert">
+		INSERT INTO settlement_psbhotelbillinit (
+			psbid,
+			psbname,
+			hotelid,
+			hotelpms,
+			hotelname,
+			procode,
+			proname,
+			citycode,
+			cityname,
+			discode,
+			disname,
+			roomnums,
+			onlinestate,
+			areamanager,
+			operator,
+			begintime,
+			endtime,
+			realendtime,
+			onlinetime,
+			offlinetime,
+			fee,
+			feetypeids,
+			onlinedays,
+			amount,
+			recoveramount,
+			createtime,
+			updatetime,
+			status,
+			billtype,
+			billtypedesc
+		)
+		VALUES <foreach collection="billinits" item="item" index="index" separator=",">
+		( 	#{item.psbid},
+			#{item.psbname},
+			#{item.hotelid},
+			#{item.hotelpms},
+			#{item.hotelname},
+			#{item.procode},
+			#{item.proname},
+			#{item.citycode},
+			#{item.cityname},
+			#{item.discode},
+			#{item.disname},
+			#{item.roomnums},
+			#{item.onlinestate},
+			#{item.areamanager},
+			#{item.operator},
+			#{item.begintime},
+			<!-- #{item.endtime}, -->
+			DATE_ADD( DATE(#{item.begintime}), INTERVAL + 360 DAY ),
+			<!-- #{item.realendtime}, -->
+			DATE_ADD( DATE(#{item.begintime}), INTERVAL + 360 DAY ),
+			<!-- #{item.onlinetime}, -->
+			#{item.begintime},
+			#{item.offlinetime},
+			#{item.fee},
+			#{item.feetypeids},
+			#{item.onlinedays},
+			#{item.amount},
+			#{item.recoveramount},
+			#{item.createtime},
+			#{item.updatetime},
+			#{item.status},
+			#{item.billtype},
+			#{item.billtypedesc}
+		)
+		</foreach>
+	</insert>
+	
+	<update id="update">
+		UPDATE settlement_psbhotelbillinit SET 	
+			psbid = #{psbid},
+			psbname = #{psbname},
+			hotelid = #{hotelid},
+			hotelpms = #{hotelpms},
+			hotelname = #{hotelname},
+			procode = #{procode},
+			proname = #{proname},
+			citycode = #{citycode},
+			cityname = #{cityname},
+			discode = #{discode},
+			disname = #{disname},
+			roomnums = #{roomnums},
+			onlinestate = #{onlinestate},
+			areamanager = #{areamanager},
+			operator = #{operator},
+			begintime = #{begintime},
+			endtime = #{endtime},
+			realendtime = #{realendtime},
+			onlinetime = #{onlinetime},
+			offlinetime = #{offlinetime},
+			fee = #{fee},
+			feetypeids = #{feetypeids},
+			onlinedays = #{onlinedays},
+			amount = #{amount},
+			recoveramount = #{recoveramount},
+			createtime = #{createtime},
+			updatetime = #{updatetime},
+			billtype = #{billtype},
+			billtypedesc = #{billtypedesc}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM settlement_psbhotelbillinit
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

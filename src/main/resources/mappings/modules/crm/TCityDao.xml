@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.crm.location.dao.TCityDao">
+    
+	<sql id="tCityColumns">
+		a.cityid AS "cityid",
+		a.code AS "code",
+		a.cityname AS "cityname",
+		a.proid AS "proid",
+		a.citysort AS "citysort",
+		a.latitude AS "latitude",
+		a.longitude AS "longitude",
+		a.simplename AS "simplename",
+		a.ishotcity AS "ishotcity",
+		a.range AS "range",
+		a.isselect AS "isselect",
+		a.querycityname AS "querycityname",
+		a.level AS "level"
+	</sql>
+	
+	<sql id="tCityJoins">
+	</sql>
+    
+	<select id="get" resultType="TCity">
+		SELECT 
+			<include refid="tCityColumns"/>
+		FROM ots.t_city a
+		<include refid="tCityJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByCode" resultType="TCity">
+		SELECT
+		<include refid="tCityColumns"/>
+		FROM ots.t_city a
+		<include refid="tCityJoins"/>
+		WHERE a.code = #{code}
+	</select>
+	
+	<select id="findList" resultType="TCity">
+		SELECT 
+			<include refid="tCityColumns"/>
+		FROM ots.t_city a
+		<include refid="tCityJoins"/>
+		<where>
+			
+			<if test="cityid != null and cityid != ''">
+				AND a.cityid = #{cityid}
+			</if>
+			<if test="code != null and code != ''">
+				AND a.code = #{code}
+			</if>
+			<if test="cityname != null and cityname != ''">
+				AND a.cityname = #{cityname}
+			</if>
+			<if test="proid != null and proid != ''">
+				AND a.proid = #{proid}
+			</if>
+			<if test="citysort != null and citysort != ''">
+				AND a.citysort = #{citysort}
+			</if>
+			<if test="simplename != null and simplename != ''">
+				AND a.simplename = #{simplename}
+			</if>
+			<if test="ishotcity != null and ishotcity != ''">
+				AND a.ishotcity = #{ishotcity}
+			</if>
+			<if test="range != null and range != ''">
+				AND a.range = #{range}
+			</if>
+			<if test="isselect != null and isselect != ''">
+				AND a.isselect = #{isselect}
+			</if>
+			<if test="querycityname != null and querycityname != ''">
+				AND a.querycityname = #{querycityname}
+			</if>
+			<if test="level != null and level != ''">
+				AND a.level = #{level}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TCity">
+		SELECT 
+			<include refid="tCityColumns"/>
+		FROM ots.t_city a
+		<include refid="tCityJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="findAllToAllAreas" resultType="com.thinkgem.crm.location.entity.AllAreas" parameterType="com.thinkgem.crm.location.entity.AllAreas">
+        SELECT
+            a.cityid AS "id",
+            a.code AS "code",
+            a.cityname AS "name",
+            a.proid AS "parentId",
+            IF(count(b.cityid)>0,true,false) AS "parent",
+            "2" AS "type"
+        FROM ots.t_city a
+        LEFT JOIN ots.t_district b ON b.cityid=a.cityid
+        WHERE a.proid = ${id}
+        group by a.cityid
+    </select>
+	
+	<insert id="insert">
+		INSERT INTO ots.t_city(
+			cityid,
+			code,
+			cityname,
+			proid,
+			citysort,
+			latitude,
+			longitude,
+			simplename,
+			ishotcity,
+			range,
+			isselect,
+			querycityname,
+			level
+		) VALUES (
+			#{cityid},
+			#{code},
+			#{cityname},
+			#{proid},
+			#{citysort},
+			#{latitude},
+			#{longitude},
+			#{simplename},
+			#{ishotcity},
+			#{range},
+			#{isselect},
+			#{querycityname},
+			#{level}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ots.t_city SET
+			cityid = #{cityid},
+			code = #{code},
+			cityname = #{cityname},
+			proid = #{proid},
+			citysort = #{citysort},
+			latitude = #{latitude},
+			longitude = #{longitude},
+			simplename = #{simplename},
+			ishotcity = #{ishotcity},
+			range = #{range},
+			isselect = #{isselect},
+			querycityname = #{querycityname},
+			level = #{level}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM ots.t_city
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

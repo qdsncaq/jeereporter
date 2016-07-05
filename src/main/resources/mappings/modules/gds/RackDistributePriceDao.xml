@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.gds.distributprice.dao.RackDistributePriceDao">
+    
+	<sql id="rackDistributePriceColumns">
+		a.id AS "id",
+		a.hotelid AS "hotelid",
+		a.roomtypeid AS "roomtypeid",
+		a.price AS "price",
+		a.createtime AS "createtime",
+		a.createuser AS "createuser",
+		a.updatetime AS "updatetime",
+		a.updateuser AS "updateuser",
+        b.hotelname AS "hotelname",
+        c.name AS "roomtypename"
+	</sql>
+	
+	<sql id="rackDistributePriceJoins">
+	  left  join hotel b on a.hotelid=b.id   left  join  roomtype c on a.roomtypeid=c.id
+	</sql>
+    
+	<select id="get" resultType="RackDistributePrice">
+		SELECT 
+			<include refid="rackDistributePriceColumns"/>
+		FROM rack_distribute_price a
+		<include refid="rackDistributePriceJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	   <select id="getbyhotelandroomtype" resultType="RackDistributePrice">
+        SELECT 
+            <include refid="rackDistributePriceColumns"/>
+        FROM rack_distribute_price a
+        <include refid="rackDistributePriceJoins"/>
+        WHERE a.hotelid = #{hotelid} and  a.roomtypeid = #{roomtypeid}
+    </select>
+	
+	<select id="findList" resultType="RackDistributePrice">
+		SELECT 
+			<include refid="rackDistributePriceColumns"/>
+		FROM rack_distribute_price a
+		<include refid="rackDistributePriceJoins"/>
+		<where>
+			
+			<if test="hotelname != null and hotelname != ''">
+				AND b.hotelname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+			</if>
+			<if test="createtime != null and createtime != ''">
+				AND a.createtime = #{createtime}
+			</if>
+			<if test="createuser != null and createuser != ''">
+				AND a.createuser = #{createuser}
+			</if>
+			<if test="updatetime != null and updatetime != ''">
+				AND a.updatetime = #{updatetime}
+			</if>
+			<if test="updateuser != null and updateuser != ''">
+				AND a.updateuser = #{updateuser}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RackDistributePrice">
+		SELECT 
+			<include refid="rackDistributePriceColumns"/>
+		FROM rack_distribute_price a
+		<include refid="rackDistributePriceJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO rack_distribute_price(
+			hotelid,
+			roomtypeid,
+			price,
+			createtime,
+			createuser
+		) VALUES (
+			#{hotelid},
+			#{roomtypeid},
+			#{price},
+			#{createtime},
+			#{createuser}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE rack_distribute_price SET 	
+			hotelid = #{hotelid},
+			roomtypeid = #{roomtypeid},
+			price = #{price},
+			updatetime = #{updatetime},
+			updateuser = #{updateuser}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM rack_distribute_price
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

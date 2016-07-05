@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.crm.syslabel.dao.RfCrmSysLabelDao">
+    
+	<sql id="rfCrmSysLabelColumns">
+		a.id AS "id",
+		a.code_label AS "codeLabel",
+		a.key_label AS "keyLabel",
+		a.value_label AS "valueLabel",
+		a.order_by AS "orderBy",
+		a.is_show AS "isShow",
+		a.type AS "type",
+		a.user_id AS "userId",
+		a.available AS "available",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="rfCrmSysLabelJoins">
+	</sql>
+    
+	<select id="get" resultType="RfCrmSysLabel">
+		SELECT 
+			<include refid="rfCrmSysLabelColumns"/>
+		FROM rf_crm_sys_label a
+		<include refid="rfCrmSysLabelJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+
+	<select id="findList" resultType="RfCrmSysLabel">
+		SELECT 
+			<include refid="rfCrmSysLabelColumns"/>
+		FROM rf_crm_sys_label a
+		<include refid="rfCrmSysLabelJoins"/>
+		<where>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="codeLabel != null and codeLabel != ''">
+				AND a.code_label = #{codeLabel}
+			</if>
+			<if test="keyLabel != null and keyLabel != ''">
+				AND a.key_label = #{keyLabel}
+			</if>
+			<if test="valueLabel != null and valueLabel != ''">
+				AND a.value_label = #{valueLabel}
+			</if>
+			<if test="orderBy != null and orderBy != ''">
+				AND a.order_by = #{orderBy}
+			</if>
+			<if test="isShow != null and isShow != ''">
+				AND a.is_show = #{isShow}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="available != null and available != ''">
+				AND a.available = #{available}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RfCrmSysLabel">
+		SELECT 
+			<include refid="rfCrmSysLabelColumns"/>
+		FROM rf_crm_sys_label a
+		<include refid="rfCrmSysLabelJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO rf_crm_sys_label(
+			id,
+			code_label,
+			key_label,
+			value_label,
+			order_by,
+			is_show,
+			type,
+			user_id,
+			available,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{codeLabel},
+			#{keyLabel},
+			#{valueLabel},
+			#{orderBy},
+			#{isShow},
+			#{type},
+			#{userId},
+			#{available},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE rf_crm_sys_label SET 	
+			code_label = #{codeLabel},
+			key_label = #{keyLabel},
+			value_label = #{valueLabel},
+			order_by = #{orderBy},
+			is_show = #{isShow},
+			type = #{type},
+			user_id = #{userId},
+			available = #{available},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM rf_crm_sys_label
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

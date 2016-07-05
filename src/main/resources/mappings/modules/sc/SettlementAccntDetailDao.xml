@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.sc.accntdetail.dao.SettlementAccntDetailDao">
+    
+	<sql id="settlementAccntDetailColumns">
+		a.id AS "id",
+		a.accountid AS "accountid",
+		a.accountname AS "accountname",
+		a.orderid AS "orderid",
+		a.orderprice AS "orderprice",
+		FORMAT(a.orderprice, 2) AS "strOrderprice",
+		a.hotelid AS "hotelid",
+		a.hotelname AS "hotelname",
+		a.biztype AS "biztype",
+		a.ordertotal AS "ordertotal",
+		FORMAT(a.ordertotal, 2) AS "strOrdertotal",
+		a.ordertime AS "ordertime",
+		a.roomnums AS "roomnums",
+		a.days AS "days",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.accountrole AS "accountrole",
+		a.hotelpms AS "hotelpms",
+		a.status AS "status",
+		a.orderstatus AS "orderstatus",
+		a.freetotal AS "freetotal",
+		FORMAT(a.freetotal, 2) AS "strFreetotal",
+		a.left_date AS "leftDate",
+		a.tripname AS "tripname",
+		a.remarks AS "remarks",
+		a.feetype AS "feetype",
+		a.scruleid AS "scruleid",
+		a.snapshotrate AS "snapshotrate",
+		a.scruledesc AS "scruledesc",
+		a.accountyear AS "accountyear",
+		a.accountmonth AS "accountmonth",
+		a.accountweek AS "accountweek",
+		a.begindate AS "begindate",
+		a.enddate AS "enddate",
+		a.no AS "no",
+		a.orderno,
+		a.no1 AS "no1"
+	</sql>
+	
+	<sql id="settlementAccntDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="SettlementAccntDetail">
+		SELECT 
+			<include refid="settlementAccntDetailColumns"/>
+		FROM settlement_accnt_detail a
+		<include refid="settlementAccntDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SettlementAccntDetail">
+		SELECT 
+			<include refid="settlementAccntDetailColumns"/>
+			,b.orderid as bizorderid
+			,b.thirdno
+			,b.callback_time as "callbackTime"
+		FROM settlement_accnt_detail a
+		  LEFT OUTER JOIN
+		    (SELECT accountid,sys_orderid,thirdno,hotelpms,orderid,callback_time FROM settlement_pay WHERE paystatus=3 GROUP BY accountid,sys_orderid,thirdno,hotelpms,orderid,callback_time) b
+		      ON a.orderid=b.sys_orderid AND a.hotelpms=b.hotelpms AND a.accountid=b.accountid 
+		<where>
+			<if test="accountid != null and accountid != ''">
+				AND a.accountid = #{accountid}
+			</if>
+			<if test="accountname != null and accountname != ''">
+				AND a.accountname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{accountname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{accountname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{accountname},'%')</if>
+			</if>
+			<if test="orderid != null and orderid != ''">
+				AND a.orderid = #{orderid}
+			</if>
+			<if test="beginOrderprice != null and beginOrderprice != ''">
+				AND a.orderprice <![CDATA[>=]]> #{beginOrderprice} 
+			</if>
+			<if test="endOrderprice != null and endOrderprice != ''">
+				AND a.orderprice <![CDATA[<=]]> #{endOrderprice}
+			</if>
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="hotelname != null and hotelname != ''">
+				AND a.hotelname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+			</if>
+			<if test="biztype != null and biztype != ''">
+				AND a.biztype = #{biztype}
+			</if>
+			<if test="beginOrdertotal != null and beginOrdertotal != ''">
+				AND a.ordertotal <![CDATA[>=]]> #{beginOrdertotal} 
+			</if>
+			<if test="endOrdertotal != null and endOrdertotal != ''">
+				AND a.ordertotal <![CDATA[<=]]> #{endOrdertotal}
+			</if>
+			
+			<if test="beginOrdertime != null and beginOrdertime != ''">
+				AND a.ordertime <![CDATA[>=]]> #{beginOrdertime} 
+			</if>
+			<if test="endOrdertime != null and endOrdertime != ''">
+				AND a.ordertime <![CDATA[<=]]> #{endOrdertime}
+			</if>
+			
+			<if test="beginRoomnums != null and beginRoomnums != ''">
+				AND a.roomnums <![CDATA[>=]]> #{beginRoomnums} 
+			</if>
+			<if test="endRoomnums != null and endRoomnums != ''">
+				AND a.roomnums <![CDATA[<=]]> #{endRoomnums}
+			</if>
+			<if test="beginDays != null and beginDays != ''">
+				AND a.days <![CDATA[>=]]> #{beginDays} 
+			</if>
+			<if test="endDays != null and endDays != ''">
+				AND a.days <![CDATA[<=]]> #{endDays}
+			</if>
+			
+			<if test="beginCreateTime != null and beginCreateTime != ''">
+				AND a.create_time <![CDATA[>=]]> #{beginCreateTime} 
+			</if>
+            <if test="endCreateTime != null and endCreateTime != ''">
+                AND a.create_time <![CDATA[<=]]> #{endCreateTime} 
+            </if>
+            
+            <if test="beginUpdateTime != null and beginUpdateTime != ''">
+                AND a.update_time <![CDATA[>=]]> #{beginUpdateTime}
+            </if>
+			<if test="endUpdateTime != null and endUpdateTime != ''">
+				AND a.update_time <![CDATA[<=]]> #{endUpdateTime}
+			</if>
+			
+			<if test="accountrole != null and accountrole != ''">
+				AND a.accountrole = #{accountrole}
+			</if>
+			<if test="hotelpms != null and hotelpms != ''">
+				AND a.hotelpms = #{hotelpms}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="orderstatus != null and orderstatus != ''">
+				AND a.orderstatus = #{orderstatus}
+			</if>
+			<if test="beginFreetotal != null and beginFreetotal != ''">
+				AND a.freetotal <![CDATA[>=]]> #{beginFreetotal} 
+			</if>
+			<if test="endFreetotal != null and endFreetotal != ''">
+				AND a.freetotal <![CDATA[<=]]> #{endFreetotal}
+			</if>
+			
+			<if test="beginLeftDate != null and beginLeftDate != ''">
+				AND a.left_date <![CDATA[>=]]> #{beginLeftDate} 
+			</if>
+			<if test="endLeftDate != null and endLeftDate != ''">
+				AND a.left_date <![CDATA[<=]]> #{endLeftDate}
+			</if>
+			
+			<if test="tripname != null and tripname != ''">
+				AND a.tripname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{tripname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tripname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{tripname},'%')</if>
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+			<if test="feetype != null and feetype != ''">
+				AND a.feetype = #{feetype}
+			</if>
+			<if test="scruleid != null and scruleid != ''">
+				AND a.scruleid = #{scruleid}
+			</if>
+			<if test="beginSnapshotrate != null and beginSnapshotrate != ''">
+				AND a.snapshotrate <![CDATA[>=]]> #{beginSnapshotrate} 
+			</if>
+			<if test="endSnapshotrate != null and endSnapshotrate != ''">
+				AND a.snapshotrate <![CDATA[<=]]> #{endSnapshotrate}
+			</if>
+			<if test="scruledesc != null and scruledesc != ''">
+				AND a.scruledesc LIKE 
+					<if test="dbName == 'oracle'">'%'||#{scruledesc}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{scruledesc}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{scruledesc},'%')</if>
+			</if>
+			<if test="accountyear != null and accountyear != ''">
+				AND a.accountyear = #{accountyear}
+			</if>
+			<if test="accountmonth != null and accountmonth != ''">
+				AND a.accountmonth = #{accountmonth}
+			</if>
+			<if test="accountweek != null and accountweek != ''">
+				AND a.accountweek = #{accountweek}
+			</if>
+			<if test="beginBegindate != null and beginBegindate != ''">
+				AND a.begindate <![CDATA[>=]]> #{beginBegindate} 
+			</if>
+			<if test="endBegindate != null and endBegindate != ''">
+				AND a.begindate <![CDATA[<=]]> #{endBegindate}
+			</if>
+			<if test="endEnddate != null and endEnddate != ''">
+				AND a.enddate <![CDATA[>=]]> #{beginEnddate} 
+			</if>
+			<if test="endEnddate != null and endEnddate != ''">
+				AND a.enddate <![CDATA[<=]]> #{endEnddate}
+			</if>
+			<if test="no != null and no != ''">
+				AND a.no = #{no}
+			</if>
+			<if test="no1 != null and no1 != ''">
+				AND a.no1 = #{no1}
+			</if>
+			
+            <if test="beginCallbackTime != null and beginCallbackTime != ''">
+                AND b.callback_time <![CDATA[>=]]> #{beginCallbackTime} 
+            </if>
+            <if test="endCallbackTime != null and endCallbackTime != ''">
+                AND b.callback_time <![CDATA[<=]]> #{endCallbackTime} 
+            </if>
+		</where>
+		ORDER BY id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				, ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		DESC
+	</select>
+	
+	<select id="findAllList" resultType="SettlementAccntDetail">
+		SELECT 
+			<include refid="settlementAccntDetailColumns"/>
+		FROM settlement_accnt_detail a
+		<include refid="settlementAccntDetailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO settlement_accnt_detail(
+			id,
+			accountid,
+			accountname,
+			orderid,
+			orderprice,
+			hotelid,
+			hotelname,
+			biztype,
+			ordertotal,
+			ordertime,
+			roomnums,
+			days,
+			create_time,
+			update_time,
+			accountrole,
+			hotelpms,
+			status,
+			orderstatus,
+			freetotal,
+			left_date,
+			tripname,
+			remarks,
+			feetype,
+			scruleid,
+			snapshotrate,
+			scruledesc,
+			accountyear,
+			accountmonth,
+			accountweek,
+			begindate,
+			enddate,
+			no,
+			no1
+		) VALUES (
+			#{id},
+			#{accountid},
+			#{accountname},
+			#{orderid},
+			#{orderprice},
+			#{hotelid},
+			#{hotelname},
+			#{biztype},
+			#{ordertotal},
+			#{ordertime},
+			#{roomnums},
+			#{days},
+			#{createTime},
+			#{updateTime},
+			#{accountrole},
+			#{hotelpms},
+			#{status},
+			#{orderstatus},
+			#{freetotal},
+			#{leftDate},
+			#{tripname},
+			#{remarks},
+			#{feetype},
+			#{scruleid},
+			#{snapshotrate},
+			#{scruledesc},
+			#{accountyear},
+			#{accountmonth},
+			#{accountweek},
+			#{begindate},
+			#{enddate},
+			#{no},
+			#{no1}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE settlement_accnt_detail SET 	
+			accountid = #{accountid},
+			accountname = #{accountname},
+			orderid = #{orderid},
+			orderprice = #{orderprice},
+			hotelid = #{hotelid},
+			hotelname = #{hotelname},
+			biztype = #{biztype},
+			ordertotal = #{ordertotal},
+			ordertime = #{ordertime},
+			roomnums = #{roomnums},
+			days = #{days},
+			create_time = #{createTime},
+			update_time = #{updateTime},
+			accountrole = #{accountrole},
+			hotelpms = #{hotelpms},
+			status = #{status},
+			orderstatus = #{orderstatus},
+			freetotal = #{freetotal},
+			left_date = #{leftDate},
+			tripname = #{tripname},
+			remarks = #{remarks},
+			feetype = #{feetype},
+			scruleid = #{scruleid},
+			snapshotrate = #{snapshotrate},
+			scruledesc = #{scruledesc},
+			accountyear = #{accountyear},
+			accountmonth = #{accountmonth},
+			accountweek = #{accountweek},
+			begindate = #{begindate},
+			enddate = #{enddate},
+			no = #{no}
+			no1 = #{no1}
+		WHERE id = #{id}
+	</update>
+	
+  <update id="updateByPrimaryKeySelective">
+    update settlement_accnt_detail
+    <set >
+      <if test="orderid != null and orderid != ''" >
+        orderid = #{orderid},
+      </if>
+      <if test="orderprice != null" >
+        orderprice = #{orderprice},
+      </if>
+      <if test="hotelid != null" >
+        hotelid = #{hotelid},
+      </if>
+      <if test="hotelname != null" >
+        hotelname = #{hotelname},
+      </if>
+      <if test="accountid != null" >
+        accountid = #{accountid},
+      </if>
+      <if test="accountname != null" >
+        accountname = #{accountname},
+      </if>
+      <if test="biztype != null" >
+        biztype = #{biztype},
+      </if>
+      <if test="ordertotal != null" >
+        ordertotal = #{ordertotal},
+      </if>
+      <if test="ordertime != null" >
+        ordertime = #{ordertime},
+      </if>
+      <if test="roomnums != null" >
+        roomnums = #{roomnums},
+      </if>
+      <if test="days != null" >
+        days = #{days},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+      <if test="accountrole != null" >
+        accountrole = #{accountrole},
+      </if>
+      <if test="hotelpms != null" >
+        hotelpms = #{hotelpms},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="orderstatus != null" >
+        orderstatus = #{orderstatus},
+      </if>
+      <if test="freetotal != null" >
+        freetotal = #{freetotal},
+      </if>
+      <if test="leftDate != null" >
+        left_date = #{leftDate},
+      </if>
+      <if test="tripname != null" >
+        tripname = #{tripname},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks},
+      </if>
+      <if test="feetype != null" >
+        feetype = #{feetype},
+      </if>
+      <if test="scruleid != null" >
+        scruleid = #{scruleid},
+      </if>
+      <if test="snapshotrate != null" >
+        snapshotrate = #{snapshotrate},
+      </if>
+      <if test="scruledesc != null" >
+        scruledesc = #{scruledesc},
+      </if>
+      <if test="begindate != null" >
+        begindate = #{begindate},
+      </if>
+      <if test="enddate != null" >
+        enddate = #{enddate},
+      </if>
+      <if test="no != null" >
+        no = #{no},
+      </if>
+      <if test="no1 != null" >
+        no1 = #{no1},
+      </if>
+      <if test="orderno != null" >
+        orderno = #{orderno},
+      </if>
+      <if test="bonusproportion != null" >
+        bonusproportion = #{bonusproportion},
+      </if>
+      <if test="basicbonus != null" >
+        basicbonus = #{basicbonus},
+      </if>
+      <if test="scdate != null" >
+        scdate = #{scdate},
+      </if>
+      <if test="checkindate != null" >
+        checkindate = #{checkindate},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+	
+	<update id="delete">
+		DELETE FROM settlement_accnt_detail
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 酒店账单财务确认后更新明细账orderstatus -->
+	<update id="updateOrderStatusAfterHotelBillConfirm">
+        UPDATE settlement_accnt_detail SET
+          orderstatus = 2, status = 9
+            WHERE no = #{id}
+    </update>
+
+    <update id="updateStatusBeforeWashingBillResettlement">
+        UPDATE settlement_accnt_detail SET
+          status = 2
+            WHERE no = #{id}
+    </update>
+    
+    <!-- 查询所有影响账户余额的账单流水明细数据 -->
+    <select id="findAllBalanceDetails" resultType="SettlementAccntDetail">
+		SELECT 
+		    a.id AS 'id',
+		    a.accountid AS 'accountid',
+		    a.accountname AS 'accountname',
+		    a.orderid AS 'orderid',
+		    a.orderprice AS 'orderprice',
+		    FORMAT(a.orderprice, 2) AS 'strOrderprice',
+		    a.hotelid AS 'hotelid',
+		    a.hotelname AS 'hotelname',
+		    a.biztype AS 'biztype',
+		    a.ordertotal AS 'ordertotal',
+		    FORMAT(a.ordertotal, 2) AS 'strOrdertotal',
+		    a.ordertime AS 'ordertime',
+		    a.roomnums AS 'roomnums',
+		    a.days AS 'days',
+		    a.createtime AS 'createTime',
+		    a.updatetime AS 'updateTime',
+		    a.accountrole AS 'accountrole',
+		    a.hotelpms AS 'hotelpms',
+		    a.status AS 'status',
+		    a.orderstatus AS 'orderstatus',
+		    a.freetotal AS 'freetotal',
+		    FORMAT(a.freetotal, 2) AS 'strFreetotal',
+		    a.leftdate AS 'leftDate',
+		    a.tripname AS 'tripname',
+		    a.remarks AS 'remarks',
+		    a.feetype AS 'feetype',
+		    a.scruleid AS 'scruleid',
+		    a.snapshotrate AS 'snapshotrate',
+		    a.scruledesc AS 'scruledesc',
+		    a.accountyear AS 'accountyear',
+		    a.accountmonth AS 'accountmonth',
+		    a.accountweek AS 'accountweek',
+		    a.begindate AS 'begindate',
+		    a.enddate AS 'enddate',
+		    a.no AS 'no',
+		    a.orderno,
+		    a.no1 AS 'no1',
+		    a.balanceonbeforeupdate,
+		    a.balanceonafterupdate,
+		    a.flag1,
+		    a.balance
+		FROM
+		    (SELECT 
+		        a1.id AS 'id',
+		            a1.accountid AS 'accountid',
+		            a1.accountname AS 'accountname',
+		            a1.orderid AS 'orderid',
+		            a1.orderprice AS 'orderprice',
+		            FORMAT(a1.orderprice, 2) AS 'strOrderprice',
+		            a1.hotelid AS 'hotelid',
+		            a1.hotelname AS 'hotelname',
+		            a1.biztype AS 'biztype',
+		            a1.ordertotal AS 'ordertotal',
+		            FORMAT(a1.ordertotal, 2) AS 'strOrdertotal',
+		            a1.ordertime AS 'ordertime',
+		            a1.roomnums AS 'roomnums',
+		            a1.days AS 'days',
+		            a1.create_time AS 'createTime',
+		            a1.update_time AS 'updateTime',
+		            a1.accountrole AS 'accountrole',
+		            a1.hotelpms AS 'hotelpms',
+		            a1.status AS 'status',
+		            a1.orderstatus AS 'orderstatus',
+		            a1.freetotal AS 'freetotal',
+		            FORMAT(a1.freetotal, 2) AS 'strFreetotal',
+		            a1.left_date AS 'leftDate',
+		            a1.tripname AS 'tripname',
+		            a1.remarks AS 'remarks',
+		            a1.feetype AS 'feetype',
+		            a1.scruleid AS 'scruleid',
+		            a1.snapshotrate AS 'snapshotrate',
+		            a1.scruledesc AS 'scruledesc',
+		            a1.accountyear AS 'accountyear',
+		            a1.accountmonth AS 'accountmonth',
+		            a1.accountweek AS 'accountweek',
+		            a1.begindate AS 'begindate',
+		            a1.enddate AS 'enddate',
+		            a1.no AS 'no',
+		            a1.orderno,
+		            a1.no1 AS 'no1',
+		            b1.balance,
+		            a1.balanceonbeforeupdate,
+		            a1.balanceonafterupdate,
+		            a1.flag1
+		    FROM
+		        settlement_accnt_detail a1
+		    INNER JOIN (SELECT DISTINCT
+		        accountid, hotelid, accountrole, SUM(balance) AS balance
+		    FROM
+		        settlement_accnt_ledger
+		    WHERE
+		        accountrole NOT IN (2 , 4, 5, 7, 8, 9, 10)
+		    GROUP BY accountid , hotelid , accountrole) b1 ON a1.accountid = b1.accountid
+		        AND a1.hotelid = b1.hotelid
+		        AND a1.accountrole = b1.accountrole
+		    WHERE
+		        a1.accountrole NOT IN (2 , 4, 5, 7, 8, 9, 10)
+		            AND (CASE WHEN a1.biztype=7 THEN a1.status>0 ELSE a1.status=9 END)
+    UNION 
+		SELECT 
+		        a2.id AS 'id',
+		            a2.accountid AS 'accountid',
+		            a2.accountname AS 'accountname',
+		            a2.orderid AS 'orderid',
+		            a2.orderprice AS 'orderprice',
+		            FORMAT(a2.orderprice, 2) AS 'strOrderprice',
+		            a2.hotelid AS 'hotelid',
+		            a2.hotelname AS 'hotelname',
+		            a2.biztype AS 'biztype',
+		            a2.ordertotal AS 'ordertotal',
+		            FORMAT(a2.ordertotal, 2) AS 'strOrdertotal',
+		            a2.ordertime AS 'ordertime',
+		            a2.roomnums AS 'roomnums',
+		            a2.days AS 'days',
+		            a2.create_time AS 'createTime',
+		            a2.update_time AS 'updateTime',
+		            a2.accountrole AS 'accountrole',
+		            a2.hotelpms AS 'hotelpms',
+		            a2.status AS 'status',
+		            a2.orderstatus AS 'orderstatus',
+		            a2.freetotal AS 'freetotal',
+		            FORMAT(a2.freetotal, 2) AS 'strFreetotal',
+		            a2.left_date AS 'leftDate',
+		            a2.tripname AS 'tripname',
+		            a2.remarks AS 'remarks',
+		            a2.feetype AS 'feetype',
+		            a2.scruleid AS 'scruleid',
+		            a2.snapshotrate AS 'snapshotrate',
+		            a2.scruledesc AS 'scruledesc',
+		            a2.accountyear AS 'accountyear',
+		            a2.accountmonth AS 'accountmonth',
+		            a2.accountweek AS 'accountweek',
+		            a2.begindate AS 'begindate',
+		            a2.enddate AS 'enddate',
+		            a2.no AS 'no',
+		            a2.orderno,
+		            a2.no1 AS 'no1',
+		            b2.balance,
+		            a2.balanceonbeforeupdate,
+		            a2.balanceonafterupdate,
+		            a2.flag1
+		    FROM
+		        settlement_accnt_detail a2
+		    INNER JOIN (SELECT DISTINCT
+		        accountid, accountrole, SUM(balance) AS balance
+		    FROM
+		        settlement_accnt_ledger
+		    WHERE
+		        accountrole IN (2 , 4, 5, 7, 8, 9, 10)
+		    GROUP BY accountid, accountrole) b2 ON a2.accountid = b2.accountid
+		        AND a2.accountrole = b2.accountrole
+		    WHERE
+		        a2.accountrole IN (2 , 4, 5, 7, 8, 9, 10)
+		            AND (CASE WHEN a2.biztype=7 THEN a2.status>0 ELSE a2.status=9 END)
+		    ) a
+        <where>
+            <if test="accountid != null and accountid != ''">
+                AND a.accountid = #{accountid}
+            </if>
+            <if test="accountname != null and accountname != ''">
+                AND a.accountname LIKE 
+                    <if test="dbName == 'oracle'">'%'||#{accountname}||'%'</if>
+                    <if test="dbName == 'mssql'">'%'+#{accountname}+'%'</if>
+                    <if test="dbName == 'mysql'">concat('%',#{accountname},'%')</if>
+            </if>
+            <if test="orderid != null and orderid != ''">
+                AND a.orderid = #{orderid}
+            </if>
+            <if test="beginOrderprice != null and beginOrderprice != ''">
+                AND a.orderprice <![CDATA[>=]]> #{beginOrderprice} 
+            </if>
+            <if test="endOrderprice != null and endOrderprice != ''">
+                AND a.orderprice <![CDATA[<=]]> #{endOrderprice}
+            </if>
+            <if test="hotelid != null and hotelid != ''">
+                AND a.hotelid = #{hotelid}
+            </if>
+            <if test="hotelname != null and hotelname != ''">
+                AND a.hotelname LIKE 
+                    <if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+                    <if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+                    <if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+            </if>
+            <if test="biztype != null and biztype != ''">
+                AND a.biztype = #{biztype}
+            </if>
+            <if test="beginOrdertotal != null and beginOrdertotal != ''">
+                AND a.ordertotal <![CDATA[>=]]> #{beginOrdertotal} 
+            </if>
+            <if test="endOrdertotal != null and endOrdertotal != ''">
+                AND a.ordertotal <![CDATA[<=]]> #{endOrdertotal}
+            </if>
+            
+            <if test="beginOrdertime != null and beginOrdertime != ''">
+                AND a.ordertime <![CDATA[>=]]> #{beginOrdertime} 
+            </if>
+            <if test="endOrdertime != null and endOrdertime != ''">
+                AND a.ordertime <![CDATA[<=]]> #{endOrdertime}
+            </if>
+            
+            <if test="beginRoomnums != null and beginRoomnums != ''">
+                AND a.roomnums <![CDATA[>=]]> #{beginRoomnums} 
+            </if>
+            <if test="endRoomnums != null and endRoomnums != ''">
+                AND a.roomnums <![CDATA[<=]]> #{endRoomnums}
+            </if>
+            <if test="beginDays != null and beginDays != ''">
+                AND a.days <![CDATA[>=]]> #{beginDays} 
+            </if>
+            <if test="endDays != null and endDays != ''">
+                AND a.days <![CDATA[<=]]> #{endDays}
+            </if>
+            
+            <if test="beginCreateTime != null and beginCreateTime != ''">
+                AND a.create_time <![CDATA[>=]]> #{beginCreateTime} 
+            </if>
+            <if test="endCreateTime != null and endCreateTime != ''">
+                AND a.create_time <![CDATA[<=]]> #{endCreateTime} 
+            </if>
+            
+            <if test="beginUpdateTime != null and beginUpdateTime != ''">
+                AND a.update_time <![CDATA[>=]]> #{beginUpdateTime}
+            </if>
+            <if test="endUpdateTime != null and endUpdateTime != ''">
+                AND a.update_time <![CDATA[<=]]> #{endUpdateTime}
+            </if>
+            
+            <if test="accountrole != null and accountrole != ''">
+                AND a.accountrole = #{accountrole}
+            </if>
+            <if test="hotelpms != null and hotelpms != ''">
+                AND a.hotelpms = #{hotelpms}
+            </if>
+            <if test="status != null and status != ''">
+                AND a.status = #{status}
+            </if>
+            <if test="orderstatus != null and orderstatus != ''">
+                AND a.orderstatus = #{orderstatus}
+            </if>
+            <if test="beginFreetotal != null and beginFreetotal != ''">
+                AND a.freetotal <![CDATA[>=]]> #{beginFreetotal} 
+            </if>
+            <if test="endFreetotal != null and endFreetotal != ''">
+                AND a.freetotal <![CDATA[<=]]> #{endFreetotal}
+            </if>
+            
+            <if test="beginLeftDate != null and beginLeftDate != ''">
+                AND a.left_date <![CDATA[>=]]> #{beginLeftDate} 
+            </if>
+            <if test="endLeftDate != null and endLeftDate != ''">
+                AND a.left_date <![CDATA[<=]]> #{endLeftDate}
+            </if>
+            
+            <if test="tripname != null and tripname != ''">
+                AND a.tripname LIKE 
+                    <if test="dbName == 'oracle'">'%'||#{tripname}||'%'</if>
+                    <if test="dbName == 'mssql'">'%'+#{tripname}+'%'</if>
+                    <if test="dbName == 'mysql'">concat('%',#{tripname},'%')</if>
+            </if>
+            <if test="remarks != null and remarks != ''">
+                AND a.remarks = #{remarks}
+            </if>
+            <if test="feetype != null and feetype != ''">
+                AND a.feetype = #{feetype}
+            </if>
+            <if test="scruleid != null and scruleid != ''">
+                AND a.scruleid = #{scruleid}
+            </if>
+            <if test="beginSnapshotrate != null and beginSnapshotrate != ''">
+                AND a.snapshotrate <![CDATA[>=]]> #{beginSnapshotrate} 
+            </if>
+            <if test="endSnapshotrate != null and endSnapshotrate != ''">
+                AND a.snapshotrate <![CDATA[<=]]> #{endSnapshotrate}
+            </if>
+            <if test="scruledesc != null and scruledesc != ''">
+                AND a.scruledesc LIKE 
+                    <if test="dbName == 'oracle'">'%'||#{scruledesc}||'%'</if>
+                    <if test="dbName == 'mssql'">'%'+#{scruledesc}+'%'</if>
+                    <if test="dbName == 'mysql'">concat('%',#{scruledesc},'%')</if>
+            </if>
+            <if test="accountyear != null and accountyear != ''">
+                AND a.accountyear = #{accountyear}
+            </if>
+            <if test="accountmonth != null and accountmonth != ''">
+                AND a.accountmonth = #{accountmonth}
+            </if>
+            <if test="accountweek != null and accountweek != ''">
+                AND a.accountweek = #{accountweek}
+            </if>
+            <if test="beginBegindate != null and beginBegindate != ''">
+                AND a.begindate <![CDATA[>=]]> #{beginBegindate} 
+            </if>
+            <if test="endBegindate != null and endBegindate != ''">
+                AND a.begindate <![CDATA[<=]]> #{endBegindate}
+            </if>
+            <if test="endEnddate != null and endEnddate != ''">
+                AND a.enddate <![CDATA[>=]]> #{beginEnddate} 
+            </if>
+            <if test="endEnddate != null and endEnddate != ''">
+                AND a.enddate <![CDATA[<=]]> #{endEnddate}
+            </if>
+            <if test="no != null and no != ''">
+                AND a.no = #{no}
+            </if>
+            <if test="no1 != null and no1 != ''">
+                AND a.no1 = #{no1}
+            </if>
+            
+            <if test="beginCallbackTime != null and beginCallbackTime != ''">
+                AND b.callback_time <![CDATA[>=]]> #{beginCallbackTime} 
+            </if>
+            <if test="endCallbackTime != null and endCallbackTime != ''">
+                AND b.callback_time <![CDATA[<=]]> #{endCallbackTime} 
+            </if>
+        </where>
+		ORDER BY a.accountid , a.updatetime DESC
+    </select>
+	
+</mapper>

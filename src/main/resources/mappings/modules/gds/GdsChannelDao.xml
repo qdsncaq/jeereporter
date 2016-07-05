@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.gds.channel.dao.GdsChannelDao">
+    
+	<sql id="gdsChannelColumns">
+		a.id AS "id",
+		a.channelid AS "channelid",
+		a.name AS "name",
+		a.state AS "state",
+		a.is_visible AS "isVisible",
+		a.createtime AS "createtime",
+		a.createuser AS "createuser",
+		a.updatetime AS "updatetime",
+		a.updateuser AS "updateuser"
+	</sql>
+	
+	<sql id="gdsChannelJoins">
+	</sql>
+    
+	<select id="get" resultType="GdsChannel">
+		SELECT 
+			<include refid="gdsChannelColumns"/>
+		FROM gds_channel a
+		<include refid="gdsChannelJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="GdsChannel">
+		SELECT 
+			<include refid="gdsChannelColumns"/>
+		FROM gds_channel a
+		<include refid="gdsChannelJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="channelid != null and channelid != ''">
+				AND a.channelid = #{channelid}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+			<if test="isVisible != null and isVisible != ''">
+				AND a.is_visible = #{isVisible}
+			</if>
+			<if test="createtime != null and createtime != ''">
+				AND a.createtime = #{createtime}
+			</if>
+			<if test="createuser != null and createuser != ''">
+				AND a.createuser = #{createuser}
+			</if>
+			<if test="updatetime != null and updatetime != ''">
+				AND a.updatetime = #{updatetime}
+			</if>
+			<if test="updateuser != null and updateuser != ''">
+				AND a.updateuser = #{updateuser}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="GdsChannel">
+		SELECT 
+			<include refid="gdsChannelColumns"/>
+		FROM gds_channel a
+		<include refid="gdsChannelJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO gds_channel(
+			id,
+			channelid,
+			name,
+			state,
+			is_visible,
+			createtime,
+			createuser,
+			updatetime,
+			updateuser
+		) VALUES (
+			#{id},
+			#{channelid},
+			#{name},
+			#{state},
+			#{isVisible},
+			#{createtime},
+			#{createuser},
+			#{updatetime},
+			#{updateuser}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE gds_channel SET 	
+			channelid = #{channelid},
+			name = #{name},
+			state = #{state},
+			is_visible = #{isVisible},
+			createtime = #{createtime},
+			createuser = #{createuser},
+			updatetime = #{updatetime},
+			updateuser = #{updateuser}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM gds_channel
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

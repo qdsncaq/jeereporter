@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.gds.order.dao.OrdersDao">
+    
+	<sql id="ordersColumns">
+		a.createtime AS "createtime",
+		a.id AS "id",
+		a.hotelid AS "hotelid",
+		a.hotelname AS "hotelname",
+		a.hotelpms AS "hotelpms",
+		a.channelid AS "channelid",
+		a.paytype AS "paytype",
+		a.begintime AS "begintime",
+		a.endtime AS "endtime",
+		a.status AS "status",
+		a.teamname AS "teamname",
+		a.totalprice AS "totalprice",
+		a.contacts AS "contacts",
+		a.contactsphone AS "contactsphone",
+		a.paystatus AS "paystatus",
+		a.orderno AS "orderno",
+		a.pmsorderid AS "pmsorderid",
+		a.grouporderid AS "grouporderid",
+		a.ordertype AS "ordertype",
+		a.cancelreason AS "cancelreason",
+		a.updatetime AS "updatetime",
+		a.note AS "note",
+		a.channelname AS "channelname",
+		a.salerid AS "salerid",
+		a.settlestatus AS "settlestatus"
+	</sql>
+	
+	<sql id="ordersJoins">
+	</sql>
+    
+	<select id="get" resultType="Orders">
+		SELECT 
+			<include refid="ordersColumns"/>
+		FROM orders a
+		<include refid="ordersJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Orders">
+		SELECT 
+			<include refid="ordersColumns"/>
+		FROM orders a
+		<include refid="ordersJoins"/>
+		<where>
+			
+			<if test="createtime != null and createtime != ''">
+				AND date_format(a.createtime,'%Y-%m-%d') = date_format(#{createtime},'%Y-%m-%d')
+			</if>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="hotelname != null and hotelname != ''">
+				AND a.hotelname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hotelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hotelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hotelname},'%')</if>
+			</if>
+			<if test="paytype != null and paytype != ''">
+				AND a.paytype = #{paytype}
+			</if>
+			<if test="begintime != null and begintime != ''">
+				AND date_format(a.begintime,'%Y-%m-%d') = date_format(#{begintime},'%Y-%m-%d')
+			</if>
+			<if test="endtime != null and endtime != ''">
+				AND date_format(a.endtime,'%Y-%m-%d') = date_format(#{endtime},'%Y-%m-%d')
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="contacts != null and contacts != ''">
+				AND a.contacts LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contacts}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contacts}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contacts},'%')</if>
+			</if>
+			<if test="contactsphone != null and contactsphone != ''">
+				AND a.contactsphone = #{contactsphone}
+			</if>
+			<if test="channelname != null and channelname != ''">
+				AND a.channelname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{channelname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{channelname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{channelname},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Orders">
+		SELECT 
+			<include refid="ordersColumns"/>
+		FROM orders a
+		<include refid="ordersJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO orders(
+			createtime,
+			id,
+			hotelid,
+			hotelname,
+			hotelpms,
+			channelid,
+			paytype,
+			begintime,
+			endtime,
+			status,
+			teamname,
+			totalprice,
+			contacts,
+			contactsphone,
+			paystatus,
+			orderno,
+			pmsorderid,
+			grouporderid,
+			ordertype,
+			cancelreason,
+			updatetime,
+			note,
+			channelname,
+			salerid,
+			settlestatus
+		) VALUES (
+			#{createtime},
+			#{id},
+			#{hotelid},
+			#{hotelname},
+			#{hotelpms},
+			#{channelid},
+			#{paytype},
+			#{begintime},
+			#{endtime},
+			#{status},
+			#{teamname},
+			#{totalprice},
+			#{contacts},
+			#{contactsphone},
+			#{paystatus},
+			#{orderno},
+			#{pmsorderid},
+			#{grouporderid},
+			#{ordertype},
+			#{cancelreason},
+			#{updatetime},
+			#{note},
+			#{channelname},
+			#{salerid},
+			#{settlestatus}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE orders SET 	
+			createtime = #{createtime},
+			hotelid = #{hotelid},
+			hotelname = #{hotelname},
+			hotelpms = #{hotelpms},
+			channelid = #{channelid},
+			paytype = #{paytype},
+			begintime = #{begintime},
+			endtime = #{endtime},
+			status = #{status},
+			teamname = #{teamname},
+			totalprice = #{totalprice},
+			contacts = #{contacts},
+			contactsphone = #{contactsphone},
+			paystatus = #{paystatus},
+			orderno = #{orderno},
+			pmsorderid = #{pmsorderid},
+			grouporderid = #{grouporderid},
+			ordertype = #{ordertype},
+			cancelreason = #{cancelreason},
+			updatetime = #{updatetime},
+			note = #{note},
+			channelname = #{channelname},
+			salerid = #{salerid},
+			settlestatus = #{settlestatus}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM orders
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

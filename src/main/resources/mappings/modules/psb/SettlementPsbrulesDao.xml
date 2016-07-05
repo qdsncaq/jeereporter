@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.psb.psbrules.dao.SettlementPsbrulesDao">
+    
+	<sql id="settlementPsbrulesColumns">
+		a.id AS "id",
+		a.psbid AS "psbid",
+		a.rulename AS "rulename",
+		a.fee10 AS "fee10",
+		a.fee20 AS "fee20",
+		a.remarks AS "remarks",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
+		a.delflag AS "delflag",
+		a.psbname AS "psbname"
+	</sql>
+	
+	<sql id="settlementPsbrulesJoins">
+	</sql>
+    
+	<select id="get" resultType="SettlementPsbrules">
+		SELECT 
+			<include refid="settlementPsbrulesColumns"/>
+		FROM settlement_psbrules a
+		<include refid="settlementPsbrulesJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SettlementPsbrules">
+		SELECT 
+			<include refid="settlementPsbrulesColumns"/>
+		FROM settlement_psbrules a
+		<include refid="settlementPsbrulesJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="psbid != null and psbid != ''">
+				AND a.psbid = #{psbid}
+			</if>
+			<if test="rulename != null and rulename != ''">
+				AND a.rulename LIKE 
+					<if test="dbName == 'oracle'">'%'||#{rulename}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{rulename}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{rulename},'%')</if>
+			</if>
+			<if test="fee10 != null and fee10 != ''">
+				AND a.fee10 = #{fee10}
+			</if>
+			<if test="fee20 != null and fee20 != ''">
+				AND a.fee20 = #{fee20}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+			<if test="beginCreatetime != null and beginCreatetime != ''">
+				AND a.createtime <![CDATA[>=]]> #{beginCreatetime}
+			</if>
+			<if test="endCreatetime != null and endCreatetime != ''">
+				AND a.createtime <![CDATA[<=]]> #{endCreatetime}
+			</if>
+			<if test="beginUpdatetime != null and beginUpdatetime != ''">
+				AND a.updatetime <![CDATA[>=]]> #{beginUpdatetime} 
+			</if>
+			<if test="endUpdatetime != null and endUpdatetime != ''">
+				AND a.updatetime <![CDATA[<=]]> #{endUpdatetime}
+			</if>
+			<if test="psbname != null and psbname != ''">
+				AND a.psbname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{psbname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{psbname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{psbname},'%')</if>
+			</if>
+			<if test="delflag != null and delflag != ''">
+				AND a.delflag = #{delflag}
+			</if>
+			<if test="delflag == null or delflag == ''">
+				AND a.delflag = 1
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="SettlementPsbrules">
+		SELECT 
+			<include refid="settlementPsbrulesColumns"/>
+		FROM settlement_psbrules a
+		<include refid="settlementPsbrulesJoins"/>
+		<where>
+			a.delflag = 1
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findRulesByPsbid" resultType="SettlementPsbrules">
+		SELECT 
+			<include refid="settlementPsbrulesColumns"/>
+		FROM settlement_psbrules a
+		<include refid="settlementPsbrulesJoins"/>
+		<where>
+			a.psbid = #{psbid}
+			AND a.delflag = 1
+		</where>
+	</select>
+	
+	<!-- 出账单的时候 根据规则ids 查询对应规则 -->
+	<select id="selectRulesByids" resultType="SettlementPsbrules">
+		SELECT 
+			<include refid="settlementPsbrulesColumns"/>
+		FROM settlement_psbrules a
+		<include refid="settlementPsbrulesJoins"/>
+		WHERE
+			a.id IN 
+			<foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+		  	</foreach>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO settlement_psbrules(
+			psbid,
+			rulename,
+			fee10,
+			fee20,
+			remarks,
+			createtime,
+			updatetime,
+			delflag,
+			psbname
+		) VALUES (
+			#{psbid},
+			#{rulename},
+			#{fee10},
+			#{fee20},
+			#{remarks},
+			#{createtime},
+			#{updatetime},
+			#{delflag},
+			#{psbname}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE settlement_psbrules SET 	
+			psbid = #{psbid},
+			rulename = #{rulename},
+			fee10 = #{fee10},
+			fee20 = #{fee20},
+			remarks = #{remarks},
+			<!-- createtime = #{createtime}, -->
+			updatetime = #{updatetime},
+			delflag = #{delflag},
+			psbname = #{psbname}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM settlement_psbrules
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

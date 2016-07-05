@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.crm.user.dao.SyOrgUserDao">
+    
+	<sql id="syOrgUserColumns">
+		a.user_code AS "userCode",
+		a.user_code AS "userCodeView",
+		a.user_login_name AS "userLoginName",
+		a.user_name AS "userName",
+		a.dept_code AS "deptCode",
+		a.user_password AS "userPassword",
+		a.user_sort AS "userSort",
+		a.user_home_phone AS "userHomePhone",
+		a.user_mobile AS "userMobile",
+		a.user_qq AS "userQq",
+		a.user_email AS "userEmail",
+		a.user_work_loc AS "userWorkLoc",
+		a.user_post AS "userPost",
+		a.user_post_level AS "userPostLevel",
+		a.user_room AS "userRoom",
+		a.user_work_num AS "userWorkNum",
+		a.user_idcard AS "userIdCard",
+		a.user_birthday AS "userBirthday",
+		a.user_office_phone AS "userOfficePhone",
+		a.user_nation AS "userNation",
+		a.user_height AS "userHeight",
+		a.user_sex AS "userSex",
+		a.user_home_land AS "userHomeLand",
+		a.user_politics AS "userPolitics",
+		a.user_marriage AS "userMarriage",
+		a.user_edu_levle AS "userEduLevle",
+		a.user_edu_school AS "userEduSchool",
+		a.user_edu_major AS "userEduMajor",
+		a.user_title AS "userTitle",
+		a.user_title_date AS "userTitleDate",
+		a.user_work_date AS "userWorkDate",
+		a.user_cmpy_date AS "userCmpyDate",
+		a.user_state AS "userState",
+		a.cmpy_code AS "cmpyCode",
+		a.s_flag AS "sFlag",
+		a.s_user AS "sUser",
+		a.user_login_type AS "userLoginType",
+		a.user_expire_date AS "userExpireDate",
+		a.user_password_date AS "userPasswordDate",
+		a.s_mtime AS "sMtime",
+		a.user_img_src AS "userImgSrc",
+		a.pt_id AS "ptId",
+		a.user_from AS "userFrom",
+		a.jiangang_flag AS "jiangangFlag",
+		a.user_short_name AS "userShortName",
+		a.user_en_name AS "userEnName",
+		a.user_img AS "userImg",
+<!-- 		a.user_edulevle AS "userEdulevle", -->
+		a.usere_expire_date AS "usereExpireDate"
+	</sql>
+	<sql id="syOrgUserColumnsTaskReceive">
+		b.is_complete as isComplete,
+		b.update_time as taskCompleteTime,
+		b.create_time as taskCreateTime
+	</sql>
+	<!-- 销售所属省份城市 -->
+	<sql id="syOrgUserColumnsProvAndCity">
+		d.code as provCode,
+		d.proName as provName,
+		e.code as cityCode,
+		e.cityName as cityName
+	</sql>
+
+    <!-- 销售所属级别 -->
+    <sql id="syOrgUserColumnsRelation">
+        r.level as "level",
+        r.type as "type",
+        r.role_id as "roleId",
+        r.qz_user_code as qzUserCode,
+        r.qz_user_name as qzUserName,
+        r.qj_user_code as qjUserCode,
+        r.qj_user_Name as qjUserName
+    </sql>
+	
+	<sql id="syOrgUserJoins">
+	
+	</sql>
+	
+	<!-- 销售所属省份城市 left join-->
+	<sql id="syOrgUserJoinsProvAndCity">
+		left join rf_crm_user_area c on a.user_code = c.user_code
+		left join t_province d on c.prov_code = d.code
+		left join t_city e on c.city_code = e.code
+		
+	</sql>
+
+    <!-- 销售所属级别 left join-->
+    <sql id="syOrgUserJoinsRelation">
+        left join rf_crm_user_relation r on a.user_code = r.user_code
+    </sql>
+
+   	<!-- 销售所属省份城市 inner join-->
+	<sql id="syOrgUserJoinsProvAndCityInnerJoin">
+		inner join rf_crm_user_area c on a.user_code = c.user_code
+		<if test="provCode != null and provCode != '' ">
+			AND c.prov_code = #{provCode}
+		</if>
+		<if test="cityCode != null and cityCode != '' ">
+			AND c.city_code = #{cityCode}
+		</if>
+		left join t_province d on c.prov_code = d.code
+		left join t_city e on c.city_code = e.code
+		
+	</sql>
+    
+    
+    <sql id="syOrgUserJoinsTaskReceive">
+		left join rf_crm_user_task_receive b on a.user_code = b.receive_user_id and b.task_id = #{taskId}
+	</sql>
+	
+	<select id="get" resultType="SyOrgUser">
+		SELECT 
+			<include refid="syOrgUserColumns"/>,
+			<include refid="syOrgUserColumnsProvAndCity"/>,
+            <include refid="syOrgUserColumnsRelation"/>
+		FROM sy_org_user a
+			<include refid="syOrgUserJoins"/>
+			<include refid="syOrgUserJoinsProvAndCity"/>
+            <include refid="syOrgUserJoinsRelation"/>
+		WHERE a.user_code = #{userCode}
+	</select>
+	
+	<select id="findList" resultType="SyOrgUser">
+		SELECT 
+			<include refid="syOrgUserColumns"/>,
+			<include refid="syOrgUserColumnsProvAndCity"/>,
+            <include refid="syOrgUserColumnsRelation"/>
+			<if test="taskId != null and taskId != '' ">
+				,
+				<include refid="syOrgUserColumnsTaskReceive"/>
+			</if>
+		FROM sy_org_user a
+		<include refid="syOrgUserJoins"/>
+        <include refid="syOrgUserJoinsRelation"/>
+		
+		<if test="provCode == null or provCode == '' ">
+			<include refid="syOrgUserJoinsProvAndCity"/>
+		</if>
+		
+		<if test="provCode != null and provCode != '' ">
+			<include refid="syOrgUserJoinsProvAndCityInnerJoin"/>
+		</if>
+		
+		<if test="taskId != null and taskId != '' ">
+			<include refid="syOrgUserJoinsTaskReceive"/>
+		</if>
+		<where>
+			
+			<if test="userCodeList != null and userCodeList != '' ">
+				 AND a.user_code in
+				<foreach collection="userCodeList" 
+				         index="index" 
+				         item="item" 
+				         open="(" 
+				         separator="," 
+				         close=")">
+				    #{item}
+				</foreach>
+				
+			</if>
+			
+			
+			<if test="userCode != null and userCode != '' ">
+				AND a.user_code = #{userCode}
+			</if>
+			<if test="userLoginName != null and userLoginName != ''">
+				AND a.user_login_name like CONCAT('%', #{userLoginName}, '%')
+			</if>
+			<if test="userName != null and userName != ''">
+				AND a.user_name like CONCAT('%', #{userName}, '%')
+			</if>
+			<if test="deptCode != null and deptCode != ''">
+				AND a.dept_code = #{deptCode}
+			</if>
+			<if test="userPassword != null and userPassword != ''">
+				AND a.user_password = #{userPassword}
+			</if>
+			<if test="userSort != null and userSort != ''">
+				AND a.user_sort = #{userSort}
+			</if>
+			<if test="userHomePhone != null and userHomePhone != ''">
+				AND a.user_home_phone = #{userHomePhone}
+			</if>
+			<if test="userMobile != null and userMobile != ''">
+				AND a.user_mobile = #{userMobile}
+			</if>
+			<if test="userQq != null and userQq != ''">
+				AND a.user_qq = #{userQq}
+			</if>
+			<if test="userEmail != null and userEmail != ''">
+				AND a.user_email = #{userEmail}
+			</if>
+			<if test="userWorkLoc != null and userWorkLoc != ''">
+				AND a.user_work_loc = #{userWorkLoc}
+			</if>
+			<if test="userPost != null and userPost != ''">
+				AND a.user_post = #{userPost}
+			</if>
+			<if test="userPostLevel != null and userPostLevel != ''">
+				AND a.user_post_level = #{userPostLevel}
+			</if>
+			<if test="userRoom != null and userRoom != ''">
+				AND a.user_room = #{userRoom}
+			</if>
+			<if test="userWorkNum != null and userWorkNum != ''">
+				AND a.user_work_num = #{userWorkNum}
+			</if>
+			<if test="userIdCard != null and userIdCard != ''">
+				AND a.user_idcard = #{userIdCard}
+			</if>
+			<if test="userBirthday != null and userBirthday != ''">
+				AND a.user_birthday = #{userBirthday}
+			</if>
+			<if test="userOfficePhone != null and userOfficePhone != ''">
+				AND a.user_office_phone = #{userOfficePhone}
+			</if>
+			<if test="userNation != null and userNation != ''">
+				AND a.user_nation = #{userNation}
+			</if>
+			<if test="userHeight != null and userHeight != ''">
+				AND a.user_height = #{userHeight}
+			</if>
+			<if test="userSex != null and userSex != ''">
+				AND a.user_sex = #{userSex}
+			</if>
+			<if test="userHomeLand != null and userHomeLand != ''">
+				AND a.user_home_land = #{userHomeLand}
+			</if>
+			<if test="userPolitics != null and userPolitics != ''">
+				AND a.user_politics = #{userPolitics}
+			</if>
+			<if test="userMarriage != null and userMarriage != ''">
+				AND a.user_marriage = #{userMarriage}
+			</if>
+			<if test="userEduLevle != null and userEduLevle != ''">
+				AND a.user_edu_levle = #{userEduLevle}
+			</if>
+			<if test="userEduSchool != null and userEduSchool != ''">
+				AND a.user_edu_school = #{userEduSchool}
+			</if>
+			<if test="userEduMajor != null and userEduMajor != ''">
+				AND a.user_edu_major = #{userEduMajor}
+			</if>
+			<if test="userTitle != null and userTitle != ''">
+				AND a.user_title = #{userTitle}
+			</if>
+			<if test="userTitleDate != null and userTitleDate != ''">
+				AND a.user_title_date = #{userTitleDate}
+			</if>
+			<if test="userWorkDate != null and userWorkDate != ''">
+				AND a.user_work_date = #{userWorkDate}
+			</if>
+			<if test="userCmpyDate != null and userCmpyDate != ''">
+				AND a.user_cmpy_date = #{userCmpyDate}
+			</if>
+			<if test="userState != null and userState != ''">
+				AND a.user_state = #{userState}
+			</if>
+			<if test="cmpyCode != null and cmpyCode != ''">
+				AND a.cmpy_code = #{cmpyCode}
+			</if>
+			<if test="sFlag != null and sFlag != ''">
+				AND a.s_flag = #{sFlag}
+			</if>
+			<if test="sUser != null and sUser != ''">
+				AND a.s_user = #{sUser}
+			</if>
+			<if test="userLoginType != null and userLoginType != ''">
+				AND a.user_login_type = #{userLoginType}
+			</if>
+			<if test="userExpireDate != null and userExpireDate != ''">
+				AND a.user_expire_date = #{userExpireDate}
+			</if>
+			<if test="userPasswordDate != null and userPasswordDate != ''">
+				AND a.user_password_date = #{userPasswordDate}
+			</if>
+			<if test="sMtime != null and sMtime != ''">
+				AND a.s_mtime = #{sMtime}
+			</if>
+			<if test="userImgSrc != null and userImgSrc != ''">
+				AND a.user_img_src = #{userImgSrc}
+			</if>
+			<if test="ptId != null and ptId != ''">
+				AND a.pt_id = #{ptId}
+			</if>
+			<if test="userFrom != null and userFrom != ''">
+				AND a.user_from = #{userFrom}
+			</if>
+			<if test="jiangangFlag != null and jiangangFlag != ''">
+				AND a.jiangang_flag = #{jiangangFlag}
+			</if>
+			<if test="userShortName != null and userShortName != ''">
+				AND a.user_short_name = #{userShortName}
+			</if>
+			<if test="userEnName != null and userEnName != ''">
+				AND a.user_en_name = #{userEnName}
+			</if>
+			<if test="userImg != null and userImg != ''">
+				AND a.user_img = #{userImg}
+			</if>
+			<if test="userEdulevle != null and userEdulevle != ''">
+				AND a.user_edulevle = #{userEdulevle}
+			</if>
+			<if test="usereExpireDate != null and usereExpireDate != ''">
+				AND a.usere_expire_date = #{usereExpireDate}
+			</if>
+            <if test="qzUserCode != null and qzUserCode != ''">
+                AND r.qz_user_code = #{qzUserCode}
+            </if>
+            <if test="qjUserCode != null and qjUserCode != ''">
+                AND r.qj_user_code = #{qjUserCode}
+            </if>
+            <if test="level != null and level != ''">
+                AND r.level = #{level}
+            </if>
+			<if test="type != null and type != ''">
+				AND r.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="findUsersByCode" resultType="com.thinkgem.crm.location.entity.AllAreas" parameterType="java.util.List">
+        SELECT
+            a.user_code AS "code",
+            a.user_name AS "name"
+        FROM sy_org_user a
+        WHERE
+              a.user_code in
+              <foreach collection="list" item="item" open="(" separator="," close=")">
+                  #{item}
+              </foreach>
+    </select>
+	
+	<select id="findAllList" resultType="SyOrgUser">
+		SELECT 
+			<include refid="syOrgUserColumns"/>
+		FROM sy_org_user a
+		<include refid="syOrgUserJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sy_org_user(
+			user_code,
+			user_login_name,
+			user_name,
+			dept_code,
+			user_password,
+			user_sort,
+			user_home_phone,
+			user_mobile,
+			user_qq,
+			user_email,
+			user_work_loc,
+			user_post,
+			user_post_level,
+			user_room,
+			user_work_num,
+			user_idcard,
+			user_birthday,
+			user_office_phone,
+			user_nation,
+			user_height,
+			user_sex,
+			user_home_land,
+			user_politics,
+			user_marriage,
+			user_edu_levle,
+			user_edu_school,
+			user_edu_major,
+			user_title,
+			user_title_date,
+			user_work_date,
+			user_cmpy_date,
+			user_state,
+			cmpy_code,
+			s_flag,
+			s_user,
+			user_login_type,
+			user_expire_date,
+			user_password_date,
+			s_mtime,
+			user_img_src,
+			pt_id,
+			user_from,
+			jiangang_flag,
+			user_short_name,
+			user_en_name,
+			user_img,
+			user_edulevle,
+			usere_expire_date
+		) VALUES (
+			uuid(),
+			#{userLoginName},
+			#{userName},
+			#{deptCode},
+			#{userPassword},
+			#{userSort},
+			#{userHomePhone},
+			#{userMobile},
+			#{userQq},
+			#{userEmail},
+			#{userWorkLoc},
+			#{userPost},
+			#{userPostLevel},
+			#{userRoom},
+			#{userWorkNum},
+			#{userIdCard},
+			#{userBirthday},
+			#{userOfficePhone},
+			#{userNation},
+			#{userHeight},
+			#{userSex},
+			#{userHomeLand},
+			#{userPolitics},
+			#{userMarriage},
+			#{userEduLevle},
+			#{userEduSchool},
+			#{userEduMajor},
+			#{userTitle},
+			#{userTitleDate},
+			#{userWorkDate},
+			#{userCmpyDate},
+			#{userState},
+			#{cmpyCode},
+			#{sFlag},
+			#{sUser},
+			#{userLoginType},
+			#{userExpireDate},
+			#{userPasswordDate},
+			#{sMtime},
+			#{userImgSrc},
+			#{ptId},
+			#{userFrom},
+			#{jiangangFlag},
+			#{userShortName},
+			#{userEnName},
+			#{userImg},
+			#{userEdulevle},
+			#{usereExpireDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sy_org_user SET 	
+			user_code = #{userCode},
+			user_login_name = #{userLoginName},
+			user_name = #{userName},
+			dept_code = #{deptCode},
+			<if test="userPassword != null and userPassword != ''">
+				user_password = #{userPassword},
+			</if>
+			user_sort = #{userSort},
+			user_home_phone = #{userHomePhone},
+			user_mobile = #{userMobile},
+			user_qq = #{userQq},
+			user_email = #{userEmail},
+			user_work_loc = #{userWorkLoc},
+			user_post = #{userPost},
+			user_post_level = #{userPostLevel},
+			user_room = #{userRoom},
+			user_work_num = #{userWorkNum},
+			user_idcard = #{userIdCard},
+			user_birthday = #{userBirthday},
+			user_office_phone = #{userOfficePhone},
+			user_nation = #{userNation},
+			user_height = #{userHeight},
+			user_sex = #{userSex},
+			user_home_land = #{userHomeLand},
+			user_politics = #{userPolitics},
+			user_marriage = #{userMarriage},
+			user_edu_levle = #{userEduLevle},
+			user_edu_school = #{userEduSchool},
+			user_edu_major = #{userEduMajor},
+			user_title = #{userTitle},
+			user_title_date = #{userTitleDate},
+			user_work_date = #{userWorkDate},
+			user_cmpy_date = #{userCmpyDate},
+			user_state = #{userState},
+			cmpy_code = #{cmpyCode},
+			s_flag = #{sFlag},
+			s_user = #{sUser},
+			user_login_type = #{userLoginType},
+			user_expire_date = #{userExpireDate},
+			user_password_date = #{userPasswordDate},
+			s_mtime = #{sMtime},
+			user_img_src = #{userImgSrc},
+			pt_id = #{ptId},
+			user_from = #{userFrom},
+			jiangang_flag = #{jiangangFlag},
+			user_short_name = #{userShortName},
+			user_en_name = #{userEnName},
+			user_img = #{userImg},
+			user_edulevle = #{userEdulevle},
+			usere_expire_date = #{usereExpireDate}
+		WHERE user_code = #{userCode}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sy_org_user
+		WHERE user_code = #{userCode}
+	</update>
+	
+	<!-- 查询没有配置销售区域的剩余销售用户 -->
+	<select id="findListNotExistUserArea" resultType="SyOrgUser">
+		SELECT 
+			<include refid="syOrgUserColumns"/>
+		FROM sy_org_user a
+		<include refid="syOrgUserJoins"/>
+		<where>
+		    NOT EXISTS (select 1 from rf_crm_user_area b where a.USER_CODE = b.USER_CODE)
+			<if test="userCode != null and userCode != ''">
+				AND a.user_code = #{userCode}
+			</if>
+			<if test="userLoginName != null and userLoginName != ''">
+				AND a.user_login_name = #{userLoginName}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND a.user_name = #{userName}
+			</if>
+			<if test="deptCode != null and deptCode != ''">
+				AND a.dept_code = #{deptCode}
+			</if>
+			<if test="userPassword != null and userPassword != ''">
+				AND a.user_password = #{userPassword}
+			</if>
+			<if test="userSort != null and userSort != ''">
+				AND a.user_sort = #{userSort}
+			</if>
+			<if test="userHomePhone != null and userHomePhone != ''">
+				AND a.user_home_phone = #{userHomePhone}
+			</if>
+			<if test="userMobile != null and userMobile != ''">
+				AND a.user_mobile = #{userMobile}
+			</if>
+			<if test="userQq != null and userQq != ''">
+				AND a.user_qq = #{userQq}
+			</if>
+			<if test="userEmail != null and userEmail != ''">
+				AND a.user_email = #{userEmail}
+			</if>
+			<if test="userWorkLoc != null and userWorkLoc != ''">
+				AND a.user_work_loc = #{userWorkLoc}
+			</if>
+			<if test="userPost != null and userPost != ''">
+				AND a.user_post = #{userPost}
+			</if>
+			<if test="userPostLevel != null and userPostLevel != ''">
+				AND a.user_post_level = #{userPostLevel}
+			</if>
+			<if test="userRoom != null and userRoom != ''">
+				AND a.user_room = #{userRoom}
+			</if>
+			<if test="userWorkNum != null and userWorkNum != ''">
+				AND a.user_work_num = #{userWorkNum}
+			</if>
+			<if test="userIdCard != null and userIdCard != ''">
+				AND a.user_idcard = #{userIdCard}
+			</if>
+			<if test="userBirthday != null and userBirthday != ''">
+				AND a.user_birthday = #{userBirthday}
+			</if>
+			<if test="userOfficePhone != null and userOfficePhone != ''">
+				AND a.user_office_phone = #{userOfficePhone}
+			</if>
+			<if test="userNation != null and userNation != ''">
+				AND a.user_nation = #{userNation}
+			</if>
+			<if test="userHeight != null and userHeight != ''">
+				AND a.user_height = #{userHeight}
+			</if>
+			<if test="userSex != null and userSex != ''">
+				AND a.user_sex = #{userSex}
+			</if>
+			<if test="userHomeLand != null and userHomeLand != ''">
+				AND a.user_home_land = #{userHomeLand}
+			</if>
+			<if test="userPolitics != null and userPolitics != ''">
+				AND a.user_politics = #{userPolitics}
+			</if>
+			<if test="userMarriage != null and userMarriage != ''">
+				AND a.user_marriage = #{userMarriage}
+			</if>
+			<if test="userEduLevle != null and userEduLevle != ''">
+				AND a.user_edu_levle = #{userEduLevle}
+			</if>
+			<if test="userEduSchool != null and userEduSchool != ''">
+				AND a.user_edu_school = #{userEduSchool}
+			</if>
+			<if test="userEduMajor != null and userEduMajor != ''">
+				AND a.user_edu_major = #{userEduMajor}
+			</if>
+			<if test="userTitle != null and userTitle != ''">
+				AND a.user_title = #{userTitle}
+			</if>
+			<if test="userTitleDate != null and userTitleDate != ''">
+				AND a.user_title_date = #{userTitleDate}
+			</if>
+			<if test="userWorkDate != null and userWorkDate != ''">
+				AND a.user_work_date = #{userWorkDate}
+			</if>
+			<if test="userCmpyDate != null and userCmpyDate != ''">
+				AND a.user_cmpy_date = #{userCmpyDate}
+			</if>
+			<if test="userState != null and userState != ''">
+				AND a.user_state = #{userState}
+			</if>
+			<if test="cmpyCode != null and cmpyCode != ''">
+				AND a.cmpy_code = #{cmpyCode}
+			</if>
+			<if test="sFlag != null and sFlag != ''">
+				AND a.s_flag = #{sFlag}
+			</if>
+			<if test="sUser != null and sUser != ''">
+				AND a.s_user = #{sUser}
+			</if>
+			<if test="userLoginType != null and userLoginType != ''">
+				AND a.user_login_type = #{userLoginType}
+			</if>
+			<if test="userExpireDate != null and userExpireDate != ''">
+				AND a.user_expire_date = #{userExpireDate}
+			</if>
+			<if test="userPasswordDate != null and userPasswordDate != ''">
+				AND a.user_password_date = #{userPasswordDate}
+			</if>
+			<if test="sMtime != null and sMtime != ''">
+				AND a.s_mtime = #{sMtime}
+			</if>
+			<if test="userImgSrc != null and userImgSrc != ''">
+				AND a.user_img_src = #{userImgSrc}
+			</if>
+			<if test="ptId != null and ptId != ''">
+				AND a.pt_id = #{ptId}
+			</if>
+			<if test="userFrom != null and userFrom != ''">
+				AND a.user_from = #{userFrom}
+			</if>
+			<if test="jiangangFlag != null and jiangangFlag != ''">
+				AND a.jiangang_flag = #{jiangangFlag}
+			</if>
+			<if test="userShortName != null and userShortName != ''">
+				AND a.user_short_name = #{userShortName}
+			</if>
+			<if test="userEnName != null and userEnName != ''">
+				AND a.user_en_name = #{userEnName}
+			</if>
+			<if test="userImg != null and userImg != ''">
+				AND a.user_img = #{userImg}
+			</if>
+			<if test="userEdulevle != null and userEdulevle != ''">
+				AND a.user_edulevle = #{userEdulevle}
+			</if>
+			<if test="usereExpireDate != null and usereExpireDate != ''">
+				AND a.usere_expire_date = #{usereExpireDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 根据province code 获取所有销售 -->
+	<select id="getSellersByProvCode" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select s.USER_CODE,s.USER_NAME from ots.sy_org_user s INNER join ots.rf_crm_user_area t on s.user_code=t.user_code where t.prov_code=#{provCode}
+	</select>
+</mapper>

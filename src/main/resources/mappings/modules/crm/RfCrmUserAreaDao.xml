@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.crm.user.dao.RfCrmUserAreaDao">
+    
+	<sql id="rfCrmUserAreaColumns">
+		a.id AS "id",
+		a.user_code AS "userCode",
+		a.prov_code AS "provCode",
+		a.city_code AS "cityCode",
+		a.dis_code AS "disCode",
+		a.available AS "available",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	<!-- 翻译代码字段 -->
+	<sql id="rfCrmUserAreaAndNameColumns">
+		b.user_name AS "userName",
+		b.user_state AS "userState",
+		c.ProName AS "provName",
+		d.CityName AS "cityName",
+		e.DisName AS "disName"
+	</sql>
+	
+	<sql id="rfCrmUserAreaJoins">
+	</sql>
+    
+    <sql id="rfCrmUserAreaAndNameJoins">
+		<!--     只包含本公司员工 user_state = '1'  -->
+   		LEFT JOIN sy_org_user b on a.USER_CODE = b.USER_CODE
+		LEFT JOIN t_province c ON a.prov_code = c.code
+		LEFT JOIN t_city d ON a.city_code = d.code
+		LEFT JOIN t_district e ON a.dis_code = e.code
+	</sql>
+	
+	<select id="get" resultType="RfCrmUserArea">
+		SELECT 
+			<include refid="rfCrmUserAreaColumns"/>
+		FROM rf_crm_user_area a
+		<include refid="rfCrmUserAreaJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="RfCrmUserArea">
+		SELECT 
+			<include refid="rfCrmUserAreaColumns"/>,
+			<include refid="rfCrmUserAreaAndNameColumns"/>
+		FROM rf_crm_user_area a
+		<include refid="rfCrmUserAreaJoins"/>
+		<include refid="rfCrmUserAreaAndNameJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="userCode != null and userCode != ''">
+				AND a.user_code = #{userCode}
+			</if>
+			<if test="provCode != null and provCode != ''">
+				AND a.prov_code = #{provCode}
+			</if>
+			<if test="cityCode != null and cityCode != ''">
+				AND a.city_code = #{cityCode}
+			</if>
+			<if test="disCode != null and disCode != ''">
+				AND a.dis_code = #{disCode}
+			</if>
+			<if test="available != null and available != ''">
+				AND a.available = #{available}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND a.create_time = #{createTime}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+				AND a.update_time = #{updateTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="findUserByArea" resultType="com.thinkgem.crm.location.entity.AllAreas">
+        SELECT
+          a.id AS "id",
+          a.user_code AS "code",
+          b.user_name AS "name"
+        FROM rf_crm_user_area a
+        LEFT JOIN sy_org_user b on a.USER_CODE = b.USER_CODE
+        <where>
+
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="userCode != null and userCode != ''">
+                AND a.user_code = #{userCode}
+            </if>
+            <if test="provCode != null and provCode != ''">
+                AND a.prov_code = #{provCode}
+            </if>
+            <if test="cityCode != null and cityCode != ''">
+                AND a.city_code = #{cityCode}
+            </if>
+            <if test="disCode != null and disCode != ''">
+                AND a.dis_code = #{disCode}
+            </if>
+            <if test="available != null and available != ''">
+                AND a.available = #{available}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                AND a.create_time = #{createTime}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                AND a.update_time = #{updateTime}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+	
+	<select id="findAllList" resultType="RfCrmUserArea">
+		SELECT 
+			<include refid="rfCrmUserAreaColumns"/>
+		FROM rf_crm_user_area a
+		<include refid="rfCrmUserAreaJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO rf_crm_user_area(
+			user_code,
+			prov_code,
+			city_code,
+			dis_code,
+			available,
+			create_time,
+			update_time
+		) VALUES (
+			#{userCode},
+			#{provCode},
+			#{cityCode},
+			#{disCode},
+			#{available},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE rf_crm_user_area SET 	
+			user_code = #{userCode},
+			prov_code = #{provCode},
+			city_code = #{cityCode},
+			dis_code = #{disCode},
+			available = #{available},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		<!-- 不用物理删除用逻辑删除
+		DELETE FROM rf_crm_user_area
+		WHERE id = #{id} 
+		-->
+		UPDATE rf_crm_user_area SET available = 2 WHERE id = #{id}
+	</update>
+	<select id="queryProvince" resultType="com.thinkgem.crm.location.entity.TProvince">
+		SELECT p.`Code` AS code, p.ProName AS proname, a.is_nation AS nation
+		from rf_crm_user_area a INNER JOIN t_province p
+		ON a.prov_code = p.`Code` WHERE a.user_code = #{userId}
+	</select>
+</mapper>

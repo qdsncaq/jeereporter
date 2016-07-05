@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.sc.billinfo.dao.SettlementBillInfoDao">
+    
+	<sql id="settlementBillInfoColumns">
+		a.id AS "id",
+		a.billid AS "billid",
+		a.billscsum AS "billscsum",
+		a.settlesum AS "settlesum",
+		a.settletime AS "settletime",
+		a.status AS "status",
+		a.remarks AS "remarks",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime"
+	</sql>
+	
+	<sql id="settlementBillInfoJoins">
+	</sql>
+    
+	<select id="get" resultType="SettlementBillInfo">
+		SELECT 
+			<include refid="settlementBillInfoColumns"/>
+		FROM settlement_bill_info a
+		<include refid="settlementBillInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SettlementBillInfo">
+		SELECT 
+			<include refid="settlementBillInfoColumns"/>
+		FROM settlement_bill_info a
+		<include refid="settlementBillInfoJoins"/>
+		<where>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="billid != null and billid != ''">
+				AND a.billid = #{billid}
+			</if>
+			<if test="beginBillscsum != null and beginBillscsum != '' ">
+				AND a.billscsum <![CDATA[>=]]> #{beginBillscsum}
+			</if>
+			<if test="endBillscsum != null and endBillscsum != ''">
+				AND a.billscsum <![CDATA[<=]]> #{endBillscsum}
+			</if>
+			<if test="beginSettlesum != null and beginSettlesum != ''">
+				AND a.settlesum <![CDATA[>=]]> #{beginSettlesum}
+			</if>
+			<if test="endSettlesum != null and endSettlesum != ''">
+				AND a.settlesum <![CDATA[<=]]> #{endSettlesum}
+			</if>
+			<if test="beginSettletime != null and beginSettletime != ''">
+				AND a.settletime <![CDATA[>=]]> #{beginSettletime}
+			</if>
+			<if test="endSettletime != null and endSettletime != ''">
+				AND a.settletime <![CDATA[<=]]> #{endSettletime}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks LIKE 
+					<if test="dbName == 'oracle'">'%'||#{remarks}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{remarks}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{remarks},'%')</if>
+			</if>
+			<if test="beginCreatetime != null and beginCreatetime != ''">
+				AND a.createtime <![CDATA[>=]]> #{beginCreatetime}
+			</if>
+			<if test="endCreatetime != null and endCreatetime != ''">
+				AND a.createtime <![CDATA[<=]]> #{endCreatetime}
+			</if>
+			<if test="beginUpdatetime != null and beginUpdatetime != ''">
+				AND a.updatetime <![CDATA[>=]]> #{beginUpdatetime}
+			</if>
+			<if test="endUpdatetime != null and endUpdatetime != ''">
+				AND a.updatetime <![CDATA[<=]]> #{endUpdatetime}
+			</if>
+		</where>
+		ORDER BY id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				, ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		DESC
+	</select>
+	
+	<select id="findAllList" resultType="SettlementBillInfo">
+		SELECT 
+			<include refid="settlementBillInfoColumns"/>
+		FROM settlement_bill_info a
+		<include refid="settlementBillInfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO settlement_bill_info(
+			billid,
+			billscsum,
+			settlesum,
+			settletime,
+			status,
+			remarks,
+			createtime,
+			updatetime
+		) VALUES (
+			#{billid},
+			#{billscsum},
+			#{settlesum},
+			#{settletime},
+			#{status},
+			#{remarks},
+			#{createtime},
+			#{updatetime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE settlement_bill_info SET 	
+			billid = #{billid},
+			billscsum = #{billscsum},
+			settlesum = #{settlesum},
+			settletime = #{settletime},
+			status = #{status},
+			remarks = #{remarks},
+			createtime = #{createtime},
+			updatetime = #{updatetime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM settlement_bill_info
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

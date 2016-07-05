@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.psb.psbinfo.dao.SettlementPsbinfoDao">
+    
+	<sql id="settlementPsbinfoColumns">
+		a.id AS "id",
+		a.psbname AS "psbname",
+		a.begintime AS "begintime",
+		a.endtime AS "endtime",
+		a.fee AS "fee",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
+		a.delflag AS "delflag"
+	</sql>
+	
+	<sql id="settlementPsbinfoJoins">
+	</sql>
+    
+	<select id="get" resultType="SettlementPsbinfo">
+		SELECT 
+			<include refid="settlementPsbinfoColumns"/>
+		FROM settlement_psbinfo a
+		<include refid="settlementPsbinfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SettlementPsbinfo">
+		SELECT 
+			<include refid="settlementPsbinfoColumns"/>
+		FROM settlement_psbinfo a
+		<include refid="settlementPsbinfoJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="psbname != null and psbname != ''">
+				AND a.psbname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{psbname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{psbname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{psbname},'%')</if>
+			</if>
+			<if test="beginBegintime != null and beginBegintime != ''">
+				AND a.begintime <![CDATA[>=]]> #{beginBegintime} 
+			</if>
+			<if test="endBegintime != null and endBegintime != ''">
+				AND a.begintime <![CDATA[<=]]> #{endBegintime}
+			</if>
+			<if test="beginEndtime != null and beginEndtime != ''">
+				AND a.endtime <![CDATA[>=]]> #{beginEndtime} 
+			</if>
+			<if test="endEndtime != null and endEndtime != ''">
+				AND a.endtime <![CDATA[<=]]> #{endEndtime}
+			</if>
+			<if test="beginFee != null and beginFee != ''">
+				AND a.fee <![CDATA[>=]]> #{beginFee}
+			</if>
+			<if test="endFee != null and endFee != ''">
+				AND a.fee <![CDATA[<=]]> #{endFee}
+			</if>
+			<if test="createtime != null and createtime != ''">
+				AND a.createtime = #{createtime}
+			</if>
+			<if test="updatetime != null and updatetime != ''">
+				AND a.updatetime = #{updatetime}
+			</if>
+			<if test="delflag != null and delflag != ''">
+				AND a.delflag = #{delflag}
+			</if>
+			<if test="delflag == null or delflag == ''">
+				AND a.delflag = 1
+			</if>
+		</where>
+		ORDER BY id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				, ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		DESC
+	</select>
+	
+	<select id="findAllPsb" resultType="SettlementPsbinfo">
+		SELECT 
+			<include refid="settlementPsbinfoColumns"/>
+		FROM settlement_psbinfo a
+		<include refid="settlementPsbinfoJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="psbname != null and psbname != ''">
+				AND a.psbname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{psbname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{psbname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{psbname},'%')</if>
+			</if>
+			<if test="beginBegintime != null and beginBegintime != ''">
+				AND a.begintime <![CDATA[>=]]> #{beginBegintime} 
+			</if>
+			<if test="endBegintime != null and endBegintime != ''">
+				AND a.begintime <![CDATA[<=]]> #{endBegintime}
+			</if>
+			<if test="beginEndtime != null and beginEndtime != ''">
+				AND a.endtime <![CDATA[>=]]> #{beginEndtime} 
+			</if>
+			<if test="endEndtime != null and endEndtime != ''">
+				AND a.endtime <![CDATA[<=]]> #{endEndtime}
+			</if>
+			<if test="beginFee != null and beginFee != ''">
+				AND a.fee <![CDATA[>=]]> #{beginFee}
+			</if>
+			<if test="endFee != null and endFee != ''">
+				AND a.fee <![CDATA[<=]]> #{endFee}
+			</if>
+			<if test="createtime != null and createtime != ''">
+				AND a.createtime = #{createtime}
+			</if>
+			<if test="updatetime != null and updatetime != ''">
+				AND a.updatetime = #{updatetime}
+			</if>
+			<if test="delflag != null and delflag != ''">
+				AND a.delflag = #{delflag}
+			</if>
+		</where>
+		GROUP BY a.psbname
+	</select>
+	
+	<select id="findAllList" resultType="SettlementPsbinfo">
+		SELECT 
+			<include refid="settlementPsbinfoColumns"/>
+		FROM settlement_psbinfo a
+		<include refid="settlementPsbinfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO settlement_psbinfo(
+			psbname,
+			begintime,
+			endtime,
+			fee,
+			createtime,
+			updatetime,
+			delflag
+		) VALUES (
+			#{psbname},
+			#{begintime},
+			#{endtime},
+			#{fee},
+			#{createtime},
+			#{updatetime},
+			#{delflag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE settlement_psbinfo SET 	
+			psbname = #{psbname},
+			begintime = #{begintime},
+			endtime = #{endtime},
+			fee = #{fee},
+			createtime = #{createtime},
+			updatetime = #{updatetime},
+			delflag = #{delflag}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- <update id="delete">
+		DELETE FROM settlement_psbinfo
+		WHERE id = #{id}
+	</update> -->
+	<update id="delete">
+		UPDATE FROM settlement_psbinfo
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

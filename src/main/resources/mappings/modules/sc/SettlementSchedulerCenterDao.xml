@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.sc.schedulercenter.dao.SettlementSchedulerCenterDao">
+    
+	<sql id="settlementSchedulerCenterColumns">
+		a.id AS "id",
+		a.task_name AS "taskName",
+		a.current_machine AS "currentMachine",
+		a.tick_time AS "tickTime",
+		a.threshold AS "threshold"
+	</sql>
+	
+	<sql id="settlementSchedulerCenterJoins">
+	</sql>
+    
+	<select id="get" resultType="SettlementSchedulerCenter">
+		SELECT 
+			<include refid="settlementSchedulerCenterColumns"/>
+		FROM settlement_scheduler_center a
+		<include refid="settlementSchedulerCenterJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SettlementSchedulerCenter">
+		SELECT 
+			<include refid="settlementSchedulerCenterColumns"/>
+		FROM settlement_scheduler_center a
+		<include refid="settlementSchedulerCenterJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="taskName != null and taskName != ''">
+				AND a.task_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{taskName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{taskName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{taskName},'%')</if>
+			</if>
+			<if test="currentMachine != null and currentMachine != ''">
+				AND a.current_machine = #{currentMachine}
+			</if>
+			<if test="beginTickTime != null and beginTickTime != ''">
+				AND a.tick_time <![CDATA[>=]]> #{beginTickTime}
+			</if>
+			<if test="endTickTime != null and endTickTime != ''">
+				AND a.tick_time <![CDATA[<=]]> #{endTickTime}
+			</if>
+			<if test="beginThreshold != null and beginThreshold != ''">
+				AND a.threshold <![CDATA[>=]]> #{beginThreshold}
+			</if>
+			<if test="endThreshold != null and endThreshold != ''">
+				AND a.threshold <![CDATA[<=]]> #{endThreshold}
+			</if>
+		</where>
+		ORDER BY id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				, ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		DESC
+	</select>
+	
+	<select id="findAllList" resultType="SettlementSchedulerCenter">
+		SELECT 
+			<include refid="settlementSchedulerCenterColumns"/>
+		FROM settlement_scheduler_center a
+		<include refid="settlementSchedulerCenterJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO settlement_scheduler_center(
+			id,
+			task_name,
+			current_machine,
+			tick_time,
+			threshold
+		) VALUES (
+			#{id},
+			#{taskName},
+			#{currentMachine},
+			#{tickTime},
+			#{threshold}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE settlement_scheduler_center SET 	
+			id = #{id},
+			task_name = #{taskName},
+			current_machine = #{currentMachine},
+			tick_time = #{tickTime},
+			threshold = #{threshold}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM settlement_scheduler_center
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

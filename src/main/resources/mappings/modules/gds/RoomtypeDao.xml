@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.gds.roomtype.dao.RoomtypeDao">
+    
+	<sql id="roomtypeColumns">
+		a.id AS "id",
+		a.id_1 AS "id1",
+		a.hotelid AS "hotelid",
+		a.name AS "name",
+		a.roomtypepms AS "roomtypepms",
+		a.roomnum AS "roomnum",
+		a.cost AS "cost",
+		a.type AS "type",
+		a.updatetime AS "updatetime"
+	</sql>
+	
+	<sql id="roomtypeJoins">
+	</sql>
+    
+	<select id="get" resultType="Roomtype">
+		SELECT 
+			<include refid="roomtypeColumns"/>
+		FROM roomtype a
+		<include refid="roomtypeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Roomtype">
+		SELECT 
+			<include refid="roomtypeColumns"/>
+		FROM roomtype a
+		<include refid="roomtypeJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="id1 != null and id1 != ''">
+				AND a.id_1 = #{id1}
+			</if>
+			<if test="hotelid != null and hotelid != ''">
+				AND a.hotelid = #{hotelid}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="roomtypepms != null and roomtypepms != ''">
+				AND a.roomtypepms = #{roomtypepms}
+			</if>
+			<if test="roomnum != null and roomnum != ''">
+				AND a.roomnum = #{roomnum}
+			</if>
+			<if test="cost != null and cost != ''">
+				AND a.cost = #{cost}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="updatetime != null and updatetime != ''">
+				AND a.updatetime = #{updatetime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Roomtype">
+		SELECT 
+			<include refid="roomtypeColumns"/>
+		FROM roomtype a
+		<include refid="roomtypeJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO roomtype(
+			id,
+			id_1,
+			hotelid,
+			name,
+			roomtypepms,
+			roomnum,
+			cost,
+			type,
+			updatetime
+		) VALUES (
+			#{id},
+			#{id1},
+			#{hotelid},
+			#{name},
+			#{roomtypepms},
+			#{roomnum},
+			#{cost},
+			#{type},
+			#{updatetime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE roomtype SET 	
+			id_1 = #{id1},
+			hotelid = #{hotelid},
+			name = #{name},
+			roomtypepms = #{roomtypepms},
+			roomnum = #{roomnum},
+			cost = #{cost},
+			type = #{type},
+			updatetime = #{updatetime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM roomtype
+		WHERE id = #{id}
+	</update>
+
+    <select id="findDailyRate" resultType="com.thinkgem.gds.roomtype.entity.RoomtypePrices">
+        SELECT
+          a.day AS "day",
+          a.price AS "dayPrice"
+        FROM daily_rate a
+        WHERE a.hotelid = #{hotelid} and a.roomtypeid = #{id} and day>(CURRENT_DATE()+0)
+    </select>
+
+    <select id="findRackRate" resultType="com.thinkgem.gds.roomtype.entity.RoomtypePrices">
+        SELECT
+          a.price AS "rackRatePrice"
+        FROM rack_rate a
+        WHERE a.hotelid = #{hotelid} and a.roomtypeid = #{id}
+    </select>
+
+    <select id="findWeekRate" resultType="com.thinkgem.gds.roomtype.entity.RoomtypePrices">
+        SELECT
+          a.week AS "week",
+          a.price AS "weekPrice"
+        FROM weekend_rate a
+        WHERE a.hotelid = #{hotelid} and a.roomtypeid = #{id}
+    </select>
+	
+</mapper>

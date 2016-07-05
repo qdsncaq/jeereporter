@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.crm.location.dao.TProvinceDao">
+    
+	<sql id="tProvinceColumns">
+		a.proid AS "proid",
+		a.code AS "code",
+		a.proname AS "proname",
+		a.prosort AS "prosort",
+		a.proremark AS "proremark",
+		a.latitude AS "latitude",
+		a.longitude AS "longitude"
+	</sql>
+	
+	<sql id="tProvinceJoins">
+	</sql>
+    
+	<select id="get" resultType="TProvince">
+		SELECT 
+			<include refid="tProvinceColumns"/>
+		FROM ots.t_province a
+		<include refid="tProvinceJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByCode" resultType="TProvince">
+		SELECT
+		<include refid="tProvinceColumns"/>
+		FROM ots.t_province a
+		<include refid="tProvinceJoins"/>
+		WHERE a.code = #{code}
+	</select>
+	
+	<select id="findList" resultType="TProvince">
+		SELECT 
+			<include refid="tProvinceColumns"/>
+		FROM ots.t_province a
+		<include refid="tProvinceJoins"/>
+		<where>
+			
+			<if test="proid != null and proid != ''">
+				AND a.proid = #{proid}
+			</if>
+			<if test="code != null and code != ''">
+				AND a.code = #{code}
+			</if>
+			<if test="proname != null and proname != ''">
+				AND a.proname = #{proname}
+			</if>
+			<if test="prosort != null and prosort != ''">
+				AND a.prosort = #{prosort}
+			</if>
+			<if test="proremark != null and proremark != ''">
+				AND a.proremark = #{proremark}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TProvince">
+		SELECT 
+			<include refid="tProvinceColumns"/>
+		FROM ots.t_province a
+		<include refid="tProvinceJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="findAllToAllAreas" resultType="com.thinkgem.crm.location.entity.AllAreas">
+        SELECT
+          a.code AS "code",
+          a.proname AS "name",
+          a.proid AS "id",
+          IF(count(b.cityid)>0,true,false) AS "parent",
+          "1" AS "type"
+        FROM ots.t_province a
+        LEFT JOIN ots.t_city b ON b.proid=a.proid
+        group by a.ProID
+    </select>
+	
+	<insert id="insert">
+		INSERT INTO ots.t_province(
+			proid,
+			code,
+			proname,
+			prosort,
+			proremark,
+			latitude,
+			longitude
+		) VALUES (
+			#{proid},
+			#{code},
+			#{proname},
+			#{prosort},
+			#{proremark},
+			#{latitude},
+			#{longitude}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ots.t_province SET
+			proid = #{proid},
+			code = #{code},
+			proname = #{proname},
+			prosort = #{prosort},
+			proremark = #{proremark},
+			latitude = #{latitude},
+			longitude = #{longitude}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM ots.t_province
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
