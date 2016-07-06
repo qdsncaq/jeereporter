@@ -49,7 +49,7 @@
         <webserver.port>8181</webserver.port>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <downloadSources>true</downloadSources>
-        
+<!--         
         <gds-face.version>${gds-face-version}</gds-face.version>
         <stock-face.version>${stock-face-version}</stock-face.version>
         <basic-face.version>${basic-face-version}</basic-face.version>
@@ -57,6 +57,7 @@
         <order-face.version>${order-face-version}</order-face.version>
         <datacenter-face.version>${datacenter-face.version}</datacenter-face.version>
         <api-face.version>${api-face.version}</api-face.version>
+ -->        
     </properties>
 
     <!-- 设定主仓库，按设定顺序进行查找。 -->
@@ -155,7 +156,7 @@
 			<artifactId>xbean-reflect</artifactId>
 			<version>3.4</version>
 		</dependency>
-     
+<!--      
 		<dependency>
 			<groupId>com.fangbaba</groupId>
 			<artifactId>order-face</artifactId>
@@ -194,6 +195,7 @@
 			<artifactId>settlement-center-face</artifactId>
 			<version>${settlement-face.version}</version>
 		</dependency>
+ -->		
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -706,7 +708,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+<!--         
       	<dependency>
 			<groupId>com.mk</groupId>
 			<artifactId>mk-common-framework</artifactId>
@@ -722,6 +724,7 @@
                 </exclusion>
             </exclusions>
 		</dependency>
+ -->		
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
@@ -790,7 +793,7 @@
 			<artifactId>cat-client</artifactId>
 			<version>1.3.6</version>
 		</dependency>
-
+<!-- 
         <dependency>
             <groupId>com.mk</groupId>
             <artifactId>mk-cas</artifactId>
@@ -814,7 +817,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+ -->
         <!--<dependency>-->
             <!--<groupId>org.jasig.cas.client</groupId>-->
             <!--<artifactId>cas-client-core</artifactId>-->
@@ -826,11 +829,13 @@
 			<artifactId>lz-mongo</artifactId>
 			<version>0.0.2</version>
 		</dependency>
+<!-- 		
 		<dependency>
 		  <groupId>com.fangbaba</groupId>
 		  <artifactId>crmas-face</artifactId>
 		  <version>0.0.5</version>
 		</dependency>
+ -->		
     </dependencies>
     <build>
         <finalName>auth</finalName>
