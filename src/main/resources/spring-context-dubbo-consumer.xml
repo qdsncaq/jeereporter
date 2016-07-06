@@ -11,6 +11,7 @@
   
     <!-- 生成远程服务代理，可以像使用本地bean一样使用demoService -->  
     <!-- GDS -->
+    <!-- 
     <dubbo:reference id="distributionPriceServiceDubbo"  
         interface="com.fangbaba.gds.face.service.IDistributionPriceService"  timeout="30000" group="${dubbo.gds.group}" version="1.0.0" check="false" retries="0"/>  
     <dubbo:reference id="distributionSwitchServiceDubbo"  
@@ -44,20 +45,25 @@
     <dubbo:reference id="otaHotelFullFlagServiceDubbo"  
         interface="com.fangbaba.gds.face.service.IOtaHotelFullFlagService"  timeout="30000" group="${dubbo.gds.group}" version="1.0.0" check="false" retries="0"/>
     <dubbo:reference id="hotelOpenSettingService"
-                     interface="com.fangbaba.gds.face.service.IHotelOpenSettingService"  timeout="30000" group="${dubbo.gds.group}" version="1.0.0" check="false" retries="0"/>
-     <dubbo:reference id="stockService"
+        interface="com.fangbaba.gds.face.service.IHotelOpenSettingService"  timeout="30000" group="${dubbo.gds.group}" version="1.0.0" check="false" retries="0"/>
+     -->
+    
+    <!-- stock -->
+    <!-- 
+    <dubbo:reference id="stockService"
         interface="com.fangbaba.stock.face.service.IStockService"  timeout="30000" group="${dubbo.stock.group}" version="1.0.0" check="false"/>     
-        
+     -->
+     
+   <!-- settlement -->
+   <!-- 
    <dubbo:reference id="settlementOfficeService"
 		interface="com.mk.office.service.IOfficeService" timeout="30000" group="${dubbo.sc.group}"  version="1.0.0" check="false"/>
-        
-        
-     <!-- basic -->
-    <dubbo:reference id="settlementRelationServiceDubbo"  
+   <dubbo:reference id="settlementRelationServiceDubbo"  
         interface="com.mk.settlement.service.ISettlementRelationService"  timeout="30000" group="${dubbo.sc.group}" version="1.0.0" check="false" retries="0"/> 
+    -->  
      
-     
-     <!-- basic -->
+    <!-- basic -->
+    <!-- 
     <dubbo:reference id="hotelServiceDubbo"  
         interface="com.fangbaba.basic.face.service.HotelService"  timeout="30000" group="${dubbo.basic.group}" version="1.0.0" check="false" retries="0"/>  
     <dubbo:reference id="roomtypeServiceDubbo"  
@@ -74,20 +80,27 @@
         interface="com.fangbaba.basic.face.service.SellPriceService"  timeout="30000" group="${dubbo.basic.group}" version="1.0.0" check="false" retries="0"/>
     <dubbo:reference id="hotelBusinessServiceDubbo"
 		interface="com.fangbaba.basic.face.service.HotelBusinessService" timeout="30000" group="${dubbo.basic.group}"  version="1.0.0" check="false" retries="0"/>    
-		
-	<!-- order -->            
+	 -->
+	
+	<!-- order -->  
+	<!--           
 	<dubbo:reference id="orderService"  
         interface="com.fangbaba.order.service.OrderService"  timeout="30000" group="${dubbo.order.group}" version="1.0.0" check="false" retries="0"/>  
+     -->
+     
 	<!-- crm -->
+	<!-- 
     <dubbo:reference id="hotelInfoServiceDubbo"
         interface="com.mk.hms.dubbo.service.HotelInfoService"  timeout="30000" group="${dubbo.crm.group}" version="1.0.0" check="false" retries="0"/>
+     -->
+
 	<!-- datacenter -->
+	<!-- 
     <dubbo:reference id="datacenterService"  
         interface="com.fangbaba.datacenter.service.DatacenterService"  timeout="30000" group="${dubbo.datacenter.group}" version="1.0.0" check="false" retries="0"/> 
     <dubbo:reference id="hotelChangePushServiceImplDubbo"  
         interface="com.fangbaba.gds.face.service.IHotelChangePushService"  timeout="30000" group="${dubbo.gds.group}" version="1.0.0" check="false" retries="0"/>    
-   
-    <dubbo:reference id="hotelTagsAPIService" interface="com.fangbaba.basic.face.service.HotelTagsService"
-                     timeout="20000" check="false" retries="0" group="${dubbo.basic.group}" version="1.0.0"/>
-        
+    <dubbo:reference id="hotelTagsAPIService" 
+        interface="com.fangbaba.basic.face.service.HotelTagsService" timeout="20000" check="false" retries="0" group="${dubbo.basic.group}" version="1.0.0"/>
+     -->    
 </beans>  

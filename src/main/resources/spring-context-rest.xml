@@ -16,10 +16,10 @@
 	<import resource="classpath:META-INF/cxf/cxf-extension-http-binding.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
 
-    <bean id="userInfoOperServiceRest" class="com.thinkgem.jeesite.ws.impl.UserInfoOperServiceIRestmpl" ></bean>
-
+    <!-- <bean id="userInfoOperServiceRest" class="com.thinkgem.jeesite.ws.impl.UserInfoOperServiceIRestmpl" ></bean> -->
+<!-- 
 	<jaxrs:server id="restContainer" address="/">
-		<jaxrs:serviceBeans>
+ 		<jaxrs:serviceBeans>
 			<ref bean="userInfoOperServiceRest" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>
@@ -33,5 +33,5 @@
 			<entry key="xml" value="application/xml" />
 		</jaxrs:extensionMappings>
 	</jaxrs:server>
-
+ -->
 </beans>  

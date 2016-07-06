@@ -1,5 +1,14 @@
 package com.thinkgem.jeesite.ws.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.thinkgem.jeesite.common.Exception.AuthRoleException;
 import com.thinkgem.jeesite.common.Exception.AuthUserException;
 import com.thinkgem.jeesite.common.utils.MD5Utils;
@@ -11,22 +20,10 @@ import com.thinkgem.jeesite.modules.auth.service.AuthUserService;
 import com.thinkgem.jeesite.ws.UserInfoOperService;
 import com.thinkgem.jeesite.ws.model.Result;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Created by jjh on 16/1/28.
  */
+@Service
 public class UserInfoOperServiceImpl implements UserInfoOperService {
 
     private static Logger logger = LoggerFactory.getLogger(UserInfoOperServiceImpl.class);

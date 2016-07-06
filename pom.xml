@@ -1066,15 +1066,15 @@
                 <oms.jdbc.username>root</oms.jdbc.username>
                 <oms.jdbc.password>imike@2015</oms.jdbc.password>
 
+                <logFile.path>../logs/jeesite/office.log</logFile.path>
+<!-- 
                 <ZK.URL>192.168.0.17:2181</ZK.URL>
                 <office.dubbo.group.name>auth_dev</office.dubbo.group.name>
+                <cas.server.host>192.168.0.33:8443</cas.server.host>
+                <cas.service.host>127.0.0.1:8085</cas.service.host>
 
                 <stlmt.server.url>http://127.0.0.1:8081</stlmt.server.url>
                 <crm.url>http://192.168.0.21:8012/hms/hms/public</crm.url>
-                <logFile.path>../logs/jeesite/office.log</logFile.path>
-
-                <cas.server.host>192.168.0.33:8443</cas.server.host>
-                <cas.service.host>127.0.0.1:8085</cas.service.host>
                 <dubbo.gds.group>gds_test</dubbo.gds.group>
                 <dubbo.stock.group>stock_test</dubbo.stock.group>
                 <dubbo.order.group>order_test</dubbo.order.group>
@@ -1089,6 +1089,7 @@
                 <datacenter-face.version>1.1.0</datacenter-face.version>
                 <api-face.version>1.0.5</api-face.version>
                 <settlement-face-version>0.0.1-SNAPSHOT</settlement-face-version>
+ -->                
                 <!-- mongo -->
 				<mongo.host> 192.168.0.34:27017</mongo.host>
 				
