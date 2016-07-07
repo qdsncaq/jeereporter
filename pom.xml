@@ -156,46 +156,7 @@
 			<artifactId>xbean-reflect</artifactId>
 			<version>3.4</version>
 		</dependency>
-<!--      
-		<dependency>
-			<groupId>com.fangbaba</groupId>
-			<artifactId>order-face</artifactId>
-			<version>${order-face.version}</version>
-		</dependency>
-	    
-    	<dependency>
-			<groupId>com.fangbaba</groupId>
-			<artifactId>gds-face</artifactId>
-			<version>${gds-face-version}</version>
-		</dependency>
-		<dependency>
-            <groupId>com.fangbaba</groupId>
-            <artifactId>stock-face</artifactId>
-            <version>${stock-face-version}</version>
-        </dependency>
-        <dependency>
-			<groupId>com.fangbaba</groupId>
-			<artifactId>basic-face</artifactId>
-			<version>${basic-face-version}</version>
-		</dependency>
 		
-		<dependency>
-			<groupId>com.fangbaba</groupId>
-			<artifactId>datacenter-face</artifactId>
-			<version>${datacenter-face.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fangbaba</groupId>
-			<artifactId>api-face</artifactId>
-			<version>${api-face.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.mk</groupId>
-			<artifactId>settlement-center-face</artifactId>
-			<version>${settlement-face.version}</version>
-		</dependency>
- -->		
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -708,23 +669,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-<!--         
-      	<dependency>
-			<groupId>com.mk</groupId>
-			<artifactId>mk-common-framework</artifactId>
-			<version>1.0.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-access</artifactId>
-                </exclusion>
-            </exclusions>
-		</dependency>
- -->		
+	
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
@@ -793,31 +738,7 @@
 			<artifactId>cat-client</artifactId>
 			<version>1.3.6</version>
 		</dependency>
-<!-- 
-        <dependency>
-            <groupId>com.mk</groupId>
-            <artifactId>mk-cas</artifactId>
-            <version>1.0.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
- -->
+
         <!--<dependency>-->
             <!--<groupId>org.jasig.cas.client</groupId>-->
             <!--<artifactId>cas-client-core</artifactId>-->
@@ -1050,216 +971,36 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <dataSource.jdbc.url><![CDATA[jdbc:mysql://192.168.0.34:3306/auth?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
+                <dataSource.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
                 <dataSource.jdbc.username>root</dataSource.jdbc.username>
-                <dataSource.jdbc.password>imike@2015</dataSource.jdbc.password>
+                <dataSource.jdbc.password></dataSource.jdbc.password>
                 
-                <gds.jdbc.url><![CDATA[jdbc:mysql://192.168.0.34:3306/gds?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
+                <gds.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/gds?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
 				<gds.jdbc.username>root</gds.jdbc.username>
-				<gds.jdbc.password>imike@2015</gds.jdbc.password>
+				<gds.jdbc.password></gds.jdbc.password>
 
-                <crm.jdbc.url><![CDATA[jdbc:mysql://192.168.0.34:3306/ots?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
+                <crm.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/ots?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
                 <crm.jdbc.username>root</crm.jdbc.username>
-                <crm.jdbc.password>imike@2015</crm.jdbc.password>
+                <crm.jdbc.password></crm.jdbc.password>
 
-                <oms.jdbc.url><![CDATA[jdbc:mysql://192.168.0.34:3306/auth?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
+                <oms.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
                 <oms.jdbc.username>root</oms.jdbc.username>
-                <oms.jdbc.password>imike@2015</oms.jdbc.password>
+                <oms.jdbc.password></oms.jdbc.password>
 
                 <logFile.path>../logs/jeesite/office.log</logFile.path>
-<!-- 
-                <ZK.URL>192.168.0.17:2181</ZK.URL>
-                <office.dubbo.group.name>auth_dev</office.dubbo.group.name>
-                <cas.server.host>192.168.0.33:8443</cas.server.host>
-                <cas.service.host>127.0.0.1:8085</cas.service.host>
 
-                <stlmt.server.url>http://127.0.0.1:8081</stlmt.server.url>
-                <crm.url>http://192.168.0.21:8012/hms/hms/public</crm.url>
-                <dubbo.gds.group>gds_test</dubbo.gds.group>
-                <dubbo.stock.group>stock_test</dubbo.stock.group>
-                <dubbo.order.group>order_test</dubbo.order.group>
-                <dubbo.basic.group>basic_test</dubbo.basic.group>
-                <dubbo.sc.group>sc_test</dubbo.sc.group>
-                <dubbo.crm.group>crm_test</dubbo.crm.group>
-                <dubbo.datacenter.group>datacenter_test</dubbo.datacenter.group>
-                <stock-face-version>0.0.1-SNAPSHOT</stock-face-version>
-                <gds-face-version>3.1.5</gds-face-version>
-                <basic-face-version>1.0.8-SNAPSHOT</basic-face-version>
-                <order-face-version>2.4.0</order-face-version>
-                <datacenter-face.version>1.1.0</datacenter-face.version>
-                <api-face.version>1.0.5</api-face.version>
-                <settlement-face-version>0.0.1-SNAPSHOT</settlement-face-version>
- -->                
                 <!-- mongo -->
 				<mongo.host> 192.168.0.34:27017</mongo.host>
-				
+				<!-- 
 				<spring.redis.sentinel.master>mymaster</spring.redis.sentinel.master>
 				<spring.redis.sentinel.nodes>192.168.0.21:26379</spring.redis.sentinel.nodes>
 				<jedis.pool.maxidl>20</jedis.pool.maxidl>
 				<jedis.pool.minidl>8</jedis.pool.minidl>
 				<jedis.pool.maxtotal>500</jedis.pool.maxtotal>
+				 -->
             </properties>
         </profile>
-        <profile>
-            <id>bjtest</id>
-            <properties>
-                <dataSource.jdbc.url><![CDATA[jdbc:mysql://192.168.0.34:3306/auth?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
-                <dataSource.jdbc.username>root</dataSource.jdbc.username>
-                <dataSource.jdbc.password>imike@2015</dataSource.jdbc.password>
-                
-                <gds.jdbc.url><![CDATA[jdbc:mysql://mysql.imike.care:3306/gds?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
-				<gds.jdbc.username>root</gds.jdbc.username>
-				<gds.jdbc.password>imike@2015</gds.jdbc.password>
 
-                <crm.jdbc.url><![CDATA[jdbc:mysql://192.168.0.34:3306/ots?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
-                <crm.jdbc.username>root</crm.jdbc.username>
-                <crm.jdbc.password>imike@2015</crm.jdbc.password>
-
-                <oms.jdbc.url><![CDATA[jdbc:mysql://192.168.0.34:3306/auth?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
-                <oms.jdbc.username>root</oms.jdbc.username>
-                <oms.jdbc.password>imike@2015</oms.jdbc.password>
-                
-                <ZK.URL>192.168.0.17:2181</ZK.URL>
-
-                <stlmt.server.url>http://192.168.0.71:8003</stlmt.server.url>
-                <crm.url>http://192.168.0.21:8012/hms/hms/public</crm.url>
-                <logFile.path>/data/logs/office.fangbaba.com/office.log</logFile.path>
-
-                <cas.server.host>192.168.0.33:8443</cas.server.host>
-                <cas.service.host>192.168.0.37:8004</cas.service.host>
-                
-                <office.dubbo.group.name>auth_test</office.dubbo.group.name>
-                <dubbo.gds.group>gds_test</dubbo.gds.group>
-                 <dubbo.stock.group>stock_test</dubbo.stock.group>
-                <dubbo.order.group>order_test</dubbo.order.group>
-                <dubbo.basic.group>basic_test</dubbo.basic.group>
-                <dubbo.sc.group>sc_test</dubbo.sc.group>
-                <dubbo.crm.group>crm_test</dubbo.crm.group>
-                <dubbo.datacenter.group>datacenter_test</dubbo.datacenter.group>
-                
-                <gds-face-version>0.0.1-SNAPSHOT</gds-face-version>
-                <stock-face-version>0.0.1-SNAPSHOT</stock-face-version>
-                <basic-face-version>1.0.8-SNAPSHOT</basic-face-version>
-                <settlement-face-version>0.0.1-SNAPSHOT</settlement-face-version>
-                <order-face-version>2.4.0</order-face-version>
-                <datacenter-face.version>1.1.0</datacenter-face.version>
-                <api-face.version>1.0.6</api-face.version>
-        		<!-- mongo -->
-				<mongo.host> 192.168.0.34:27017</mongo.host>
-				
-				<spring.redis.sentinel.master>mymaster</spring.redis.sentinel.master>
-				<spring.redis.sentinel.nodes>192.168.0.21:26379</spring.redis.sentinel.nodes>
-				<jedis.pool.maxidl>20</jedis.pool.maxidl>
-				<jedis.pool.minidl>8</jedis.pool.minidl>
-				<jedis.pool.maxtotal>500</jedis.pool.maxtotal>
-            </properties>
-        </profile>
-        <profile>
-            <id>simulation</id>
-            <properties>
-                <dataSource.jdbc.url><![CDATA[jdbc:mysql://10.10.249.158:3306/auth?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
-                <dataSource.jdbc.username>root</dataSource.jdbc.username>
-                <dataSource.jdbc.password>d2FuZ2h1YXRhbwo=</dataSource.jdbc.password>
-                
-                <gds.jdbc.url><![CDATA[jdbc:mysql://10.10.249.158:3306/gds?autoReconnect=true&zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
-                <gds.jdbc.username>root</gds.jdbc.username>
-                <gds.jdbc.password>d2FuZ2h1YXRhbwo=</gds.jdbc.password>
-
-                <crm.jdbc.url><![CDATA[jdbc:mysql://10.10.249.158:3306/ots?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
-                <crm.jdbc.username>root</crm.jdbc.username>
-                <crm.jdbc.password>d2FuZ2h1YXRhbwo=</crm.jdbc.password>
-
-                <oms.jdbc.url><![CDATA[jdbc:mysql://10.10.182.91:3306/oms?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
-                <oms.jdbc.username>pms-bj-developer</oms.jdbc.username>
-                <oms.jdbc.password>2zuevbheeN5wRWDnSBwd</oms.jdbc.password>
-                
-                <ZK.URL>10.10.249.158:2181</ZK.URL>
-                <office.dubbo.group.name>auth</office.dubbo.group.name>
-
-                <stlmt.server.url>http://asc.fangbaba.cc</stlmt.server.url>
-                <crm.url>http://crmas.fangbaba.cc/crmas/hms/public</crm.url>
-                <logFile.path>/data/logs/office.fangbaba.com/office.log</logFile.path>
-
-                <cas.server.host>cas.fangbaba.cc</cas.server.host>
-                <cas.service.host>office.fangbaba.cc</cas.service.host>
-                
-           		<dubbo.order.group>order_simu</dubbo.order.group>
-                <dubbo.gds.group>gds_simu</dubbo.gds.group>
-                <dubbo.stock.group>stock_simu</dubbo.stock.group>
-                <dubbo.basic.group>basic_simu</dubbo.basic.group>
-                <dubbo.sc.group>sc_simu</dubbo.sc.group>
-                <dubbo.crm.group>crm_simu</dubbo.crm.group>
-                <dubbo.datacenter.group>datacenter_simu</dubbo.datacenter.group>
-
-                <gds-face-version>0.0.1-SNAPSHOT</gds-face-version>
-                <stock-face-version>0.0.1-SNAPSHOT</stock-face-version>
-                <basic-face-version>1.0.8-SNAPSHOT</basic-face-version>
-                <settlement-face-version>0.0.1-SNAPSHOT</settlement-face-version>
-                <order-face-version>2.4.0</order-face-version>
-                <datacenter-face.version>1.1.0</datacenter-face.version>
-                <api-face.version>1.0.5</api-face.version>
-                <!-- mongo -->
-				<mongo.host>10.10.240.216:27017</mongo.host>
-            	
-                <spring.redis.sentinel.master>ds-redis</spring.redis.sentinel.master>
-                <spring.redis.sentinel.nodes>10.10.249.158:26379</spring.redis.sentinel.nodes>
-                <jedis.pool.maxidl>20</jedis.pool.maxidl>
-                <jedis.pool.minidl>8</jedis.pool.minidl>
-                <jedis.pool.maxtotal>500</jedis.pool.maxtotal>
-            </properties>
-        </profile>
-        <profile>
-            <id>clu</id>
-            <properties>
-                <dataSource.jdbc.url><![CDATA[jdbc:mysql://10.10.221.48:3306/auth?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
-                <dataSource.jdbc.username>denglei</dataSource.jdbc.username>
-                <dataSource.jdbc.password>#SXZjl6Tf#W#Fztl</dataSource.jdbc.password>
-                
-                <gds.jdbc.url><![CDATA[jdbc:mysql://10.10.221.48:3306/gds?autoReconnect=true&zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
-				<gds.jdbc.username>denglei</gds.jdbc.username>
-				<gds.jdbc.password>#SXZjl6Tf#W#Fztl</gds.jdbc.password>
-
-                <crm.jdbc.url><![CDATA[jdbc:mysql://10.10.221.48:3306/ots?autoReconnect=true&zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></crm.jdbc.url>
-                <crm.jdbc.username>wanghuatao</crm.jdbc.username>
-                <crm.jdbc.password>fXZoGdL9Wn1Z3HwM</crm.jdbc.password>
-
-                <oms.jdbc.url><![CDATA[jdbc:mysql://10.10.230.232:3306/oms?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
-                <oms.jdbc.username>oms_writer</oms.jdbc.username>
-                <oms.jdbc.password>ulsc5EoxCFIIjs(</oms.jdbc.password>
-
-                <ZK.URL>10.10.231.253:2181,10.10.240.233:2181</ZK.URL>
-                <office.dubbo.group.name>auth</office.dubbo.group.name>
-                <crm.url>http://crmas.fangbaba.com/crmas/hms/public</crm.url>
-                <stlmt.server.url>http://asc.fangbaba.com</stlmt.server.url>
-                <logFile.path>/data/logs/office.fangbaba.com/office.log</logFile.path>
-
-                <cas.server.host>cas.fangbaba.com</cas.server.host>
-                <cas.service.host>office.fangbaba.com</cas.service.host>
-                
-                <dubbo.order.group>order_clu</dubbo.order.group>
-                <dubbo.gds.group>gds_clu</dubbo.gds.group>
-                <dubbo.stock.group>stock_clu</dubbo.stock.group>
-                <dubbo.crm.group>crm_clu</dubbo.crm.group>
-                <dubbo.basic.group>basic_clu</dubbo.basic.group>
-                <dubbo.sc.group>sc</dubbo.sc.group>
-                <dubbo.datacenter.group>datacenter_clu</dubbo.datacenter.group>
-                <stock-face-version>1.0.4</stock-face-version>
-                <gds-face-version>3.1.8</gds-face-version>
-                <basic-face-version>1.1.1</basic-face-version>
-                <settlement-face-version>1.2.6</settlement-face-version>
-                <order-face-version>2.4.0</order-face-version>
-                <datacenter-face.version>1.1.0</datacenter-face.version>
-                <api-face.version>1.0.5</api-face.version>
-                 <!-- mongo -->
-				<mongo.host>10.10.191.169:27017</mongo.host>              
-            
-				<spring.redis.sentinel.master>ds-redis</spring.redis.sentinel.master>
-				<spring.redis.sentinel.nodes>10.10.240.233:26379,10.10.231.253:26379</spring.redis.sentinel.nodes>
-				<jedis.pool.maxidl>20</jedis.pool.maxidl>
-				<jedis.pool.minidl>8</jedis.pool.minidl>
-				<jedis.pool.maxtotal>500</jedis.pool.maxtotal>
-            </properties>
-        </profile>
     </profiles>
 
 </project>
