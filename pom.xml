@@ -745,12 +745,12 @@
             <!--<version>3.2.1</version>-->
         <!--</dependency>-->
         
+<!-- 		
 		<dependency>
 			<groupId>com.lz</groupId>
 			<artifactId>lz-mongo</artifactId>
 			<version>0.0.2</version>
 		</dependency>
-<!-- 		
 		<dependency>
 		  <groupId>com.fangbaba</groupId>
 		  <artifactId>crmas-face</artifactId>
@@ -990,8 +990,8 @@
                 <logFile.path>../logs/jeesite/office.log</logFile.path>
 
                 <!-- mongo -->
-				<mongo.host> 192.168.0.34:27017</mongo.host>
 				<!-- 
+				<mongo.host> 192.168.0.34:27017</mongo.host>
 				<spring.redis.sentinel.master>mymaster</spring.redis.sentinel.master>
 				<spring.redis.sentinel.nodes>192.168.0.21:26379</spring.redis.sentinel.nodes>
 				<jedis.pool.maxidl>20</jedis.pool.maxidl>
