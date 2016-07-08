@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>锌层测试班组报表</title>
+	<title>锌层测厚班组报表</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -18,8 +18,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/rpt/zinccoatingWorkTeamReport/">锌层测试班报表列表</a></li>
-		<shiro:hasPermission name="rpt:zinccoatingWorkTeamReport:edit"><li><a href="${ctx}/rpt/zinccoatingWorkTeamReport/form">锌层测试日志添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/rpt/zinccoatingWorkTeamReport/">锌层测厚班报表列表</a></li>
+		<shiro:hasPermission name="rpt:zinccoatingWorkTeamReport:edit"><li><a href="${ctx}/rpt/zinccoatingWorkTeamReport/form">锌层测厚日志添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="zinccoatingWorkTeamReport" action="${ctx}/rpt/zinccoatingWorkTeamReport/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

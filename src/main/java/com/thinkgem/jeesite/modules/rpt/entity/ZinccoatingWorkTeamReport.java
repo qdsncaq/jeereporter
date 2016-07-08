@@ -7,7 +7,8 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 锌层测厚班报表Entity.
  * 
- * @author xiaohong
+ * @author aiqing.chu
+ * @version 2017-07-07
  *
  */
 public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamReport> {

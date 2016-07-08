@@ -48,10 +48,24 @@
 	    0 AS zinctotalincreverse
 	</sql>
 	
+	<sql id="zinccoatingweeklyReportColumns">
+	    DATE_FORMAT(a.logtime, '%Y-%m-%d %h:00:00') AS logtime,
+	    a.loggroup AS 'loggroup',
+	    (CASE
+	        WHEN a.loggroup = 1 THEN '甲班'
+	        WHEN a.loggroup = 2 THEN '乙班'
+	        ELSE ''
+	    END) AS loggroupname,
+	    count(a.gencode) AS 'genqty',
+	    SUM(a.walklen) AS 'totallen',
+	    SUM(a.bandwidth * a.bandthickness * a.walklen * 7.9 / 1000000) AS totalsteel,
+        sum(a.zincrateunilateral+zincratefront+zincratereverse) as zincratetotal
+	</sql>
+	
 	<sql id="zinccoatingthicknessLogJoins">
 	</sql>
 	
-	<!-- 班报表 -->
+	<!-- 锌层测厚班报表 -->
 	<select id="queryZinccoatingworkteamReport" resultType="ZinccoatingWorkTeamReport">
         SELECT 
 			<include refid="zinccoatingworkteamReportColumns"/>
@@ -65,6 +79,30 @@
 			</if>
         </where>
         GROUP BY DATE_FORMAT(a.logtime, '%Y-%m-%d %h:%i:00') , a.loggroup
+        <choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			    ORDER BY a.logtime DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 锌层测厚周报表 -->
+	<select id="queryZinccoatingweeklyReport" resultType="ZinccoatingWeeklyReport">
+        SELECT 
+			<include refid="zinccoatingweeklyReportColumns"/>
+		FROM rpt_base_zinccoatingthickness_log a
+        <where>
+            <if test="beginLogtime != null and endLogtime != null and beginLogtime != '' and endLogtime != ''">
+				AND a.logtime BETWEEN #{beginLogtime} AND #{endLogtime}
+			</if>
+			<if test="loggroup != null and loggroup != ''">
+				AND a.loggroup = #{loggroup}
+			</if>
+        </where>
+        GROUP BY DATE_FORMAT(a.logtime, '%Y-%m-%d %h:00:00') , a.loggroup
         <choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}

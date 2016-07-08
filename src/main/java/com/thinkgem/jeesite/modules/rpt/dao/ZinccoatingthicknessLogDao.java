@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
+import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingWeeklyReport;
 import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingWorkTeamReport;
 import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingthicknessLog;
 
@@ -18,6 +19,20 @@ import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingthicknessLog;
 @MyBatisDao
 public interface ZinccoatingthicknessLogDao extends CrudDao<ZinccoatingthicknessLog> {
 	
+	/**
+	 * 查询锌层测厚班组报表.
+	 * 
+	 * @param zinccoatingWorkTeamReport
+	 * @return
+	 */
 	List<ZinccoatingWorkTeamReport> queryZinccoatingworkteamReport(ZinccoatingWorkTeamReport zinccoatingWorkTeamReport);
+	
+	/**
+	 * 查询锌层测厚周报表.
+	 * 
+	 * @param zinccoatingWeeklyReport
+	 * @return
+	 */
+	List<ZinccoatingWeeklyReport> queryZinccoatingweeklyReport(ZinccoatingWeeklyReport zinccoatingWeeklyReport);
 	
 }
