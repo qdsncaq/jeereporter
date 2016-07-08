@@ -100,7 +100,9 @@ public class OnOffLineDetailMongoDao {
 
 	private List<Document> toDocList(List<OnOffLineDetailMongo> entityList) {
 		List<Document> docList = new ArrayList<Document>();
-		entityList.forEach(entity -> docList.add(this.toDocument(entity)));
+		for (OnOffLineDetailMongo entity : entityList) {
+			docList.add(this.toDocument(entity));
+		}
 		return docList;
 	}
 

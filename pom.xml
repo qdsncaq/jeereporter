@@ -43,7 +43,7 @@
         <mssql.driver.version>1.3.1</mssql.driver.version>
 
         <!-- environment setting -->
-        <jdk.version>1.8</jdk.version>
+        <jdk.version>1.7</jdk.version>
         <tomcat.version>2.2</tomcat.version>
         <jetty.version>7.6.14.v20131031</jetty.version>
         <webserver.port>8181</webserver.port>
@@ -975,11 +975,11 @@
                 <dataSource.jdbc.username>root</dataSource.jdbc.username>
                 <dataSource.jdbc.password></dataSource.jdbc.password>
                 
-                <gds.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/gds?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
+                <gds.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
 				<gds.jdbc.username>root</gds.jdbc.username>
 				<gds.jdbc.password></gds.jdbc.password>
 
-                <crm.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/ots?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
+                <crm.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
                 <crm.jdbc.username>root</crm.jdbc.username>
                 <crm.jdbc.password></crm.jdbc.password>
 
@@ -1001,6 +1001,29 @@
             </properties>
         </profile>
 
+        <profile>
+            <id>saas</id>
+            <properties>
+                <dataSource.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/d6868ee2d9e414961bae126d127c16693?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
+                <dataSource.jdbc.username>ded480ac-01de</dataSource.jdbc.username>
+                <dataSource.jdbc.password>f9397f38-b9f0</dataSource.jdbc.password>
+                
+                <gds.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/d6868ee2d9e414961bae126d127c16693?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
+				<gds.jdbc.username>ded480ac-01de</gds.jdbc.username>
+				<gds.jdbc.password>f9397f38-b9f0</gds.jdbc.password>
+
+                <crm.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/d6868ee2d9e414961bae126d127c16693?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
+                <crm.jdbc.username>ded480ac-01de</crm.jdbc.username>
+                <crm.jdbc.password>f9397f38-b9f0</crm.jdbc.password>
+
+                <oms.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/d6868ee2d9e414961bae126d127c16693?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
+                <oms.jdbc.username>ded480ac-01de</oms.jdbc.username>
+                <oms.jdbc.password>f9397f38-b9f0</oms.jdbc.password>
+
+                <logFile.path>../logs/jeesite/office.log</logFile.path>
+            </properties>
+        </profile>
+        
     </profiles>
 
 </project>
