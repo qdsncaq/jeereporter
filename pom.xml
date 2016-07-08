@@ -987,7 +987,7 @@
                 <oms.jdbc.username>root</oms.jdbc.username>
                 <oms.jdbc.password></oms.jdbc.password>
 
-                <logFile.path>../logs/jeesite/office.log</logFile.path>
+                <logFile.path>../logs/jeesite/jeereporter.log</logFile.path>
 
                 <!-- mongo -->
 				<!-- 
@@ -1020,7 +1020,7 @@
                 <oms.jdbc.username>ded480ac-01de</oms.jdbc.username>
                 <oms.jdbc.password>f9397f38-b9f0</oms.jdbc.password>
 
-                <logFile.path>../logs/jeesite/office.log</logFile.path>
+                <logFile.path>../logs/jeesite/jeereporter.log</logFile.path>
             </properties>
         </profile>
         
