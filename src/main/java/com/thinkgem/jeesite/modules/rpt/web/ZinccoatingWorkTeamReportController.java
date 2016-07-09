@@ -57,7 +57,7 @@ public class ZinccoatingWorkTeamReportController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(ZinccoatingWorkTeamReport zinccoatingWorkTeamReport, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<ZinccoatingWorkTeamReport> page = new Page<ZinccoatingWorkTeamReport>(request, response);
-		page.setOrderBy(" logtime desc ");
+		page.setOrderBy(" logtime asc ");
 		zinccoatingWorkTeamReport.setPage(page);
 		List<ZinccoatingWorkTeamReport> list = zinccoatingWorkTeamReportService.queryZinccoatingworkteamReport(zinccoatingWorkTeamReport);
 		page.setList(list);

@@ -31,10 +31,13 @@ public class ZinccoatingthicknessLog extends DataEntity<ZinccoatingthicknessLog>
 	private String linespeed;		// 线速
 	private String walklen;		// 钢卷行走长度
 	private String zincrateunilateral;		// 单侧目标上锌量
+	private Double zincratetargetfront;    // 正面目标上锌量
+	private Double zincratetargetreverse;    //背面目标上锌量
 	private String detectionpositionfront;		// 正面检测位置
 	private String detectionpositionreverse;		// 反面检测位置
 	private String zincratefront;		// 正面上实时上锌量
 	private String zincratereverse;		// 反面上实时上锌量
+	private Integer flag;    // 接头信号标识
 	private Date beginLogtime;		// 开始 记录时间
 	private Date endLogtime;		// 结束 记录时间
 	
@@ -178,6 +181,30 @@ public class ZinccoatingthicknessLog extends DataEntity<ZinccoatingthicknessLog>
 
 	public void setEndLogtime(Date endLogtime) {
 		this.endLogtime = endLogtime;
+	}
+
+	public Double getZincratetargetfront() {
+		return zincratetargetfront;
+	}
+
+	public void setZincratetargetfront(Double zincratetargetfront) {
+		this.zincratetargetfront = zincratetargetfront;
+	}
+
+	public Double getZincratetargetreverse() {
+		return zincratetargetreverse;
+	}
+
+	public void setZincratetargetreverse(Double zincratetargetreverse) {
+		this.zincratetargetreverse = zincratetargetreverse;
+	}
+
+	public Integer getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Integer flag) {
+		this.flag = flag;
 	}
 		
 }

@@ -49,6 +49,20 @@ public class ZinccoatingthicknessLogService extends CrudService<Zinccoatingthick
 		super.delete(zinccoatingthicknessLog);
 	}
 	
+	/**
+	 * 
+	 * @param zinccoatingthicknessLog
+	 * @return
+	 */
+	public List<ZinccoatingthicknessLog> queryList(ZinccoatingthicknessLog zinccoatingthicknessLog) {
+		return dao.queryList(zinccoatingthicknessLog);
+	}
+	
+	/**
+	 * 
+	 * @param zinccoatingWeeklyReport
+	 * @return
+	 */
 	public List<ZinccoatingWeeklyReport> queryZinccoatingweeklyReport(ZinccoatingWeeklyReport zinccoatingWeeklyReport) {
 		return dao.queryZinccoatingweeklyReport(zinccoatingWeeklyReport);
 	}

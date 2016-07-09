@@ -42,7 +42,7 @@ public class ZinccoatingWeeklyReportController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(ZinccoatingWeeklyReport zinccoatingWeeklyReport, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<ZinccoatingWeeklyReport> page = new Page<ZinccoatingWeeklyReport>(request, response);
-		page.setOrderBy(" logtime desc ");
+		page.setOrderBy(" logtime asc ");
 		zinccoatingWeeklyReport.setPage(page);
 		List<ZinccoatingWeeklyReport> list = zinccoatingthicknessLogService.queryZinccoatingweeklyReport(zinccoatingWeeklyReport);
 		page.setList(list);

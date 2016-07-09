@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.rpt.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -46,11 +48,31 @@ public class ZinccoatingthicknessLogController extends BaseController {
 		return entity;
 	}
 	
+	/**
+	 * 
+	 * @param zinccoatingthicknessLog
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("rpt:zinccoatingthicknessLog:view")
+	@RequestMapping(value = {"queryList", ""})
+	public String queryList(ZinccoatingthicknessLog zinccoatingthicknessLog, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<ZinccoatingthicknessLog> page = new Page<ZinccoatingthicknessLog>();
+		page.setOrderBy(" a.logtime asc limit 100");
+		zinccoatingthicknessLog.setPage(page);
+		List<ZinccoatingthicknessLog> list = zinccoatingthicknessLogService.queryList(zinccoatingthicknessLog);
+		page.setList(list);
+		model.addAttribute("page", page);
+		return "modules/rpt/zinccoatingthicknessLogQueryList";
+	}
+	
 	@RequiresPermissions("rpt:zinccoatingthicknessLog:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(ZinccoatingthicknessLog zinccoatingthicknessLog, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<ZinccoatingthicknessLog> pagination = new Page<ZinccoatingthicknessLog>(request, response);
-		pagination.setOrderBy(" logtime desc ");
+		pagination.setOrderBy(" a.logtime asc ");
 		Page<ZinccoatingthicknessLog> page = zinccoatingthicknessLogService.findPage(pagination, zinccoatingthicknessLog); 
 		model.addAttribute("page", page);
 		return "modules/rpt/zinccoatingthicknessLogList";

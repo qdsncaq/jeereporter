@@ -20,6 +20,14 @@ import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingthicknessLog;
 public interface ZinccoatingthicknessLogDao extends CrudDao<ZinccoatingthicknessLog> {
 	
 	/**
+	 * 实时数据报表查询.
+	 * 
+	 * @param zinccoatingthicknessLog
+	 * @return
+	 */
+	List<ZinccoatingthicknessLog> queryList(ZinccoatingthicknessLog zinccoatingthicknessLog);
+	
+	/**
 	 * 查询锌层测厚班组报表.
 	 * 
 	 * @param zinccoatingWorkTeamReport

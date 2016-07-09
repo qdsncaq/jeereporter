@@ -7,17 +7,21 @@
 		a.logtime AS "logtime",
 		a.loggroup AS "loggroup",
 		a.prodcode AS "prodcode",
-		a.gencode AS "gencode",
+		a.gencode AS "loggencode",
+		t1.gencode AS "gencode",
 		a.workmode AS "workmode",
 		a.bandwidth AS "bandwidth",
 		a.bandthickness AS "bandthickness",
 		a.linespeed AS "linespeed",
 		a.walklen AS "walklen",
 		a.zincrateunilateral AS "zincrateunilateral",
+		a.zincratetargetfront AS "zincratetargetfront",
+		a.zincratetargetreverse AS "zincratetargetreverse",
 		a.detectionpositionfront AS "detectionpositionfront",
 		a.detectionpositionreverse AS "detectionpositionreverse",
 		a.zincratefront AS "zincratefront",
-		a.zincratereverse AS "zincratereverse"
+		a.zincratereverse AS "zincratereverse",
+		a.flag AS "flag"
 	</sql>
 	
 	<sql id="zinccoatingworkteamReportColumns">
@@ -65,6 +69,54 @@
 	<sql id="zinccoatingthicknessLogJoins">
 	</sql>
 	
+	<sql id="subqueryAutogencodeJoins">
+		LEFT JOIN (SELECT 
+		    @rowno:=@rowno + 1 AS rowno, log.logtime,log.prodcode,log.flag, CONCAT(log.fixcode, LPAD(@rowno,3,'0')) gencode
+		FROM
+		    (SELECT 
+		        logtime, prodcode, flag, CONCAT('RS', DATE_FORMAT(logtime, '%y%m%d')) AS fixcode
+		    FROM
+		        rpt_base_zinccoatingthickness_log
+		    WHERE
+		        flag = 1
+		    GROUP BY prodcode , flag
+		    ORDER BY logtime ASC) log,
+		    (SELECT @rowno:=0) t
+		ORDER BY rowno) t1
+	</sql>
+	
+	<!-- 实时数据列表 -->
+	<select id="queryList" resultType="ZinccoatingthicknessLog">
+		SELECT 
+			<include refid="zinccoatingthicknessLogColumns"/>
+		FROM rpt_base_zinccoatingthickness_log a
+		<include refid="subqueryAutogencodeJoins"/>
+		  ON a.prodcode = t1.prodcode 
+		<where>
+			
+			<if test="beginLogtime != null and endLogtime != null and beginLogtime != '' and endLogtime != ''">
+				AND a.logtime BETWEEN #{beginLogtime} AND #{endLogtime}
+			</if>
+			<if test="loggroup != null and loggroup != ''">
+				AND a.loggroup = #{loggroup}
+			</if>
+			<if test="prodcode != null and prodcode != ''">
+				AND a.prodcode = #{prodcode}
+			</if>
+			<if test="gencode != null and gencode != ''">
+				AND a.gencode = #{gencode}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			    ORDER BY a.logtime ASC
+			</otherwise>
+		</choose>
+	</select>
+	
 	<!-- 锌层测厚班报表 -->
 	<select id="queryZinccoatingworkteamReport" resultType="ZinccoatingWorkTeamReport">
         SELECT 
@@ -84,7 +136,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-			    ORDER BY a.logtime DESC
+			    ORDER BY a.logtime ASC
 			</otherwise>
 		</choose>
 	</select>
@@ -108,7 +160,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-			    ORDER BY a.logtime DESC
+			    ORDER BY a.logtime ASC
 			</otherwise>
 		</choose>
 	</select>
@@ -146,7 +198,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-			    ORDER BY id DESC
+			    ORDER BY a.logtime ASC
 			</otherwise>
 		</choose>
 	</select>
@@ -164,6 +216,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
+			    ORDER BY a.logtime ASC
 			</otherwise>
 		</choose>
 	</select>
