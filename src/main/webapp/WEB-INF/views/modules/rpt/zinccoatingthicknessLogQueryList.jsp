@@ -57,16 +57,16 @@
 				<th>生成编号</th>
 				<th>测厚仪工作模式</th>
 				<th>接头信号</th>
-				<th>带宽</th>
-				<th>带厚</th>
-				<th>线速</th>
-				<th>钢卷行走长度</th>
-				<th>正面目标上锌量</th>
-				<th>反面目标上锌量</th>
-				<th>正面检测位置</th>
-				<th>反面检测位置</th>
-				<th>正面上实时上锌量</th>
-				<th>反面上实时上锌量</th>
+				<th>带宽(mm)</th>
+				<th>带厚(mm)</th>
+				<th>线速(m/min)</th>
+				<th>钢卷行走长度(m)</th>
+				<th>正面目标上锌量(g)</th>
+				<th>反面目标上锌量(g)</th>
+				<th>正面检测位置(mm)</th>
+				<th>反面检测位置(mm)</th>
+				<th>正面上实时上锌量(g)</th>
+				<th>反面上实时上锌量(g)</th>
 				<shiro:hasPermission name="rpt:zinccoatingthicknessLog:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
