@@ -67,4 +67,13 @@ public class ZinccoatingthicknessLogService extends CrudService<Zinccoatingthick
 		return dao.queryZinccoatingweeklyReport(zinccoatingWeeklyReport);
 	}
 	
+	/**
+	 * 
+	 * @param zinccoatingMonthlyReport
+	 * @return
+	 */
+	public List<ZinccoatingWeeklyReport> queryZinccoatingmonthlyReport(ZinccoatingWeeklyReport zinccoatingMonthlyReport) {
+		return dao.queryZinccoatingmonthlyReport(zinccoatingMonthlyReport);
+	}
+	
 }

@@ -43,4 +43,12 @@ public interface ZinccoatingthicknessLogDao extends CrudDao<Zinccoatingthickness
 	 */
 	List<ZinccoatingWeeklyReport> queryZinccoatingweeklyReport(ZinccoatingWeeklyReport zinccoatingWeeklyReport);
 	
+	/**
+	 * 查询锌层测厚月报表.
+	 * 
+	 * @param zinccoatingMonthlyReport
+	 * @return
+	 */
+	List<ZinccoatingWeeklyReport> queryZinccoatingmonthlyReport(ZinccoatingWeeklyReport zinccoatingMonthlyReport);
+	
 }

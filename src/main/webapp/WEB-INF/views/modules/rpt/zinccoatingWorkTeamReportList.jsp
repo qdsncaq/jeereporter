@@ -60,7 +60,8 @@
 				<th>平均线速</th>
 				<th>钢卷总长</th>
 				<th>过钢量(吨）</th>
-				<th>目标上锌量（克）</th>
+				<th>正面目标上锌量(克)</th>
+				<th>反面目标上锌量(克)</th>
 				<th>正面平米上锌量平均值（克）</th>
 				<th>反面平米上锌量平均值（克）</th>
 				<th>上锌总增重（千克）</th>
@@ -103,7 +104,10 @@
 					<fmt:formatNumber value="${zinccoatingWorkTeamReport.totalsteel}" pattern="0.0"/>
 				</td>
 				<td nowrap style="text-align:right;">
-					<fmt:formatNumber value="${zinccoatingWorkTeamReport.zincratetarget}" pattern="0.0"/>
+					<fmt:formatNumber value="${zinccoatingWorkTeamReport.zincratetargetfront}" pattern="0.0"/>
+				</td>
+				<td nowrap style="text-align:right;">
+					<fmt:formatNumber value="${zinccoatingWorkTeamReport.zincratetargetreverse}" pattern="0.0"/>
 				</td>
 				<td nowrap style="text-align:right;">
 					<fmt:formatNumber value="${zinccoatingWorkTeamReport.zincrateavgfront}" pattern="0.0"/>
