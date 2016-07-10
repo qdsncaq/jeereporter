@@ -40,6 +40,9 @@
                 </form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<!-- <li class="btns"><input id="btnExport2Excel" class="btn btn-primary" type="button" value="导出Excel"/></li> -->
+			<!-- <li class="btns"><input id="btnViewReport" class="btn btn-primary" type="button" value="查看报表"/></li> -->
+			<li class="btns"><input id="btnDownloadReport" class="btn btn-primary" type="button" value="下载报表"/></li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>

@@ -65,8 +65,8 @@
 				<th>反面目标上锌量(g)</th>
 				<th>正面检测位置(mm)</th>
 				<th>反面检测位置(mm)</th>
-				<th>正面上实时上锌量(g)</th>
-				<th>反面上实时上锌量(g)</th>
+				<th>正面实时上锌量(g)</th>
+				<th>反面实时上锌量(g)</th>
 				<shiro:hasPermission name="rpt:zinccoatingthicknessLog:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -132,6 +132,6 @@
 		</c:forEach>
 		</tbody>
 	</table>
-	<div class="pagination">${page}</div>
+	<%-- <div class="pagination">${page}</div> --%>
 </body>
 </html>

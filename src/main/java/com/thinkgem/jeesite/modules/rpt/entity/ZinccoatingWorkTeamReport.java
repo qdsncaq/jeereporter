@@ -30,12 +30,14 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 	private Double linespeed;
 	private Double totallen;
 	private Double totalsteel;    // 过钢量(吨)
-	private Double zincratetarget;    // 目标上锌量（克）
-	private Double zincrateavgfront;    // 正面平米上锌量平均值（克）
-	private Double zincrateavgreverse;    // 反面平米上锌量平均值（克）
-	private Double zinctotalinc;    // 上锌总增总（千克）
-	private Double zinctotalincfront;    // 正面上锌增重（千克）
-	private Double zinctotalincreverse;    // 反面上锌增重（千克）
+	private Double zincratetarget;    // 目标上锌量(克)
+	private Double zincratetargetfront;    // 正面目标上锌量(克)
+    private Double zincratetargetreverse;    // 反面目标上锌量(克)
+	private Double zincrateavgfront;    // 正面平米上锌量平均值(克)
+	private Double zincrateavgreverse;    // 反面平米上锌量平均值(克)
+	private Double zinctotalinc;    // 上锌总增重(千克)
+	private Double zinctotalincfront;    // 正面上锌增重(千克)
+	private Double zinctotalincreverse;    // 反面上锌增重(千克)
 	private Date beginLogtime;		// 开始 记录时间
 	private Date endLogtime;		// 结束 记录时间
 	
@@ -145,6 +147,22 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.zincratetarget = zincratetarget;
 	}
 	
+	public Double getZincratetargetfront() {
+		return zincratetargetfront;
+	}
+
+	public void setZincratetargetfront(Double zincratetargetfront) {
+		this.zincratetargetfront = zincratetargetfront;
+	}
+
+	public Double getZincratetargetreverse() {
+		return zincratetargetreverse;
+	}
+
+	public void setZincratetargetreverse(Double zincratetargetreverse) {
+		this.zincratetargetreverse = zincratetargetreverse;
+	}
+
 	public Double getZincrateavgfront() {
 		return zincrateavgfront;
 	}
