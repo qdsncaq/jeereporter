@@ -40,6 +40,11 @@ public class ZinccoatingthicknessLog extends DataEntity<ZinccoatingthicknessLog>
 	private Integer flag;    // 接头信号标识
 	private Date beginLogtime;		// 开始 记录时间
 	private Date endLogtime;		// 结束 记录时间
+	private Double maxOffsetFront;  // 正面上锌量最大偏差值
+	private Double minOffsetFront;  // 正面上锌量最小偏差值
+	private Double maxOffsetReverse;  // 反面上锌量最大偏差值
+	private Double minOffsetReverse;  // 反面上锌量最小偏差值
+	
 	
 	public ZinccoatingthicknessLog() {
 		super();
@@ -206,5 +211,37 @@ public class ZinccoatingthicknessLog extends DataEntity<ZinccoatingthicknessLog>
 	public void setFlag(Integer flag) {
 		this.flag = flag;
 	}
-		
+
+	public Double getMaxOffsetFront() {
+		return maxOffsetFront;
+	}
+
+	public void setMaxOffsetFront(Double maxOffsetFront) {
+		this.maxOffsetFront = maxOffsetFront;
+	}
+
+	public Double getMinOffsetFront() {
+		return minOffsetFront;
+	}
+
+	public void setMinOffsetFront(Double minOffsetFront) {
+		this.minOffsetFront = minOffsetFront;
+	}
+
+	public Double getMaxOffsetReverse() {
+		return maxOffsetReverse;
+	}
+
+	public void setMaxOffsetReverse(Double maxOffsetReverse) {
+		this.maxOffsetReverse = maxOffsetReverse;
+	}
+
+	public Double getMinOffsetReverse() {
+		return minOffsetReverse;
+	}
+
+	public void setMinOffsetReverse(Double minOffsetReverse) {
+		this.minOffsetReverse = minOffsetReverse;
+	}
+
 }

@@ -68,6 +68,28 @@ public class ZinccoatingthicknessLogController extends BaseController {
 		return "modules/rpt/zinccoatingthicknessLogQueryList";
 	}
 	
+	@RequiresPermissions("rpt:zinccoatingthicknessLogExceptionList:view")
+	@RequestMapping(value = {"exceptionList", ""})
+	public String exceptionList(ZinccoatingthicknessLog zinccoatingthicknessLog, HttpServletRequest request, HttpServletResponse response, Model model) {
+		if (zinccoatingthicknessLog.getMaxOffsetFront() == null) {
+			zinccoatingthicknessLog.setMaxOffsetFront(10d);
+		}
+		if (zinccoatingthicknessLog.getMinOffsetFront() == null) {
+			zinccoatingthicknessLog.setMinOffsetFront(-10d);
+		}
+		if (zinccoatingthicknessLog.getMaxOffsetReverse() == null) {
+			zinccoatingthicknessLog.setMaxOffsetReverse(10d);
+		}
+		if (zinccoatingthicknessLog.getMinOffsetReverse() == null) {
+			zinccoatingthicknessLog.setMinOffsetReverse(-10d);
+		}
+		Page<ZinccoatingthicknessLog> pagination = new Page<ZinccoatingthicknessLog>(request, response);
+		pagination.setOrderBy(" a.logtime asc ");
+		Page<ZinccoatingthicknessLog> page = zinccoatingthicknessLogService.findPage(pagination, zinccoatingthicknessLog); 
+		model.addAttribute("page", page);
+		return "modules/rpt/zinccoatingthicknessLogExceptionList";
+	}
+
 	@RequiresPermissions("rpt:zinccoatingthicknessLog:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(ZinccoatingthicknessLog zinccoatingthicknessLog, HttpServletRequest request, HttpServletResponse response, Model model) {

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>锌层测厚日志管理</title>
+	<title>锌层测厚异常数据</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -18,10 +18,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/rpt/zinccoatingthicknessLog/list">锌层测厚日志列表</a></li>
+		<li class="active"><a href="${ctx}/rpt/zinccoatingthicknessLog/exceptionList">锌层测厚异常数据列表</a></li>
 		<shiro:hasPermission name="rpt:zinccoatingthicknessLog:edit"><li><a href="${ctx}/rpt/zinccoatingthicknessLog/form">锌层测试日志添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="zinccoatingthicknessLog" action="${ctx}/rpt/zinccoatingthicknessLog/list" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="zinccoatingthicknessLog" action="${ctx}/rpt/zinccoatingthicknessLog/exceptionList" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -34,13 +34,21 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:true});"/>
 			</li>
 			<li><label>班组：</label>
-				<form:input path="loggroup" htmlEscape="false" maxlength="1" class="input-medium"/>
+				<form:input path="loggroup" htmlEscape="false" maxlength="1" class="input-small"/>
 			</li>
 			<li><label>生产编号：</label>
-				<form:input path="prodcode" htmlEscape="false" maxlength="50" class="input-medium"/>
+				<form:input path="prodcode" htmlEscape="false" maxlength="50" class="input-small"/>
 			</li>
 			<li><label>生成编号：</label>
-				<form:input path="gencode" htmlEscape="false" maxlength="50" class="input-medium"/>
+				<form:input path="gencode" htmlEscape="false" maxlength="50" class="input-small"/>
+			</li>
+			<li><label>正面偏差：</label>
+				最高<form:input type="number" path="maxOffsetFront" htmlEscape="false" maxlength="50" class="input-mini"/>
+				最低<form:input type="number" path="minOffsetFront" htmlEscape="false" maxlength="50" class="input-mini"/>
+			</li>
+			<li><label>反面偏差：</label>
+				最高<form:input type="number" path="maxOffsetReverse" htmlEscape="false" maxlength="50" class="input-mini"/>
+				最低<form:input type="number" path="minOffsetReverse" htmlEscape="false" maxlength="50" class="input-mini"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
@@ -56,15 +64,18 @@
 				<th>生产编号</th>
 				<th>生成编号</th>
 				<th>测厚仪工作模式</th>
-				<th>带宽</th>
-				<th>带厚</th>
-				<th>线速</th>
-				<th>钢卷行走长度</th>
-				<th>单侧目标上锌量</th>
-				<th>正面检测位置</th>
-				<th>反面检测位置</th>
-				<th>正面上实时上锌量</th>
-				<th>反面上实时上锌量</th>
+				<th>带宽(mm)</th>
+				<th>带厚(mm)</th>
+				<th>线速(m/min)</th>
+				<th>钢卷行走长度(m)</th>
+				<th>正面目标上锌量(g)</th>
+				<th>反面目标上锌量(g)</th>
+				<th>正面检测位置(mm)</th>
+				<th>反面检测位置(mm)</th>
+				<th>正面上实时上锌量(g)</th>
+				<th>反面上实时上锌量(g)</th>
+				<th>正面上锌量偏差(g)</th>
+				<th>反面上锌量偏差(g)</th>
 				<shiro:hasPermission name="rpt:zinccoatingthicknessLog:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -102,7 +113,10 @@
 					<fmt:formatNumber value="${zinccoatingthicknessLog.walklen}" pattern="0.0"/>
 				</td>
 				<td nowrap style="text-align:right;">
-					<fmt:formatNumber value="${zinccoatingthicknessLog.zincrateunilateral}" pattern="0.0"/>
+					<fmt:formatNumber value="${zinccoatingthicknessLog.zincratetargetfront}" pattern="0.0"/>
+				</td>
+				<td nowrap style="text-align:right;">
+					<fmt:formatNumber value="${zinccoatingthicknessLog.zincratetargetreverse}" pattern="0.0"/>
 				</td>
 				<td nowrap style="text-align:right;">
 					<fmt:formatNumber value="${zinccoatingthicknessLog.detectionpositionfront}" pattern="0.0"/>
@@ -115,6 +129,12 @@
 				</td>
 				<td nowrap style="text-align:right;">
 					<fmt:formatNumber value="${zinccoatingthicknessLog.zincratereverse}" pattern="0.0"/>
+				</td>
+				<td nowrap style="text-align:right;">
+					<fmt:formatNumber value="${zinccoatingthicknessLog.zincratetargetfront - zinccoatingthicknessLog.zincratefront}" pattern="0.0"/>
+				</td>
+				<td nowrap style="text-align:right;">
+					<fmt:formatNumber value="${zinccoatingthicknessLog.zincratetargetreverse - zinccoatingthicknessLog.zincratereverse}" pattern="0.0"/>
 				</td>
 				<shiro:hasPermission name="rpt:zinccoatingthicknessLog:edit"><td nowrap>
     				<a href="${ctx}/rpt/zinccoatingthicknessLog/form?id=${zinccoatingthicknessLog.id}">修改</a>

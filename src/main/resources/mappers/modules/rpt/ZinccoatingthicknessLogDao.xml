@@ -8,7 +8,6 @@
 		a.loggroup AS "loggroup",
 		a.prodcode AS "prodcode",
 		a.gencode AS "loggencode",
-		t1.gencode AS "gencode",
 		a.workmode AS "workmode",
 		a.bandwidth AS "bandwidth",
 		a.bandthickness AS "bandthickness",
@@ -24,6 +23,28 @@
 		a.flag AS "flag"
 	</sql>
 	
+	<sql id="zinccoatingthicknessLogWithAutoCodeColumns">
+		a.id AS "id",
+		a.logtime AS "logtime",
+		a.loggroup AS "loggroup",
+		a.prodcode AS "prodcode",
+		a.gencode AS "loggencode",
+		t1.gencode AS "gencode",
+		a.workmode AS "workmode",
+		a.bandwidth AS "bandwidth",
+		a.bandthickness AS "bandthickness",
+		a.linespeed AS "linespeed",
+		a.walklen AS "walklen",
+		a.zincrateunilateral AS "zincrateunilateral",
+		a.zincratetargetfront AS "zincratetargetfront",
+		a.zincratetargetreverse AS "zincratetargetreverse",
+		a.detectionpositionfront AS "detectionpositionfront",
+		a.detectionpositionreverse AS "detectionpositionreverse",
+		a.zincratefront AS "zincratefront",
+		a.zincratereverse AS "zincratereverse",
+		a.flag AS "flag"
+	</sql>
+
 	<sql id="zinccoatingworkteamReportColumns">
 	    DATE_FORMAT(a.logtime, '%Y-%m-%d %h:%i:00') AS logtime,
 	    a.loggroup AS 'loggroup',
@@ -131,7 +152,7 @@
 	<!-- 实时数据列表 -->
 	<select id="queryList" resultType="ZinccoatingthicknessLog">
 		SELECT 
-			<include refid="zinccoatingthicknessLogColumns"/>
+			<include refid="zinccoatingthicknessLogWithAutoCodeColumns"/>
 		FROM rpt_base_zinccoatingthickness_log a
 		<include refid="subqueryAutogencodeJoins"/>
 		  ON a.prodcode = t1.prodcode 
@@ -244,7 +265,6 @@
 		SELECT 
 			<include refid="zinccoatingthicknessLogColumns"/>
 		FROM rpt_base_zinccoatingthickness_log a
-		<include refid="zinccoatingthicknessLogJoins"/>
 		<where>
 			
 			<if test="beginLogtime != null and endLogtime != null and beginLogtime != '' and endLogtime != ''">
@@ -259,6 +279,21 @@
 			<if test="gencode != null and gencode != ''">
 				AND a.gencode = #{gencode}
 			</if>
+			
+			AND (
+			    <if test="maxOffsetFront != null">
+			        a.zincratetargetfront - a.zincratefront <![CDATA[ >= #{maxOffsetFront} ]]>
+			    </if>
+			    <if test="minOffsetFront != null">
+			        or a.zincratetargetfront - a.zincratefront <![CDATA[ <= #{minOffsetFront} ]]>
+			    </if>
+			    <if test="maxOffsetReverse != null">
+			        or a.zincratetargetreverse - a.zincratereverse <![CDATA[ >= #{maxOffsetReverse} ]]>
+			    </if>
+			    <if test="minOffsetReverse != null">
+			        or a.zincratetargetreverse - a.zincratereverse <![CDATA[ <= #{minOffsetReverse} ]]>
+			    </if>
+			)
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
