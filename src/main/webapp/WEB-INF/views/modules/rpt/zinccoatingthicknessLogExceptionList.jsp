@@ -142,6 +142,13 @@
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
+		<c:if test="${page.list.size() == 0 }">
+          <tr>
+            <td colspan="100%" style="word-wrap:break-word;word-break:break-all;">
+                未查找到符合条件的数据.
+            </td>
+          </tr>
+        </c:if>
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>

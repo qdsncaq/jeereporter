@@ -19,7 +19,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/rpt/zinccoatingWorkTeamReport/">锌层测厚班报表列表</a></li>
-		<shiro:hasPermission name="rpt:zinccoatingWorkTeamReport:edit"><li><a href="${ctx}/rpt/zinccoatingWorkTeamReport/form">锌层测厚日志添加</a></li></shiro:hasPermission>
+		<li><a href="${ctx}/rpt/zinccoatingWorkTeamReport/chartform">图表展示</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="zinccoatingWorkTeamReport" action="${ctx}/rpt/zinccoatingWorkTeamReport/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -130,6 +130,13 @@
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
+		<c:if test="${page.list.size() == 0 }">
+          <tr>
+            <td colspan="100%" style="word-wrap:break-word;word-break:break-all;">
+                未查找到符合条件的数据.
+            </td>
+          </tr>
+        </c:if>
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>

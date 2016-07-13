@@ -65,4 +65,24 @@ public class ZinccoatingWorkTeamReportController extends BaseController {
 		return "modules/rpt/zinccoatingWorkTeamReportList";
 	}
 	
+	/**
+	 * 图表展示
+	 * @param zinccoatingWorkTeamReport
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("rpt:zinccoatingWorkTeamReport:view")
+	@RequestMapping(value = "chartform")
+	public String chartform(ZinccoatingWorkTeamReport zinccoatingWorkTeamReport, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<ZinccoatingWorkTeamReport> page = new Page<ZinccoatingWorkTeamReport>(request, response);
+		page.setOrderBy(" logtime asc ");
+		zinccoatingWorkTeamReport.setPage(page);
+		List<ZinccoatingWorkTeamReport> list = zinccoatingWorkTeamReportService.queryZinccoatingworkteamReport(zinccoatingWorkTeamReport);
+		page.setList(list);
+		model.addAttribute("page", page);
+		return "modules/rpt/zinccoatingWorkTeamChartform";
+	}
+	
 }
