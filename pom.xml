@@ -1004,21 +1004,21 @@
         <profile>
             <id>saas</id>
             <properties>
-                <dataSource.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/d6868ee2d9e414961bae126d127c16693?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
-                <dataSource.jdbc.username>2d67f889-3c8e</dataSource.jdbc.username>
-                <dataSource.jdbc.password>039b77c9-6c9e</dataSource.jdbc.password>
+                <dataSource.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/debd2b185c41049a794daafb32a78f9a6?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
+                <dataSource.jdbc.username>0b55c8a0-04be</dataSource.jdbc.username>
+                <dataSource.jdbc.password>6ae9c95d-5eb2</dataSource.jdbc.password>
                 
-                <gds.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/d6868ee2d9e414961bae126d127c16693?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
-				<gds.jdbc.username>2d67f889-3c8e</gds.jdbc.username>
-				<gds.jdbc.password>039b77c9-6c9e</gds.jdbc.password>
+                <gds.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/debd2b185c41049a794daafb32a78f9a6?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
+				<gds.jdbc.username>0b55c8a0-04be</gds.jdbc.username>
+				<gds.jdbc.password>6ae9c95d-5eb2</gds.jdbc.password>
 
-                <crm.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/d6868ee2d9e414961bae126d127c16693?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
-                <crm.jdbc.username>2d67f889-3c8e</crm.jdbc.username>
-                <crm.jdbc.password>039b77c9-6c9e</crm.jdbc.password>
+                <crm.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/debd2b185c41049a794daafb32a78f9a6?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
+                <crm.jdbc.username>0b55c8a0-04be</crm.jdbc.username>
+                <crm.jdbc.password>6ae9c95d-5eb2</crm.jdbc.password>
 
-                <oms.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/d6868ee2d9e414961bae126d127c16693?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
-                <oms.jdbc.username>2d67f889-3c8e</oms.jdbc.username>
-                <oms.jdbc.password>039b77c9-6c9e</oms.jdbc.password>
+                <oms.jdbc.url><![CDATA[jdbc:mysql://192.168.1.11:3306/debd2b185c41049a794daafb32a78f9a6?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
+                <oms.jdbc.username>0b55c8a0-04be</oms.jdbc.username>
+                <oms.jdbc.password>6ae9c95d-5eb2</oms.jdbc.password>
 
                 <logFile.path>../logs/jeesite/jeereporter.log</logFile.path>
             </properties>
