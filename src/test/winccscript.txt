@@ -1,0 +1,88 @@
+Function Action()
+HMIRuntime.Tags ("N").Write 5
+Dim objConnection
+Dim strConnectionString
+
+Dim StringA1
+Dim StringA2
+Dim StringA3
+Dim StringA4
+Dim lngA5
+Dim lngA6
+Dim lngA7
+Dim lngA8
+Dim lngA9
+Dim lngA10
+Dim lngA11
+Dim lngA12
+Dim lngA13
+Dim lngA14
+Dim lngA15
+Dim lngA16
+Dim lngA17
+Dim lngA18
+Dim lngA19
+Dim lngA20
+Dim lngA21
+Dim lngA22
+Dim lngA23
+Dim strSQL
+Dim objCommand
+HMIRuntime.Tags ("N").Write 35
+'strConnectionString = "provider=MSDASQL;DSN=SampleDSN;UID=;pwd=;"
+
+'配置mysql数据源：开始
+strConnectionString = "DRIVER={MySQL ODBC 5.3 Unicode Driver};"
+        strConnectionString = strConnectionString & "DATABASE=" & "yourdbname" & ";"
+        strConnectionString = strConnectionString & "UID=" & "yourDbuser" & ";"
+        strConnectionString = strConnectionString & "PWD=" & "yourpasswords" & ";"
+        strConnectionString = strConnectionString & "SERVER=" & "127.0.0.1" & ";"
+        strConnectionString = strConnectionString & "PORT=" & 3306 & ";"
+        strConnectionString = strConnectionString & "Option=3;"
+'配置mysql数据源：结束
+
+StringA1 = HMIRuntime.Tags("产品数据_成品钢卷编号").Read
+StringA2 = HMIRuntime.Tags("产品数据_成品材质").Read
+StringA3 = HMIRuntime.Tags("产品数据_工序名称").Read
+StringA4 =  HMIRuntime.Tags("产品数据_班次").Read
+lngA5 = HMIRuntime.Tags("产品数据_成品开卷带厚").Read
+lngA6 = HMIRuntime.Tags("产品数据_成品开卷带宽").Read
+lngA7 = HMIRuntime.Tags("产品数据_成品开卷重量").Read
+lngA8 = HMIRuntime.Tags("产品数据_成品开卷带头重量").Read
+lngA9 = HMIRuntime.Tags("产品数据_成品开卷平均线速").Read
+lngA10 = HMIRuntime.Tags("产品数据_成品预热出口带温").Read
+lngA11 = HMIRuntime.Tags("产品数据_成品还原出口带温").Read
+lngA12 = HMIRuntime.Tags("产品数据_成品入锌锅带温").Read
+lngA13 = HMIRuntime.Tags("产品数据_成品锌锅温度").Read
+lngA14 = HMIRuntime.Tags("产品数据_成品燃气耗量").Read
+lngA15 = HMIRuntime.Tags("产品数据_成品拉矫延生率").Read
+lngA16 = HMIRuntime.Tags("产品数据_成品钝化温度").Read
+lngA17 = HMIRuntime.Tags("产品数据_成品输入带厚").Read
+lngA18 = HMIRuntime.Tags("产品数据_成品输入带宽").Read
+lngA19 = HMIRuntime.Tags("产品数据_成品输入重量").Read
+lngA20 = HMIRuntime.Tags("产品数据_成品输入带头重量").Read
+lngA21 = HMIRuntime.Tags("产品数据_成品输入卷径").Read
+lngA22 = HMIRuntime.Tags("产品数据_成品长度").Read
+lngA23 = HMIRuntime.Tags("产品数据_成品长度").Read
+strSQL = "INSERT INTO Table_1 (MYDATE,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18,A19,A20,A21,A22,A23) VALUES (getDate(),'"& StringA1 &"' ,'"& StringA2 &"','"& StringA3 &"','"& StringA4 &"'," & lngA5 &","& lngA6 &"," & lngA7 & "," & lngA8 & "," & lngA9 & ","& lngA10 &"," & lngA11 & "," & lngA12 &","& lngA13 &"," & lngA14 & "," & lngA15 &","& lngA16 &"," & lngA17 & "," & lngA18 &","& lngA19 &","& lngA20 &"," & lngA21 & "," & lngA22 &"," & lngA23 &");"
+Set objConnection = CreateObject("ADODB.Connection")
+HMIRuntime.Tags ("N").Write 77
+objConnection.ConnectionString = strConnectionString
+HMIRuntime.Tags ("N").Write 78
+objConnection.Open
+HMIRuntime.Tags ("N").Write 79
+',
+Set objCommand = CreateObject("ADODB.Command")
+',,
+With objCommand
+    .ActiveConnection = objConnection
+    .CommandText = strSQL
+End With
+objCommand.Execute
+Set objCommand = Nothing
+objConnection.Close
+HMIRuntime.Tags ("N").Write 100
+Set objConnection = Nothing
+HMIRuntime.Tags ("N").Write 0
+
+End Function

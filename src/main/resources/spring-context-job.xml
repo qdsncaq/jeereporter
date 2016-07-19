@@ -1,0 +1,38 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+    
+    <!-- 有赞销售月账单 TaskJob -->
+    <bean id="demoTaskJobBean"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="demoTaskJob" />
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent">
+            <value>false</value>
+        </property>
+    </bean>
+     <!-- 有赞销售月账单：每月 1号凌晨1点50分 执行 -->
+    <bean id="demoTaskJobTimer" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="demoTaskJobBean" />
+        </property>
+        <property name="cronExpression">
+             <value>0/5 * * * * ? </value>
+        </property>
+    </bean>
+	
+	<bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="demoTaskJobTimer"/>
+			</list>
+		</property>
+	</bean>
+</beans>
