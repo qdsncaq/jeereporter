@@ -7,7 +7,7 @@
 		a.logtime AS "logtime",
 		a.loggroup AS "loggroup",
 		a.prodcode AS "prodcode",
-		a.gencode AS "loggencode",
+		a.gencode AS "gencode",
 		a.workmode AS "workmode",
 		a.bandwidth AS "bandwidth",
 		a.bandthickness AS "bandthickness",
@@ -185,7 +185,7 @@
 	<select id="queryZinccoatingworkteamReport" resultType="ZinccoatingWorkTeamReport">
         SELECT 
 			<include refid="workteamReportColumns"/>
-		FROM rpt_workteam a
+		FROM v_rpt_workteam a
         <where>
             <if test="beginLogtime != null and endLogtime != null and beginLogtime != '' and endLogtime != ''">
 				AND a.logtime BETWEEN #{beginLogtime} AND #{endLogtime}
@@ -209,7 +209,7 @@
 	<select id="queryZinccoatingweeklyReport" resultType="ZinccoatingWeeklyReport">
         SELECT 
 			<include refid="zinccoatingweeklyReportColumns"/>
-		FROM rpt_workteam a
+		FROM v_rpt_workteam a
         <where>
             <if test="beginLogtime != null and endLogtime != null and beginLogtime != '' and endLogtime != ''">
 				AND a.logtime BETWEEN #{beginLogtime} AND #{endLogtime}
@@ -233,7 +233,7 @@
 	<select id="queryZinccoatingmonthlyReport" resultType="ZinccoatingMonthlyReport">
         SELECT 
 			<include refid="monthlyReportColumns"/>
-		FROM rpt_workteam a
+		FROM v_rpt_workteam a
         <where>
             <if test="beginLogtime != null and endLogtime != null and beginLogtime != '' and endLogtime != ''">
 				AND a.logtime BETWEEN #{beginLogtime} AND #{endLogtime}
@@ -280,7 +280,7 @@
 				AND a.gencode = #{gencode}
 			</if>
 			
-			AND (
+			<!-- AND (
 			    <if test="maxOffsetFront != null">
 			        a.zincratetargetfront - a.zincratefront <![CDATA[ >= #{maxOffsetFront} ]]>
 			    </if>
@@ -293,7 +293,7 @@
 			    <if test="minOffsetReverse != null">
 			        or a.zincratetargetreverse - a.zincratereverse <![CDATA[ <= #{minOffsetReverse} ]]>
 			    </if>
-			)
+			) -->
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

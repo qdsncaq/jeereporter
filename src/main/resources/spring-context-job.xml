@@ -31,7 +31,7 @@
 	<bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="demoTaskJobTimer"/>
+				<!-- <ref bean="demoTaskJobTimer"/> -->
 			</list>
 		</property>
 	</bean>
