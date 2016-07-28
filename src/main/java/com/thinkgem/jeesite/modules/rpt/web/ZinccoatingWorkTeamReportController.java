@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.thinkgem.jeesite.common.mapper.JsonMapper;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -82,6 +84,12 @@ public class ZinccoatingWorkTeamReportController extends BaseController {
 		List<ZinccoatingWorkTeamReport> list = zinccoatingWorkTeamReportService.queryZinccoatingworkteamReport(zinccoatingWorkTeamReport);
 		page.setList(list);
 		model.addAttribute("page", page);
+//		
+//		JsonMapper jsonMapper = JsonMapper.getInstance();
+//		ObjectNode node = jsonMapper.createObjectNode();
+		
+		model.addAttribute("$chartoption$", "");
+		
 		return "modules/rpt/zinccoatingWorkTeamChartform";
 	}
 	

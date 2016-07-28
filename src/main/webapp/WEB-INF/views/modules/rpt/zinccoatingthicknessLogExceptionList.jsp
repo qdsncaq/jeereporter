@@ -26,11 +26,17 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li><label>记录时间：</label>
-				<input name="beginLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+<%-- 				<input name="beginLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${zinccoatingthicknessLog.beginLogtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:true});"/> - 
 				<input name="endLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${zinccoatingthicknessLog.endLogtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:true});"/>
+ --%>                <input name="beginLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="${zinccoatingthicknessLog.beginLogtime}"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:true});"/> - 
+				<input name="endLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="${zinccoatingthicknessLog.endLogtime}"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:true});"/>
 			</li>
 			<li><label>班组：</label>
@@ -86,7 +92,7 @@
 					${zinccoatingthicknessLog.id}
 				</a></td>
 				<td nowrap style="text-align:center;">
-					<fmt:formatDate value="${zinccoatingthicknessLog.logtime}" pattern="yyyy-MM-dd HH:mm:ss S"/>
+					${zinccoatingthicknessLog.logtime}
 				</td>
 				<td nowrap style="text-align:center;">
 					${fns:getDictLabel(zinccoatingthicknessLog.loggroup, 'RPT_WORK_TEAM', '')}

@@ -4,7 +4,7 @@
     
 	<sql id="zinccoatingthicknessLogColumns">
 		a.id AS "id",
-		a.logtime AS "logtime",
+		CONCAT(a.logtime,'.', LPAD(a.msvalue,3,'0')) AS "logtime",
 		a.loggroup AS "loggroup",
 		a.prodcode AS "prodcode",
 		a.gencode AS "gencode",
@@ -48,11 +48,7 @@
 	<sql id="zinccoatingworkteamReportColumns">
 	    DATE_FORMAT(a.logtime, '%Y-%m-%d %h:%i:00') AS logtime,
 	    a.loggroup AS 'loggroup',
-	    (CASE
-	        WHEN a.loggroup = 1 THEN '甲班'
-	        WHEN a.loggroup = 2 THEN '乙班'
-	        ELSE ''
-	    END) AS loggroupname,
+	    a.loggroup AS 'loggroupname',
 	    a.prodcode AS 'prodcode',
 	    a.gencode AS 'gencode',
 	    a.workmode AS 'workmode',
@@ -104,11 +100,7 @@
 	<sql id="zinccoatingweeklyReportColumns">
 	    DATE_FORMAT(a.logtime, '%Y-%m-%d %h:00:00') AS logtime,
 	    a.loggroup AS 'loggroup',
-	    (CASE
-	        WHEN a.loggroup = 1 THEN '甲班'
-	        WHEN a.loggroup = 2 THEN '乙班'
-	        ELSE ''
-	    END) AS loggroupname,
+	    a.loggroup AS 'loggroupname',
 	    COUNT(a.gencode) AS 'genqty',
 	    SUM(a.totallen) AS 'totallen',
 	    SUM(a.bandwidth * a.bandthickness * a.totallen * 7.9 / 1000000) AS totalsteel,
@@ -119,11 +111,7 @@
 	<sql id="monthlyReportColumns">
         DATE_FORMAT(a.logtime, '%Y-%m-%d') AS logtime,
 	    a.loggroup AS 'loggroup',
-	    (CASE
-	        WHEN a.loggroup = 1 THEN '甲班'
-	        WHEN a.loggroup = 2 THEN '乙班'
-	        ELSE ''
-	    END) AS loggroupname,
+	    a.loggroup AS 'loggroupname',
 	    count(a.gencode) AS 'genqty',
 	    SUM(a.totallen) AS 'totallen',
 	    SUM(a.bandwidth * a.bandthickness * a.totallen * 7.9 / 1000000) AS totalsteel,
@@ -280,7 +268,9 @@
 				AND a.gencode = #{gencode}
 			</if>
 			
-			<!-- AND (
+			<if test="maxOffsetFront != null or minOffsetFront != null or maxOffsetReverse != null or minOffsetReverse != null">
+			AND (
+			</if>
 			    <if test="maxOffsetFront != null">
 			        a.zincratetargetfront - a.zincratefront <![CDATA[ >= #{maxOffsetFront} ]]>
 			    </if>
@@ -293,7 +283,9 @@
 			    <if test="minOffsetReverse != null">
 			        or a.zincratetargetreverse - a.zincratereverse <![CDATA[ <= #{minOffsetReverse} ]]>
 			    </if>
-			) -->
+			<if test="maxOffsetFront != null or minOffsetFront != null or maxOffsetReverse != null or minOffsetReverse != null">
+			)
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

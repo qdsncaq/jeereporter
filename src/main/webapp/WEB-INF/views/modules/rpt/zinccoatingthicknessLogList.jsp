@@ -75,7 +75,8 @@
 					${zinccoatingthicknessLog.id}
 				</a></td>
 				<td nowrap style="text-align:center;">
-					<fmt:formatDate value="${zinccoatingthicknessLog.logtime}" pattern="yyyy-MM-dd HH:mm:ss S"/>
+					<%-- <fmt:formatDate value="${zinccoatingthicknessLog.logtime}" pattern="yyyy-MM-dd HH:mm:ss S"/> --%>
+					${zinccoatingthicknessLog.logtime}
 				</td>
 				<td nowrap style="text-align:center;">
 					${fns:getDictLabel(zinccoatingthicknessLog.loggroup, 'RPT_WORK_TEAM', '')}

@@ -753,7 +753,13 @@
           <artifactId>crmas-face</artifactId>
           <version>0.0.5</version>
         </dependency>
- -->        
+ -->
+        <!-- https://mvnrepository.com/artifact/com.github.abel533/ECharts -->
+        <dependency>
+            <groupId>com.github.abel533</groupId>
+            <artifactId>ECharts</artifactId>
+            <version>3.0.0.1</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>auth</finalName>
@@ -995,6 +1001,29 @@
                 <jedis.pool.minidl>8</jedis.pool.minidl>
                 <jedis.pool.maxtotal>500</jedis.pool.maxtotal>
                  -->
+            </properties>
+        </profile>
+
+        <profile>
+            <id>demo</id>
+            <properties>
+                <dataSource.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
+                <dataSource.jdbc.username>root</dataSource.jdbc.username>
+                <dataSource.jdbc.password>root</dataSource.jdbc.password>
+                
+                <gds.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
+                <gds.jdbc.username>root</gds.jdbc.username>
+                <gds.jdbc.password>root</gds.jdbc.password>
+
+                <crm.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
+                <crm.jdbc.username>root</crm.jdbc.username>
+                <crm.jdbc.password>root</crm.jdbc.password>
+
+                <oms.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
+                <oms.jdbc.username>root</oms.jdbc.username>
+                <oms.jdbc.password>root</oms.jdbc.password>
+
+                <logFile.path>../logs/jeesite/jeereporter.log</logFile.path>
             </properties>
         </profile>
 

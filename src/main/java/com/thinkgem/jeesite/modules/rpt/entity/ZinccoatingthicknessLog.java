@@ -3,9 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.rpt.entity;
 
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -21,7 +20,7 @@ public class ZinccoatingthicknessLog extends DataEntity<ZinccoatingthicknessLog>
 	 * 
 	 */
 	private static final long serialVersionUID = -7151018980659965802L;
-	private Date logtime;		// 记录时间
+	private String logtime;		// 记录时间
 	private String loggroup;		// 班组
 	private String prodcode;		// 生产编号
 	private String gencode;		// 生成编号
@@ -38,8 +37,8 @@ public class ZinccoatingthicknessLog extends DataEntity<ZinccoatingthicknessLog>
 	private String zincratefront;		// 正面上实时上锌量
 	private String zincratereverse;		// 反面上实时上锌量
 	private Integer flag;    // 接头信号标识
-	private Date beginLogtime;		// 开始 记录时间
-	private Date endLogtime;		// 结束 记录时间
+	private String beginLogtime;		// 开始 记录时间
+	private String endLogtime;		// 结束 记录时间
 	private Double maxOffsetFront;  // 正面上锌量最大偏差值
 	private Double minOffsetFront;  // 正面上锌量最小偏差值
 	private Double maxOffsetReverse;  // 反面上锌量最大偏差值
@@ -54,13 +53,13 @@ public class ZinccoatingthicknessLog extends DataEntity<ZinccoatingthicknessLog>
 		super(id);
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	//@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@NotNull(message="记录时间不能为空")
-	public Date getLogtime() {
+	public String getLogtime() {
 		return logtime;
 	}
 
-	public void setLogtime(Date logtime) {
+	public void setLogtime(String logtime) {
 		this.logtime = logtime;
 	}
 	
@@ -172,19 +171,19 @@ public class ZinccoatingthicknessLog extends DataEntity<ZinccoatingthicknessLog>
 		this.zincratereverse = zincratereverse;
 	}
 	
-	public Date getBeginLogtime() {
+	public String getBeginLogtime() {
 		return beginLogtime;
 	}
 
-	public void setBeginLogtime(Date beginLogtime) {
+	public void setBeginLogtime(String beginLogtime) {
 		this.beginLogtime = beginLogtime;
 	}
 	
-	public Date getEndLogtime() {
+	public String getEndLogtime() {
 		return endLogtime;
 	}
 
-	public void setEndLogtime(Date endLogtime) {
+	public void setEndLogtime(String endLogtime) {
 		this.endLogtime = endLogtime;
 	}
 

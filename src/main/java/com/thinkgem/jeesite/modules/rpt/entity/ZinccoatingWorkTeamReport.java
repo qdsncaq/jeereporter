@@ -19,7 +19,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 	private static final long serialVersionUID = -8577779633531787114L;
 	
 	private Date logtime;
-	private Integer loggroup;
+	private String loggroup;
 	private String loggroupname;
 	private String prodcode;
 	private String gencode;
@@ -51,11 +51,11 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.logtime = logtime;
 	}
 	
-	public Integer getLoggroup() {
+	public String getLoggroup() {
 		return loggroup;
 	}
 	
-	public void setLoggroup(Integer loggroup) {
+	public void setLoggroup(String loggroup) {
 		this.loggroup = loggroup;
 	}
 	

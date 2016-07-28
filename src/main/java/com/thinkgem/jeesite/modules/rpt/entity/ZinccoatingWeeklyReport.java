@@ -19,7 +19,7 @@ public class ZinccoatingWeeklyReport extends DataEntity<ZinccoatingWeeklyReport>
 	private static final long serialVersionUID = 5253236623132531369L;
 	
 	private Date logtime;
-	private Integer loggroup;
+	private String loggroup;
 	private String loggroupname;
 	private String genqty;
 	private Double totallen;
@@ -35,10 +35,10 @@ public class ZinccoatingWeeklyReport extends DataEntity<ZinccoatingWeeklyReport>
 	public void setLogtime(Date logtime) {
 		this.logtime = logtime;
 	}
-	public Integer getLoggroup() {
+	public String getLoggroup() {
 		return loggroup;
 	}
-	public void setLoggroup(Integer loggroup) {
+	public void setLoggroup(String loggroup) {
 		this.loggroup = loggroup;
 	}
 	public String getLoggroupname() {
