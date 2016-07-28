@@ -23,7 +23,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 	private String loggroupname;
 	private String prodcode;
 	private String gencode;
-	private Integer workmode;
+	private String workmode;
 	private String workmodename;
 	private Double bandwidth;
 	private Double bandthickness;
@@ -83,11 +83,11 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.gencode = gencode;
 	}
 	
-	public Integer getWorkmode() {
+	public String getWorkmode() {
 		return workmode;
 	}
 	
-	public void setWorkmode(Integer workmode) {
+	public void setWorkmode(String workmode) {
 		this.workmode = workmode;
 	}
 	
