@@ -11,12 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.thinkgem.jeesite.common.mapper.JsonMapper;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingWorkTeamReport;
 import com.thinkgem.jeesite.modules.rpt.service.ZinccoatingWorkTeamReportService;
@@ -92,5 +94,31 @@ public class ZinccoatingWorkTeamReportController extends BaseController {
 		
 		return "modules/rpt/zinccoatingWorkTeamChartform";
 	}
+	
+	/**
+	 * 导出报表数据
+	 * @param user
+	 * @param request
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("rpt:zinccoatingWorkTeamReport:view")
+    @RequestMapping(value = "export", method=RequestMethod.POST)
+    public String exportFile(ZinccoatingWorkTeamReport zinccoatingWorkTeamReport, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "班组报表数据" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
+            Page<ZinccoatingWorkTeamReport> page = new Page<ZinccoatingWorkTeamReport>(request, response);
+    		page.setOrderBy(" logtime asc ");
+    		zinccoatingWorkTeamReport.setPage(page);
+    		List<ZinccoatingWorkTeamReport> list = zinccoatingWorkTeamReportService.queryZinccoatingworkteamReport(zinccoatingWorkTeamReport);
+    		page.setList(list);
+            new ExportExcel("班组报表数据", ZinccoatingWorkTeamReport.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出报表数据失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/rpt/zinccoatingWorkTeamReport/list?repage";
+    }
 	
 }

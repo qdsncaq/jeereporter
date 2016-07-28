@@ -3,6 +3,7 @@ package com.thinkgem.jeesite.modules.rpt.entity;
 import java.util.Date;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
 /**
  * 锌层测厚班报表Entity.
@@ -43,6 +44,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 	
 	/** getters and setters */
 	
+	@ExcelField(title="记录时间", align=2, sort=10)
 	public Date getLogtime() {
 		return logtime;
 	}
@@ -51,6 +53,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.logtime = logtime;
 	}
 	
+	@ExcelField(title="班组", align=2, sort=20)
 	public String getLoggroup() {
 		return loggroup;
 	}
@@ -67,6 +70,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.loggroupname = loggroupname;
 	}
 	
+	@ExcelField(title="生成编号", align=1, sort=30)
 	public String getProdcode() {
 		return prodcode;
 	}
@@ -75,6 +79,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.prodcode = prodcode;
 	}
 	
+	@ExcelField(title="生成编号", align=1, sort=40)
 	public String getGencode() {
 		return gencode;
 	}
@@ -83,6 +88,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.gencode = gencode;
 	}
 	
+	@ExcelField(title="测厚仪工作模式", align=2, sort=50)
 	public String getWorkmode() {
 		return workmode;
 	}
@@ -99,6 +105,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.workmodename = workmodename;
 	}
 	
+	@ExcelField(title="带宽", align=3, sort=60)
 	public Double getBandwidth() {
 		return bandwidth;
 	}
@@ -107,6 +114,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.bandwidth = bandwidth;
 	}
 	
+	@ExcelField(title="带厚", align=3, sort=70)
 	public Double getBandthickness() {
 		return bandthickness;
 	}
@@ -115,6 +123,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.bandthickness = bandthickness;
 	}
 	
+	@ExcelField(title="平均线速", align=3, sort=80)
 	public Double getLinespeed() {
 		return linespeed;
 	}
@@ -123,6 +132,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.linespeed = linespeed;
 	}
 	
+	@ExcelField(title="钢卷总长", align=3, sort=90)
 	public Double getTotallen() {
 		return totallen;
 	}
@@ -131,6 +141,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.totallen = totallen;
 	}
 	
+	@ExcelField(title="过钢量（吨）", align=3, sort=100)
 	public Double getTotalsteel() {
 		return totalsteel;
 	}
@@ -147,6 +158,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.zincratetarget = zincratetarget;
 	}
 	
+	@ExcelField(title="正面目标上锌量（克）", align=3, sort=110)
 	public Double getZincratetargetfront() {
 		return zincratetargetfront;
 	}
@@ -155,6 +167,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.zincratetargetfront = zincratetargetfront;
 	}
 
+	@ExcelField(title="反面目标上锌量（克）", align=3, sort=111)
 	public Double getZincratetargetreverse() {
 		return zincratetargetreverse;
 	}
@@ -163,6 +176,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.zincratetargetreverse = zincratetargetreverse;
 	}
 
+	@ExcelField(title="正面平米上锌量平均值（克）", align=3, sort=130)
 	public Double getZincrateavgfront() {
 		return zincrateavgfront;
 	}
@@ -171,6 +185,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.zincrateavgfront = zincrateavgfront;
 	}
 	
+	@ExcelField(title="反面平米上锌量平均值（克）", align=3, sort=131)
 	public Double getZincrateavgreverse() {
 		return zincrateavgreverse;
 	}
@@ -179,6 +194,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.zincrateavgreverse = zincrateavgreverse;
 	}
 	
+	@ExcelField(title="上锌总增重（千克）", align=3, sort=140)
 	public Double getZinctotalinc() {
 		return zinctotalinc;
 	}
@@ -187,6 +203,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.zinctotalinc = zinctotalinc;
 	}
 	
+	@ExcelField(title="正面上锌增重（千克）", align=3, sort=141)
 	public Double getZinctotalincfront() {
 		return zinctotalincfront;
 	}
@@ -195,6 +212,7 @@ public class ZinccoatingWorkTeamReport extends DataEntity<ZinccoatingWorkTeamRep
 		this.zinctotalincfront = zinctotalincfront;
 	}
 	
+	@ExcelField(title="反面上锌增重（千克）", align=3, sort=142)
 	public Double getZinctotalincreverse() {
 		return zinctotalincreverse;
 	}

@@ -6,11 +6,20 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+			$("#btnDownloadReport").click(function(){
+				top.$.jBox.confirm("确认要导出报表数据吗？","系统提示",function(v,h,f){
+					if (v=="ok") {
+						$("#searchForm").attr("action","${ctx}/rpt/zinccoatingWorkTeamReport/export");
+						$("#searchForm").submit();
+					}
+				},{buttonsFocus:1});
+				top.$('.jbox-body .jbox-icon').css('top','55px');
+			});			
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
 			$("#pageSize").val(s);
+			$("#searchForm").attr("action","${ctx}/rpt/zinccoatingWorkTeamReport/list");
 			$("#searchForm").submit();
         	return false;
         }
@@ -21,7 +30,7 @@
 		<li class="active"><a href="${ctx}/rpt/zinccoatingWorkTeamReport/">锌层测厚班报表列表</a></li>
 		<li><a href="${ctx}/rpt/zinccoatingWorkTeamReport/chartform">图表展示</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="zinccoatingWorkTeamReport" action="${ctx}/rpt/zinccoatingWorkTeamReport/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="zinccoatingWorkTeamReport" action="${ctx}/rpt/zinccoatingWorkTeamReport/list" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -39,7 +48,7 @@
                     <form:options items="${fns:getDictList('RPT_WORK_TEAM')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" onclick="return page();"/></li>
 			<!-- <li class="btns"><input id="btnExport2Excel" class="btn btn-primary" type="button" value="导出Excel"/></li> -->
 			<!-- <li class="btns"><input id="btnViewReport" class="btn btn-primary" type="button" value="查看报表"/></li> -->
 			<li class="btns"><input id="btnDownloadReport" class="btn btn-primary" type="button" value="下载报表"/></li>
