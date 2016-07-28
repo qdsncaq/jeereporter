@@ -25,8 +25,8 @@ public class ZinccoatingWeeklyReport extends DataEntity<ZinccoatingWeeklyReport>
 	private Double totallen;
 	private Double totalsteel;    // 过钢量(吨)
 	private Double zincratetotal;    // 总上锌量（千克）
-	private Date beginLogtime;		// 开始 记录时间
-	private Date endLogtime;		// 结束 记录时间
+	private String beginLogtime;		// 开始 记录时间
+	private String endLogtime;		// 结束 记录时间
 	
 	
 	public Date getLogtime() {
@@ -71,16 +71,16 @@ public class ZinccoatingWeeklyReport extends DataEntity<ZinccoatingWeeklyReport>
 	public void setZincratetotal(Double zincratetotal) {
 		this.zincratetotal = zincratetotal;
 	}
-	public Date getBeginLogtime() {
+	public String getBeginLogtime() {
 		return beginLogtime;
 	}
-	public void setBeginLogtime(Date beginLogtime) {
+	public void setBeginLogtime(String beginLogtime) {
 		this.beginLogtime = beginLogtime;
 	}
-	public Date getEndLogtime() {
+	public String getEndLogtime() {
 		return endLogtime;
 	}
-	public void setEndLogtime(Date endLogtime) {
+	public void setEndLogtime(String endLogtime) {
 		this.endLogtime = endLogtime;
 	}
 

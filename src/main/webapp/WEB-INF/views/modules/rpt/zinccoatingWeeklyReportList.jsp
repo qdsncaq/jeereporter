@@ -27,10 +27,10 @@
 		<ul class="ul-form">
 			<li><label>记录时间：</label>
 				<input name="beginLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					value="<fmt:formatDate value="${zinccoatingWeeklyReport.beginLogtime}" pattern="yyyy-MM-dd"/>"
+					value="${zinccoatingWeeklyReport.beginLogtime}"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/> - 
 				<input name="endLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					value="<fmt:formatDate value="${zinccoatingWeeklyReport.endLogtime}" pattern="yyyy-MM-dd"/>"
+					value="${zinccoatingWeeklyReport.endLogtime}"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
 			</li>
 			<li><label>班组：</label>

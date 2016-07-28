@@ -40,11 +40,11 @@ public class ZinccoatingMonthlyReportController extends BaseController {
 	 */
 	@RequiresPermissions("rpt:zinccoatingMonthlyReport:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(ZinccoatingWeeklyReport zinccoatingMonthlyReport, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String list(ZinccoatingWeeklyReport zinccoatingWeeklyReport, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<ZinccoatingWeeklyReport> page = new Page<ZinccoatingWeeklyReport>(request, response);
 		page.setOrderBy(" logtime asc ");
-		zinccoatingMonthlyReport.setPage(page);
-		List<ZinccoatingWeeklyReport> list = zinccoatingthicknessLogService.queryZinccoatingmonthlyReport(zinccoatingMonthlyReport);
+		zinccoatingWeeklyReport.setPage(page);
+		List<ZinccoatingWeeklyReport> list = zinccoatingthicknessLogService.queryZinccoatingmonthlyReport(zinccoatingWeeklyReport);
 		page.setList(list);
 		model.addAttribute("page", page);
 		return "modules/rpt/zinccoatingMonthlyReportList";
