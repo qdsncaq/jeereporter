@@ -40,7 +40,10 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:true});"/>
 			</li>
 			<li><label>班组：</label>
-				<form:input path="loggroup" htmlEscape="false" maxlength="1" class="input-small"/>
+				<form:select path="loggroup" class="input-medium">
+                    <form:option value="" label="--所有班组--"/>
+                    <form:options items="${fns:getDictList('RPT_WORK_TEAM')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
 			</li>
 			<li><label>生产编号：</label>
 				<form:input path="prodcode" htmlEscape="false" maxlength="50" class="input-small"/>
