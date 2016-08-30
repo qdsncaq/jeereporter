@@ -27,10 +27,10 @@
 		<ul class="ul-form">
 			<li><label>记录时间：</label>
 				<input name="beginLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					value="<fmt:formatDate value="${zinccoatingthicknessLog.beginLogtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					value="${zinccoatingthicknessLog.beginLogtime}"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:true});"/> - 
 				<input name="endLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					value="<fmt:formatDate value="${zinccoatingthicknessLog.endLogtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					value="${zinccoatingthicknessLog.endLogtime}"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:true});"/>
 			</li>
 			<li><label>班组：</label>
@@ -46,7 +46,14 @@
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
+	<c:choose>
+	  <c:when test="${principal=='1'}">
+	<div id="messageBox" class="alert alert-info"><button data-dismiss="alert" class="close">×</button>${taketimes}</div>
+	  </c:when>
+	  <c:otherwise>
 	<sys:message content="${message}"/>
+	  </c:otherwise>
+	</c:choose>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
@@ -77,7 +84,8 @@
 					${zinccoatingthicknessLog.id}
 				</a></td>
 				<td nowrap style="text-align:center;">
-					<fmt:formatDate value="${zinccoatingthicknessLog.logtime}" pattern="yyyy-MM-dd HH:mm:ss S"/>
+					<%-- <fmt:formatDate value="${zinccoatingthicknessLog.logtime}" pattern="yyyy-MM-dd HH:mm:ss S"/> --%>
+					${zinccoatingthicknessLog.logtime}
 				</td>
 				<td nowrap style="text-align:center;">
 					${fns:getDictLabel(zinccoatingthicknessLog.loggroup, 'RPT_WORK_TEAM', '')}

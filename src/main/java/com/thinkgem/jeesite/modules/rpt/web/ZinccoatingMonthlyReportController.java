@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,12 +42,17 @@ public class ZinccoatingMonthlyReportController extends BaseController {
 	@RequiresPermissions("rpt:zinccoatingMonthlyReport:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(ZinccoatingWeeklyReport zinccoatingWeeklyReport, HttpServletRequest request, HttpServletResponse response, Model model) {
+		long startTime = System.currentTimeMillis();
 		Page<ZinccoatingWeeklyReport> page = new Page<ZinccoatingWeeklyReport>(request, response);
 		page.setOrderBy(" logtime asc ");
 		zinccoatingWeeklyReport.setPage(page);
 		List<ZinccoatingWeeklyReport> list = zinccoatingthicknessLogService.queryZinccoatingmonthlyReport(zinccoatingWeeklyReport);
 		page.setList(list);
 		model.addAttribute("page", page);
+		model.addAttribute("principal", SecurityUtils.getSubject().getPrincipal().toString());
+		long endTime = System.currentTimeMillis();
+		long hs = endTime - startTime;
+		model.addAttribute("taketimes", "本次数据加载耗时" + hs+ "毫秒.");
 		return "modules/rpt/zinccoatingMonthlyReportList";
 	}
 }

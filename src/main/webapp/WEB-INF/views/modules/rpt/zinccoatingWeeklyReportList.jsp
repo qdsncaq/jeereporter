@@ -43,7 +43,14 @@
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
+	<c:choose>
+	  <c:when test="${principal=='1'}">
+	<div id="messageBox" class="alert alert-info"><button data-dismiss="alert" class="close">×</button>${taketimes}</div>
+	  </c:when>
+	  <c:otherwise>
 	<sys:message content="${message}"/>
+	  </c:otherwise>
+	</c:choose>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>

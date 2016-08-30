@@ -106,8 +106,18 @@ public class SQLHelper {
 		if("oracle".equals(dbName)){
 			countSql = "select count(1) from (" + sql + ") tmp_count";
 		}else{
-			countSql = "select count(1) from (" + removeOrders(sql) + ") tmp_count";
+			// comment by chuaiqing
+			////countSql = "select count(1) from (" + removeOrders(sql) + ") tmp_count";
 //	        countSql = "select count(1) " + removeSelect(removeOrders(sql));
+			
+			// added by chuaiqing: 处理group by情况下的查询总记录数
+			String tempSql = removeSelect(removeOrders(sql));
+			int groupPos = tempSql.toLowerCase().indexOf("group by");
+			if (groupPos > -1) {
+				countSql = "select count(1) from (" + removeOrders(sql) + ") tmp_count";
+			} else {
+				countSql = "select count(1) " + tempSql;
+			}
 		}
         Connection conn = connection;
         PreparedStatement ps = null;

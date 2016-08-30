@@ -974,19 +974,19 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <dataSource.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
+                <dataSource.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf8]]></dataSource.jdbc.url>
                 <dataSource.jdbc.username>root</dataSource.jdbc.username>
                 <dataSource.jdbc.password></dataSource.jdbc.password>
                 
-                <gds.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
+                <gds.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/demo?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8]]></gds.jdbc.url>
                 <gds.jdbc.username>root</gds.jdbc.username>
                 <gds.jdbc.password></gds.jdbc.password>
 
-                <crm.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
+                <crm.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull]]></crm.jdbc.url>
                 <crm.jdbc.username>root</crm.jdbc.username>
                 <crm.jdbc.password></crm.jdbc.password>
 
-                <oms.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
+                <oms.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf8]]></oms.jdbc.url>
                 <oms.jdbc.username>root</oms.jdbc.username>
                 <oms.jdbc.password></oms.jdbc.password>
 

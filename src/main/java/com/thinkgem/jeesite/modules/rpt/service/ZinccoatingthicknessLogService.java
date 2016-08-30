@@ -76,4 +76,32 @@ public class ZinccoatingthicknessLogService extends CrudService<Zinccoatingthick
 		return dao.queryZinccoatingmonthlyReport(zinccoatingMonthlyReport);
 	}
 	
+	/**
+	 * 
+	 * @param zinccoatingthicknessLog
+	 * @return
+	 */
+	public int delWorkteamReport(ZinccoatingthicknessLog zinccoatingthicknessLog) {
+		return dao.delWorkteamReport(zinccoatingthicknessLog);
+	}
+	
+	/**
+	 * 
+	 * @param zinccoatingthicknessLog
+	 * @return
+	 */
+	public int genWorkteamReport(ZinccoatingthicknessLog zinccoatingthicknessLog) {
+		int rows = 0;
+		try {
+			int dels = dao.delWorkteamReport(zinccoatingthicknessLog);
+			logger.info("delete workteam report datas {} rows.", dels);
+			rows = dao.batchInsertWorkteamReportData(zinccoatingthicknessLog);
+			logger.info("batch insert workteam report datas {} rows.", rows);
+			return rows;
+		} catch (Exception e) {
+			logger.error("genWorkteamReport error: {}", e);
+		}
+		return rows;
+	}
+	
 }
