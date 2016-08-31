@@ -318,7 +318,7 @@
     <!-- 生成班组报表数据 -->
     <update id="delWorkteamReport">
         DELETE FROM rpt_workteam
-        WHERE a.logtime between #{beginLogtime} and #{endLogtime}
+        WHERE logtime between #{beginLogtime} and #{endLogtime}
     </update>
     <insert id="batchInsertWorkteamReportData">
         insert into rpt_workteam(

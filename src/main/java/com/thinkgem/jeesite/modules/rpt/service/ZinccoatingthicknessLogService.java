@@ -90,6 +90,7 @@ public class ZinccoatingthicknessLogService extends CrudService<Zinccoatingthick
 	 * @param zinccoatingthicknessLog
 	 * @return
 	 */
+	@Transactional(readOnly = false)
 	public int genWorkteamReport(ZinccoatingthicknessLog zinccoatingthicknessLog) {
 		int rows = 0;
 		try {
