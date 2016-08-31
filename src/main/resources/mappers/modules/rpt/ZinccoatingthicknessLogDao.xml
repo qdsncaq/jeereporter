@@ -427,4 +427,26 @@
         WHERE id = #{id}
     </update>
     
+    <!-- 查询图表数据 -->
+    <select id="queryWorkteamReportEChartData" resultType="map" parameterType="map">
+		SELECT gencode, sum(totalsteel) as totalsteel, sum(zinctotalinc) as zinctotalinc
+		  FROM rpt_workteam
+		  <where>
+            workmode='1'
+            <if test="beginLogtime != null and endLogtime != null and beginLogtime != '' and endLogtime != ''">
+                AND logtime BETWEEN #{beginLogtime} AND #{endLogtime}
+            </if>
+            <if test="loggroup != null and loggroup != ''">
+                AND loggroup = #{loggroup}
+            </if>
+            <if test="prodcode != null and prodcode != ''">
+                AND prodcode = #{prodcode}
+            </if>
+            <if test="gencode != null and gencode != ''">
+                AND gencode = #{gencode}
+            </if>
+          </where>
+		  GROUP BY gencode
+    </select>
+    
 </mapper>

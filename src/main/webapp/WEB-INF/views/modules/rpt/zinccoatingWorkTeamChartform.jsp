@@ -21,7 +21,7 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:true});"/>
 			</li>
 			<li><label>班组：</label>
-				<form:select path="loggroup" class="input-medium">
+				<form:select id="loggroup" path="loggroup" class="input-medium">
                     <form:option value="" label="--所有班组--"/>
                     <form:options items="${fns:getDictList('RPT_WORK_TEAM')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
@@ -69,7 +69,13 @@
     //查询  
     function loadChartData() {
     	var now = new Date().getTime();
-    	var params = {"beginLogtime":"${zinccoatingWorkTeamReport.beginLogtime}", "endLogtime":"${zinccoatingWorkTeamReport.endLogtime}"};
+    	var beginLogtime = $("#beginLogtime").val();
+    	var endLogtime = $("#endLogtime").val();
+    	var loggroup = $("#loggroup").val();
+    	var params = {"beginLogtime":beginLogtime, 
+    			"endLogtime":endLogtime,
+    			"loggroup":loggroup
+    	};
     	console.log(params);
     	myChart.clear();  
     	myChart.showLoading({text: '正在努力的读取数据中...'});  

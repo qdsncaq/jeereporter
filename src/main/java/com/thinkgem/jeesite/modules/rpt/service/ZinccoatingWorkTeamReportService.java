@@ -1,6 +1,7 @@
 package com.thinkgem.jeesite.modules.rpt.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -67,6 +68,10 @@ public class ZinccoatingWorkTeamReportService extends CrudService<ZinccoatingWor
 	 */
 	public List<ZinccoatingWorkTeamReport> queryZinccoatingworkteamReport(ZinccoatingWorkTeamReport zinccoatingWorkTeamReport) {
 		return zinccoatingthicknessLogDao.queryZinccoatingworkteamReport(zinccoatingWorkTeamReport);
+	}
+	
+	public List<Map<String, Object>> queryWorkteamReportEChartData(Map<String, Object> params) {
+		return zinccoatingthicknessLogDao.queryWorkteamReportEChartData(params);
 	}
 
 }

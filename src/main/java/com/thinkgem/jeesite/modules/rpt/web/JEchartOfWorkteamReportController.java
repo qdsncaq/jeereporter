@@ -1,13 +1,14 @@
 package com.thinkgem.jeesite.modules.rpt.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.restlet.engine.util.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,10 @@ import com.github.abel533.echarts.axis.CategoryAxis;
 import com.github.abel533.echarts.axis.ValueAxis;
 import com.github.abel533.echarts.code.Trigger;
 import com.github.abel533.echarts.series.Bar;
+import com.thinkgem.jeesite.common.utils.CookieUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingWorkTeamReport;
+import com.thinkgem.jeesite.modules.rpt.service.ZinccoatingWorkTeamReportService;
 
 
 /**
@@ -34,6 +37,9 @@ import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingWorkTeamReport;
 @RequestMapping(value = "${adminPath}/jechart/workteam")
 public class JEchartOfWorkteamReportController extends BaseController {
 
+	@Autowired
+	private ZinccoatingWorkTeamReportService zinccoatingWorkTeamReportService;
+	
 	/**
 	 * 
 	 * @param request
@@ -57,24 +63,22 @@ public class JEchartOfWorkteamReportController extends BaseController {
 	    Bar bar2 = new Bar(String.valueOf(names[1]));
 	    bar2.setCoordinateSystem("cartesian2d");
 	    
-	    List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-	    Map<String, Object> item = new HashMap<String, Object>();
-	    item.put("gencode", "gencode001");
-	    item.put("totalsteel", 100.01);
-	    item.put("zinctotalinc", 10.01);
-	    list.add(item);
-	    
-	    item = new HashMap<String, Object>();
-	    item.put("gencode", "gencode002");
-	    item.put("totalsteel", 100.02);
-	    item.put("zinctotalinc", 10.02);
-	    list.add(item);
-	    
-	    item = new HashMap<String, Object>();
-	    item.put("gencode", "gencode003");
-	    item.put("totalsteel", 100.03);
-	    item.put("zinctotalinc", 10.03);
-	    list.add(item);
+	    Map<String, Object> params = CookieUtils.getParameterMap(request);
+//	    if (params.containsKey("beginLogtime")) {
+//	    	//
+//	    	if (params.get("beginLogtime") != null && !"".equals(params.get("beginLogtime"))) {
+//	    	    Date beginLogtime = (Date) params.get("beginLogtime");
+//	    	    params.put("beginLogtime", com.thinkgem.jeesite.common.utils.DateUtils.formatDate(beginLogtime));
+//	    	}
+//	    }
+//	    if (params.containsKey("endLogtime")) {
+//	    	//
+//	    	if (params.get("endLogtime") != null && !"".equals(params.get("endLogtime"))) {
+//	    	    Date endLogtime = (Date) params.get("endLogtime");
+//	    	    params.put("endLogtime", com.thinkgem.jeesite.common.utils.DateUtils.formatDate(endLogtime));
+//	    	}
+//	    }
+	    List<Map<String, Object>> list = zinccoatingWorkTeamReportService.queryWorkteamReportEChartData(params);
 	    //循环数据
 	    for (Map<String, Object> objectMap : list) {
 	        //设置类目
