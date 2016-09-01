@@ -56,4 +56,18 @@ public class ZinccoatingWeeklyReportController extends BaseController {
 		return "modules/rpt/zinccoatingWeeklyReportList";
 	}
 	
+	/**
+	 * 图表展示
+	 * @param zinccoatingWeeklyReport
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("rpt:zinccoatingWeeklyReport:view")
+	@RequestMapping(value = "chartform")
+	public String chartform(ZinccoatingWeeklyReport zinccoatingWeeklyReport, HttpServletRequest request, HttpServletResponse response, Model model) {
+		return "modules/rpt/zinccoatingWeeklyChartform";
+	}
+	
 }

@@ -4,21 +4,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="decorator" content="default"/>
-<title>班报图表展示</title>
+<title>周报图表展示</title>
 <script type="text/javascript" src="${ctxStatic}/echarts/echarts.js"></script>
 </head>
 <body>
-	<form:form id="searchForm" modelAttribute="zinccoatingWorkTeamReport" action="${ctx}/rpt/zinccoatingWorkTeamReport/chartform" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="zinccoatingWeeklyReport" action="${ctx}/rpt/zinccoatingWeeklyReport/chartform" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li><label>记录时间：</label>
 				<input id="beginLogtime" name="beginLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					value="<fmt:formatDate value="${zinccoatingWorkTeamReport.beginLogtime}" pattern="yyyy-MM-dd HH:mm"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:true});"/> - 
+					value="<fmt:formatDate value="${zinccoatingWeeklyReport.beginLogtime}" pattern="yyyy-MM-dd HH"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH',isShowClear:true});"/> - 
 				<input id="endLogtime" name="endLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					value="<fmt:formatDate value="${zinccoatingWorkTeamReport.endLogtime}" pattern="yyyy-MM-dd HH:mm"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:true});"/>
+					value="<fmt:formatDate value="${zinccoatingWeeklyReport.endLogtime}" pattern="yyyy-MM-dd HH"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH',isShowClear:true});"/>
 			</li>
 			<li><label>班组：</label>
 				<form:select id="loggroup" path="loggroup" class="input-medium">
@@ -41,7 +41,7 @@
     // 指定图表的配置项和数据
     var option = {
         title: {
-            text: '班报柱形图'
+            text: '周报柱形图'
         },
         tooltip: {},
         legend: {
@@ -79,7 +79,7 @@
     	console.log(params);
     	myChart.clear();  
     	myChart.showLoading({text: '正在努力的读取数据中...'});  
-        $.getJSON('${ctx}/jechart/workteam/queryEchartOptionData?now='+now, params, function (data) {
+        $.getJSON('${ctx}/jechart/weekly/queryEchartOptionData?now='+now, params, function (data) {
             if (data.success) {
             	var dataOption = data.option;
             	option.title.text = dataOption.title.text;

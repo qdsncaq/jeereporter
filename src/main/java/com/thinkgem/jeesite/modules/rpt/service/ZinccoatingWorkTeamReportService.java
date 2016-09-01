@@ -70,8 +70,30 @@ public class ZinccoatingWorkTeamReportService extends CrudService<ZinccoatingWor
 		return zinccoatingthicknessLogDao.queryZinccoatingworkteamReport(zinccoatingWorkTeamReport);
 	}
 	
+	/**
+	 * 查询班报图表数据
+	 * @param params
+	 * @return
+	 */
 	public List<Map<String, Object>> queryWorkteamReportEChartData(Map<String, Object> params) {
 		return zinccoatingthicknessLogDao.queryWorkteamReportEChartData(params);
 	}
+	
+	/**
+	 * 查询周报图表数据
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> queryWeeklyReportEChartData(Map<String, Object> params) {
+		return zinccoatingthicknessLogDao.queryWeeklyReportEChartData(params);
+	}
 
+	/**
+	 * 查询月报图表数据
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> queryMonthlyReportEChartData(Map<String, Object> params) {
+		return zinccoatingthicknessLogDao.queryMonthlyReportEChartData(params);
+	}
 }

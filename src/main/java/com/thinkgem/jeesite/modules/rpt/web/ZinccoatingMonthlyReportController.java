@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingMonthlyReport;
 import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingWeeklyReport;
 import com.thinkgem.jeesite.modules.rpt.service.ZinccoatingthicknessLogService;
 
@@ -54,5 +55,19 @@ public class ZinccoatingMonthlyReportController extends BaseController {
 		long hs = endTime - startTime;
 		model.addAttribute("taketimes", "本次数据加载耗时" + hs+ "毫秒.");
 		return "modules/rpt/zinccoatingMonthlyReportList";
+	}
+	
+	/**
+	 * 图表展示
+	 * @param zinccoatingMonthlyReport
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("rpt:zinccoatingMonthlyReport:view")
+	@RequestMapping(value = "chartform")
+	public String chartform(ZinccoatingMonthlyReport zinccoatingMonthlyReport, HttpServletRequest request, HttpServletResponse response, Model model) {
+		return "modules/rpt/zinccoatingMonthlyChartform";
 	}
 }

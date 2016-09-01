@@ -19,7 +19,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/rpt/zinccoatingMonthlyReport/">锌层测厚月报表列表</a></li>
-		<shiro:hasPermission name="rpt:zinccoatingMonthlyReport:edit"><li><a href="${ctx}/rpt/zinccoatingMonthlyReport/form">锌层测厚月报表添加</a></li></shiro:hasPermission>
+		<li><a href="${ctx}/rpt/zinccoatingMonthlyReport/chartform">图表展示</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="zinccoatingWeeklyReport" action="${ctx}/rpt/zinccoatingMonthlyReport/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

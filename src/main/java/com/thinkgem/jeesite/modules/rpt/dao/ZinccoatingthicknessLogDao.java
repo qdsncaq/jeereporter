@@ -70,4 +70,8 @@ public interface ZinccoatingthicknessLogDao extends CrudDao<Zinccoatingthickness
 	
 	List<Map<String, Object>> queryWorkteamReportEChartData(Map<String, Object> params);
 	
+	List<Map<String, Object>> queryWeeklyReportEChartData(Map<String, Object> params);
+	
+	List<Map<String, Object>> queryMonthlyReportEChartData(Map<String, Object> params);
+	
 }

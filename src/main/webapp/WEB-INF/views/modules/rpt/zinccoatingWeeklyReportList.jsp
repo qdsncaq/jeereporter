@@ -19,7 +19,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/rpt/zinccoatingWeeklyReport/">锌层测厚周报表列表</a></li>
-		<shiro:hasPermission name="rpt:zinccoatingWeeklyReport:edit"><li><a href="${ctx}/rpt/zinccoatingWeeklyReport/form">锌层测厚日志添加</a></li></shiro:hasPermission>
+        <li><a href="${ctx}/rpt/zinccoatingWeeklyReport/chartform">图表展示</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="zinccoatingWeeklyReport" action="${ctx}/rpt/zinccoatingWeeklyReport/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -28,10 +28,10 @@
 			<li><label>记录时间：</label>
 				<input name="beginLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="${zinccoatingWeeklyReport.beginLogtime}"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/> - 
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH',isShowClear:true});"/> - 
 				<input name="endLogtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="${zinccoatingWeeklyReport.endLogtime}"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH',isShowClear:true});"/>
 			</li>
 			<li><label>班组：</label>
 				<form:select path="loggroup" class="input-medium">

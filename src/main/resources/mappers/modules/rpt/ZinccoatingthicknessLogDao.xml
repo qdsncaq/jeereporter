@@ -101,7 +101,7 @@
         DATE_FORMAT(a.logtime, '%Y-%m-%d %h:00:00') AS logtime,
         a.loggroup AS 'loggroup',
         a.loggroup AS 'loggroupname',
-        COUNT(a.gencode) AS 'genqty',
+        COUNT(DISTINCT a.gencode) AS 'genqty',
         SUM(a.totallen) AS 'totallen',
         SUM(a.bandwidth * a.bandthickness * a.totallen * 7.9 / 1000000) AS totalsteel,
         SUM(a.zincratefront+a.zincratereverse) as zincratetotal
@@ -112,7 +112,7 @@
         DATE_FORMAT(a.logtime, '%Y-%m-%d') AS logtime,
         a.loggroup AS 'loggroup',
         a.loggroup AS 'loggroupname',
-        count(a.gencode) AS 'genqty',
+        COUNT(DISTINCT a.gencode) AS 'genqty',
         SUM(a.totallen) AS 'totallen',
         SUM(a.bandwidth * a.bandthickness * a.totallen * 7.9 / 1000000) AS totalsteel,
         sum(a.zincratefront+a.zincratereverse) as zincratetotal
@@ -427,9 +427,12 @@
         WHERE id = #{id}
     </update>
     
-    <!-- 查询图表数据 -->
+    <!-- 查询班报图表数据 -->
     <select id="queryWorkteamReportEChartData" resultType="map" parameterType="map">
-		SELECT gencode, sum(totalsteel) as totalsteel, sum(zinctotalinc) as zinctotalinc
+		SELECT CASE
+        WHEN loggroup is null or loggroup = '' THEN '未知班组'
+        ELSE loggroup
+        END loggroup, sum(totalsteel) as totalsteel, sum(zinctotalinc) as zinctotalinc
 		  FROM rpt_workteam
 		  <where>
             workmode='1'
@@ -446,7 +449,72 @@
                 AND gencode = #{gencode}
             </if>
           </where>
-		  GROUP BY gencode
+		  GROUP BY CASE
+            WHEN loggroup is null or loggroup = '' THEN '未知班组'
+            ELSE loggroup
+            END 
+          ORDER BY CASE
+            WHEN loggroup='甲班' THEN 1
+            WHEN loggroup='乙班' THEN 2
+            ELSE 3
+            END
     </select>
     
+    <!-- 查询周报图表数据 -->
+    <select id="queryWeeklyReportEChartData" resultType="map" parameterType="map">
+		SELECT CASE
+        WHEN gencode is null or gencode = '' THEN '未知产品'
+        ELSE gencode
+        END gencode, sum(totalsteel) as totalsteel, sum(zinctotalinc) as zinctotalinc
+		  FROM rpt_workteam
+		  <where>
+            workmode='1'
+            <if test="beginLogtime != null and endLogtime != null and beginLogtime != '' and endLogtime != ''">
+                AND logtime BETWEEN #{beginLogtime} AND #{endLogtime}
+            </if>
+            <if test="loggroup != null and loggroup != ''">
+                AND loggroup = #{loggroup}
+            </if>
+            <if test="prodcode != null and prodcode != ''">
+                AND prodcode = #{prodcode}
+            </if>
+            <if test="gencode != null and gencode != ''">
+                AND gencode = #{gencode}
+            </if>
+          </where>
+		  GROUP BY CASE
+          WHEN gencode is null or gencode = '' THEN '未知产品'
+          ELSE gencode
+          END 
+          ORDER BY gencode
+    </select>
+
+    <!-- 查询月报图表数据 -->
+    <select id="queryMonthlyReportEChartData" resultType="map" parameterType="map">
+		SELECT CASE
+        WHEN gencode is null or gencode = '' THEN '未知产品'
+        ELSE gencode
+        END gencode, sum(totalsteel) as totalsteel, sum(zinctotalinc) as zinctotalinc
+		  FROM rpt_workteam
+		  <where>
+            workmode='1'
+            <if test="beginLogtime != null and endLogtime != null and beginLogtime != '' and endLogtime != ''">
+                AND logtime BETWEEN #{beginLogtime} AND #{endLogtime}
+            </if>
+            <if test="loggroup != null and loggroup != ''">
+                AND loggroup = #{loggroup}
+            </if>
+            <if test="prodcode != null and prodcode != ''">
+                AND prodcode = #{prodcode}
+            </if>
+            <if test="gencode != null and gencode != ''">
+                AND gencode = #{gencode}
+            </if>
+          </where>
+		  GROUP BY CASE
+          WHEN gencode is null or gencode = '' THEN '未知产品'
+          ELSE gencode
+          END 
+          ORDER BY gencode
+    </select>    
 </mapper>
