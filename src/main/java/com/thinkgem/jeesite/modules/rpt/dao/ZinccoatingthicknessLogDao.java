@@ -68,10 +68,44 @@ public interface ZinccoatingthicknessLogDao extends CrudDao<Zinccoatingthickness
 	 */
 	int batchInsertWorkteamReportData(ZinccoatingthicknessLog zinccoatingthicknessLog);
 	
+	/**
+	 * 删除异常数据.
+	 * 
+	 * @param zinccoatingthicknessLog
+	 * @return
+	 */
+	int delExceptionLog(ZinccoatingthicknessLog zinccoatingthicknessLog);
+	
+	/**
+	 * 生成异常数据.
+	 * 
+	 * @param zinccoatingthicknessLog
+	 * @return
+	 */
+	int batchInsertExceptionLog(ZinccoatingthicknessLog zinccoatingthicknessLog);
+	
+	/**
+	 * 查询班组图表数据.
+	 * 
+	 * @param params
+	 * @return
+	 */
 	List<Map<String, Object>> queryWorkteamReportEChartData(Map<String, Object> params);
 	
+	/**
+	 * 查询周报图表数据.
+	 * 
+	 * @param params
+	 * @return
+	 */
 	List<Map<String, Object>> queryWeeklyReportEChartData(Map<String, Object> params);
 	
+	/**
+	 * 查询月报图表数据.
+	 * 
+	 * @param params
+	 * @return
+	 */
 	List<Map<String, Object>> queryMonthlyReportEChartData(Map<String, Object> params);
 	
 }

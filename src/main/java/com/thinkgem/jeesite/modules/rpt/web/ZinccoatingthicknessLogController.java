@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.rpt.web;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.rpt.entity.ZinccoatingthicknessLog;
 import com.thinkgem.jeesite.modules.rpt.service.ZinccoatingthicknessLogService;
 
@@ -73,6 +74,18 @@ public class ZinccoatingthicknessLogController extends BaseController {
 	@RequestMapping(value = {"exceptionList", ""})
 	public String exceptionList(ZinccoatingthicknessLog zinccoatingthicknessLog, HttpServletRequest request, HttpServletResponse response, Model model) {
 		long startTime = System.currentTimeMillis();
+		
+		// 默认查询当天的实时数据
+		Date date = new Date();
+		if (zinccoatingthicknessLog.getBeginLogtime() == null || "".equals(zinccoatingthicknessLog.getBeginLogtime())) {
+			String beginLogtime = com.thinkgem.jeesite.common.utils.DateUtils.formatDate(date, "yyyy-MM-dd 00:00:00");
+			zinccoatingthicknessLog.setBeginLogtime(beginLogtime);
+		}
+		if (zinccoatingthicknessLog.getEndLogtime() == null || "".equals(zinccoatingthicknessLog.getEndLogtime())) {
+			String endLogtime = com.thinkgem.jeesite.common.utils.DateUtils.formatDate(com.thinkgem.jeesite.common.utils.DateUtil.addDateOneDay(date, 1), "yyyy-MM-dd 00:00:00");
+			zinccoatingthicknessLog.setEndLogtime(endLogtime);
+		}
+		
 		if (zinccoatingthicknessLog.getMaxOffsetFront() == null) {
 			zinccoatingthicknessLog.setMaxOffsetFront(10d);
 		}
@@ -100,6 +113,17 @@ public class ZinccoatingthicknessLogController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(ZinccoatingthicknessLog zinccoatingthicknessLog, HttpServletRequest request, HttpServletResponse response, Model model) {
 		long startTime = System.currentTimeMillis();
+//		// 默认查询当天的实时数据
+//		Date date = new Date();
+//		if (zinccoatingthicknessLog.getBeginLogtime() == null || "".equals(zinccoatingthicknessLog.getBeginLogtime())) {
+//			String beginLogtime = com.thinkgem.jeesite.common.utils.DateUtils.formatDate(date, "yyyy-MM-dd 00:00:00");
+//			zinccoatingthicknessLog.setBeginLogtime(beginLogtime);
+//		}
+//		if (zinccoatingthicknessLog.getEndLogtime() == null || "".equals(zinccoatingthicknessLog.getEndLogtime())) {
+//			String endLogtime = com.thinkgem.jeesite.common.utils.DateUtils.formatDate(com.thinkgem.jeesite.common.utils.DateUtil.addDateOneDay(date, 1), "yyyy-MM-dd 00:00:00");
+//			zinccoatingthicknessLog.setEndLogtime(endLogtime);
+//		}
+		
 		Page<ZinccoatingthicknessLog> pagination = new Page<ZinccoatingthicknessLog>(request, response);
 		pagination.setOrderBy(" a.logtime asc ");
 		Page<ZinccoatingthicknessLog> page = zinccoatingthicknessLogService.findPage(pagination, zinccoatingthicknessLog); 

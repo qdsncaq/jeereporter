@@ -315,6 +315,69 @@
         </choose>
     </select>
     
+    <!-- 生成异常数据 -->
+    <update id="delExceptionLog">
+        DELETE FROM rpt_base_zinccoatingthickness_exception
+        WHERE logtime BETWEEN #{beginLogtime} AND #{endLogtime}
+    </update>
+    <insert id="batchInsertExceptionLog">
+		INSERT INTO rpt_base_zinccoatingthickness_exception(
+		logtime
+		,msvalue
+		,loggroup
+		,prodcode
+		,gencode
+		,workmode
+		,bandwidth
+		,bandthickness
+		,linespeed
+		,walklen
+		,zincrateunilateral
+		,zincratetargetfront
+		,zincratetargetreverse
+		,detectionpositionfront
+		,detectionpositionreverse
+		,zincratefront
+		,zincratereverse
+		,flag
+		,zincratetargetfrontmaxval
+		,zincratetargetfrontminval
+		,zincratetargetfrontoffset
+		,zincratetargetreversemaxval
+		,zincratetargetreverseminval
+		,zincratetargetreverseoffset
+		)
+		SELECT a.logtime
+		,a.msvalue
+		,a.loggroup
+		,a.prodcode
+		,a.gencode
+		,a.workmode
+		,a.bandwidth
+		,a.bandthickness
+		,a.linespeed
+		,a.walklen
+		,a.zincrateunilateral
+		,b.zincratetargetfront
+		,b.zincratetargetreverse
+		,a.detectionpositionfront
+		,a.detectionpositionreverse
+		,a.zincratefront
+		,a.zincratereverse
+		,a.flag
+		,b.zincratetargetfrontmaxval
+		,b.zincratetargetfrontminval
+		,a.zincratefront - b.zincratetargetfront as zincratetargetfrontoffset
+		,b.zincratetargetreversemaxval
+		,b.zincratetargetreverseminval
+		,a.zincratereverse - b.zincratetargetreverse  as zincratetargetreverseoffset
+		FROM rpt_base_zinccoatingthickness_log a LEFT JOIN rpt_base_zinccoatingthickness_config b ON 1=1
+		  WHERE a.workmode='1'  AND a.logtime BETWEEN #{beginLogtime} AND #{endLogtime}
+		    AND (a.zincratefront &gt; b.zincratetargetfrontmaxval OR a.zincratefront &lt; b.zincratetargetfrontminval
+		        OR a.zincratereverse &gt; b.zincratetargetreversemaxval OR a.zincratereverse &lt; zincratetargetreverseminval)
+		    AND b.configname='debug'
+    </insert>
+    
     <!-- 生成班组报表数据 -->
     <update id="delWorkteamReport">
         DELETE FROM rpt_workteam

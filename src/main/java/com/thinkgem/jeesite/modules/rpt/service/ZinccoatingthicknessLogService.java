@@ -105,4 +105,24 @@ public class ZinccoatingthicknessLogService extends CrudService<Zinccoatingthick
 		return rows;
 	}
 	
+	/**
+	 * 
+	 * @param zinccoatingthicknessLog
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public int genExceptionLog(ZinccoatingthicknessLog zinccoatingthicknessLog) {
+		int rows = 0;
+		try {
+			int dels = dao.delExceptionLog(zinccoatingthicknessLog);
+			logger.info("delete exception log datas {} rows.", dels);
+			rows = dao.batchInsertExceptionLog(zinccoatingthicknessLog);
+			logger.info("batch insert exception log datas {} rows.", rows);
+			return rows;
+		} catch (Exception e) {
+			logger.error("genExceptionLog error: {}", e);
+		}
+		return rows;
+	}
+	
 }

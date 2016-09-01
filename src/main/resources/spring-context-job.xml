@@ -28,6 +28,31 @@
         </property>
     </bean>
     
+    <!-- 生成异常数据 TaskJob -->
+    <bean id="exceptionLogTaskJobBean"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="exceptionLogTaskJob" />
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent">
+            <value>false</value>
+        </property>
+    </bean>
+     <!-- 每天凌晨1点1分执行生成前一天的异常数据 -->
+    <bean id="exceptionLogTaskJobTimer" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="exceptionLogTaskJobBean" />
+        </property>
+        <property name="cronExpression">
+             <value>0 1 1 * * ? </value>
+        </property>
+    </bean>
+    
     <!-- 生成班组报表数据 TaskJob -->
     <bean id="workteamReportTaskJobBean"
         class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -58,6 +83,7 @@
 		<property name="triggers">
 			<list>
 				<!-- <ref bean="demoTaskJobTimer"/> -->
+				<ref bean="exceptionLogTaskJobTimer"/>
 				<ref bean="workteamReportTaskJobTimer"/>
 			</list>
 		</property>
